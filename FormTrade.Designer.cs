@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTrade));
             this.panelBalance = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
@@ -40,7 +40,6 @@
             this.labelBalanceBase = new System.Windows.Forms.Label();
             this.buttonUpdateOrderBook = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBoxLimitOrder = new System.Windows.Forms.CheckBox();
             this.buttonSetAskPrice = new System.Windows.Forms.Button();
             this.buttonSetBidPrice = new System.Windows.Forms.Button();
             this.labelAverage = new System.Windows.Forms.Label();
@@ -145,9 +144,9 @@
             this.labelBalanceMarket.Location = new System.Drawing.Point(246, 2);
             this.labelBalanceMarket.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceMarket.Name = "labelBalanceMarket";
-            this.labelBalanceMarket.Size = new System.Drawing.Size(30, 18);
+            this.labelBalanceMarket.Size = new System.Drawing.Size(16, 18);
             this.labelBalanceMarket.TabIndex = 4;
-            this.labelBalanceMarket.Text = "Btc";
+            this.labelBalanceMarket.Text = "_";
             // 
             // labelBalanceBaseValue
             // 
@@ -168,9 +167,9 @@
             this.labelBalanceBase.Location = new System.Drawing.Point(64, 2);
             this.labelBalanceBase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceBase.Name = "labelBalanceBase";
-            this.labelBalanceBase.Size = new System.Drawing.Size(30, 18);
+            this.labelBalanceBase.Size = new System.Drawing.Size(16, 18);
             this.labelBalanceBase.TabIndex = 0;
-            this.labelBalanceBase.Text = "Btc";
+            this.labelBalanceBase.Text = "_";
             // 
             // buttonUpdateOrderBook
             // 
@@ -185,7 +184,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.checkBoxLimitOrder);
             this.panel1.Controls.Add(this.buttonSetAskPrice);
             this.panel1.Controls.Add(this.buttonSetBidPrice);
             this.panel1.Controls.Add(this.labelAverage);
@@ -204,25 +202,12 @@
             this.panel1.Size = new System.Drawing.Size(473, 96);
             this.panel1.TabIndex = 1;
             // 
-            // checkBoxLimitOrder
-            // 
-            this.checkBoxLimitOrder.AutoSize = true;
-            this.checkBoxLimitOrder.Checked = true;
-            this.checkBoxLimitOrder.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLimitOrder.Location = new System.Drawing.Point(305, 6);
-            this.checkBoxLimitOrder.Name = "checkBoxLimitOrder";
-            this.checkBoxLimitOrder.Size = new System.Drawing.Size(76, 17);
-            this.checkBoxLimitOrder.TabIndex = 14;
-            this.checkBoxLimitOrder.Text = "Limit Order";
-            this.checkBoxLimitOrder.UseVisualStyleBackColor = true;
-            this.checkBoxLimitOrder.CheckedChanged += new System.EventHandler(this.checkBoxLimitOrder_CheckedChanged);
-            // 
             // buttonSetAskPrice
             // 
             this.buttonSetAskPrice.Location = new System.Drawing.Point(221, 3);
             this.buttonSetAskPrice.Name = "buttonSetAskPrice";
             this.buttonSetAskPrice.Size = new System.Drawing.Size(39, 23);
-            this.buttonSetAskPrice.TabIndex = 13;
+            this.buttonSetAskPrice.TabIndex = 0;
             this.buttonSetAskPrice.Text = "ASK";
             this.buttonSetAskPrice.UseVisualStyleBackColor = true;
             this.buttonSetAskPrice.Click += new System.EventHandler(this.buttonSetAskPrice_Click);
@@ -331,7 +316,7 @@
             this.buttonBuy.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBuy.Name = "buttonBuy";
             this.buttonBuy.Size = new System.Drawing.Size(199, 25);
-            this.buttonBuy.TabIndex = 0;
+            this.buttonBuy.TabIndex = 20;
             this.buttonBuy.Text = "BUY";
             this.buttonBuy.UseVisualStyleBackColor = true;
             this.buttonBuy.Click += new System.EventHandler(this.buttonBuy_Click);
@@ -351,17 +336,16 @@
             // 
             this.dgridTradeHistory.AllowUserToAddRows = false;
             this.dgridTradeHistory.AllowUserToDeleteRows = false;
-            this.dgridTradeHistory.AllowUserToOrderColumns = true;
             this.dgridTradeHistory.AllowUserToResizeRows = false;
             this.dgridTradeHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgridTradeHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridTradeHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgridTradeHistory.Location = new System.Drawing.Point(0, 0);
@@ -370,11 +354,11 @@
             this.dgridTradeHistory.Name = "dgridTradeHistory";
             this.dgridTradeHistory.ReadOnly = true;
             this.dgridTradeHistory.RowHeadersVisible = false;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgridTradeHistory.RowTemplate.Height = 24;
             this.dgridTradeHistory.RowTemplate.ReadOnly = true;
             this.dgridTradeHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -482,9 +466,9 @@
             this.buttonCancellAllOrders.Location = new System.Drawing.Point(157, 3);
             this.buttonCancellAllOrders.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancellAllOrders.Name = "buttonCancellAllOrders";
-            this.buttonCancellAllOrders.Size = new System.Drawing.Size(80, 19);
+            this.buttonCancellAllOrders.Size = new System.Drawing.Size(88, 19);
             this.buttonCancellAllOrders.TabIndex = 8;
-            this.buttonCancellAllOrders.Text = "Cancel All";
+            this.buttonCancellAllOrders.Text = "Cancel Order";
             this.buttonCancellAllOrders.UseVisualStyleBackColor = true;
             this.buttonCancellAllOrders.Click += new System.EventHandler(this.buttonCancellAllOrders_Click);
             // 
@@ -754,6 +738,7 @@
             this.Controls.Add(this.panelBalance);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "FormTrade";
             this.Text = "Trade";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormTrade_FormClosed);
@@ -835,7 +820,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button buttonSetBidPrice;
         private System.Windows.Forms.Button buttonSetAskPrice;
-        private System.Windows.Forms.CheckBox checkBoxLimitOrder;
         private System.Windows.Forms.Button buttonUpdateMyOpenOrders;
     }
 }

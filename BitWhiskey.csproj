@@ -62,14 +62,23 @@
   <ItemGroup>
     <Compile Include="AppCrypt.cs" />
     <Compile Include="AppExceptions.cs" />
+    <Compile Include="AppTimer.cs" />
     <Compile Include="Bittrex.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Cryptor.cs" />
+    <Compile Include="DataGridViewWrapper.cs" />
+    <Compile Include="ExchangeManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBalance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBalance.Designer.cs">
+      <DependentUpon>FormBalance.cs</DependentUpon>
     </Compile>
     <Compile Include="FormChart.cs">
       <SubType>Form</SubType>
@@ -77,6 +86,7 @@
     <Compile Include="FormChart.Designer.cs">
       <DependentUpon>FormChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormMainLogic.cs" />
     <Compile Include="FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +99,8 @@
     <Compile Include="FormTrade.Designer.cs">
       <DependentUpon>FormTrade.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTradeLogic.cs" />
+    <Compile Include="FormTradeRequestHandlers.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Market.cs" />
@@ -96,13 +108,14 @@
     <Compile Include="Poloniex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestsProcessingThread.cs" />
     <Compile Include="TradeData.cs" />
-    <Compile Include="TradeDriver.cs" />
-    <Compile Include="TradeDriverBittrex.cs" />
-    <Compile Include="TradeDriverPoloniex.cs" />
     <Compile Include="Yobit.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBalance.resx">
+      <DependentUpon>FormBalance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormChart.resx">
       <DependentUpon>FormChart.cs</DependentUpon>

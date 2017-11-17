@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="timerUpdate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>148, 17</value>
   </metadata>
@@ -182,6 +179,22 @@
         JICOvgG+Jh9do1g6EpptTg7ikt7qWH3ZiVVGnoY81svrYefZRpZvJSpaOlGuMfM1+ZLdQ5wS1V3wD04q
         s3hCsPqGeGoIVu8Q7rHCp2NpCeSIa/n7hnJKoHUuK3A6llIgwVioRenrRNNMoHVR5Y10+JOn6LLBhg1s
         wKjfC5nIGjAfDZ+cxSSzpE/wmrVqqp8BislaIK0cpAj6Ae3xv+oSO6RwAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonBalance.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI2SURBVEhLvZVPSBRRHMd/bbXuesmzlyDpj4V66SBl2/ZX
+        qCQtVqNuBVKwh0ArSvdPFERSK9UEmy2olTTuSkZREZp5EdJSQsmMtMKDdMkEZ/ftOpvf3kwkjWuwvW0d
+        +PBmDvM+833v9+ZHSPNFaZ4fiytQowwqi0AfBZiJhBMWZC7Bw6N7IK3LgLTGDGktHwXwZRMG79w0SHTB
+        kBzApRWE+lwzruRbcDUv45/w5VlQn2/F5VWE7us1iYJBqRp1WYQqZwEOPj0Cx4PypClvr0BZWxn2hkqw
+        L1iCXa27IX8IzUn0BPGXbrRtINyWTuLJ9yE8nuhNmmdf+3HtXQu23itGsbwfha07cXe4xShQX3gRO02Y
+        ql2GyfOZmPRYksdrxZTHim9nCewUoa5xMwIjslEw0+mFUk2I1HDOicH4u+Af6W/egoYFBVWEcK0YzEOI
+        ermASyR5G/zjjxZIICjQJh87TBguJXxymBA6kYOQuxRKf48u0TdZXyIBgTb5K/tSvD5mw0BlEZ6vN6O7
+        wILOlVx6w5W6YPoMr/tNWQDr0tHuuzZmoiOX8PnWxdQFWoK+7Sa8qbRj4LjtVwJ+ULUEo/8jgVYUEc7o
+        IcLIAcKXiiUIOlcjeMEB5W1v6gl+V52xiuyJVRTrcAlt8vyyBt8TqakI/vf3553kvgZMOwkKP2Sp8IMf
+        1kCzDU0f240C7Yk17oDiMiHsXi4OT8B6fIj/8T81dLRZNYrZeEwclf294aSrNy9uT05Hip9jIO7pamM4
+        /wAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButtonSettings.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -29,20 +29,18 @@ namespace BitWhiskey
             AppDomain.CurrentDomain.UnhandledException +=
             new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            using (var mutex = new Mutex(false, "BitWhiskey"))
+            {
+                if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
+                {
+                    Helper.Display("Copy of BitWhiskey is running! Exiting..");
+                    return;
+                }
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
+            }
 
-            /*
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex,"Unhandled Exception!");
-//                MessageBox.Show(ex.ToString());
-            }
-*/
         }
 
         static void Application_ThreadException

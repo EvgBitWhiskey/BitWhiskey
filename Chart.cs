@@ -175,16 +175,82 @@ namespace BitWhiskey
         Dictionary<int, PriceCandle> weekpricedata;
         Dictionary<int, PriceCandle> monthpricedata;
 
+        ConvertDataType curViewType;
         public PriceData()
         {
         }
-        public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType datatype)
+        public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType datatype, ConvertDataType viewType)
         {
             origpricedata = pricedata_;
-            Convert(false);
-            SelectPeriod(datatype);
+            curViewType = viewType;
+            Convert(viewType);
+            keys = new List<int>(pricedata.Keys);
+
+            //            SelectPeriod(datatype);
         }
-        public void SelectPeriod(ConvertDataType datatype)
+        public bool UpdatePrice(double lastPrice)
+        {
+            bool barAdded = false;
+            PriceCandle last = pricedata.Last().Value;
+            int lastPriceDateUnix = pricedata.Keys.Max();
+            DateTime lastPriceDate = Helper.UnixToDateTime(lastPriceDateUnix);
+
+            int unixPeriod = 0;
+            switch (curViewType)
+            {
+                case ConvertDataType.BAR_5:
+                    unixPeriod = 15 * 60;
+                    break;
+                case ConvertDataType.BAR_15:
+                    unixPeriod = 15 * 60;
+                    break;
+                case ConvertDataType.BAR_HOUR:
+                    unixPeriod = 60 * 60;
+                    break;
+                case ConvertDataType.BAR_DAY:
+                    unixPeriod = 24*60 * 60;
+                    break;
+                case ConvertDataType.BAR_WEEK:
+                    unixPeriod = 7*24 * 60 * 60;
+                    break;
+                case ConvertDataType.BAR_MONTH:
+                    unixPeriod = DateTime.DaysInMonth(lastPriceDate.Year, lastPriceDate.Month) * 24 * 60 * 60;
+                    break;
+            }
+
+
+            int curDateUnix = Helper.ToUnixTimeStamp(DateTime.UtcNow);
+            if (curDateUnix >= lastPriceDateUnix + unixPeriod)
+            { //create new bar
+                PriceCandle newbar = new PriceCandle();
+                newbar.close = lastPrice;
+                newbar.open = last.close;
+                newbar.high =Math.Max(last.close, lastPrice);
+                newbar.low = Math.Min(last.close, lastPrice);
+                newbar.volume = 666;
+                newbar.date = lastPriceDateUnix + unixPeriod;
+                pricedata.Add(newbar.date, newbar);
+                barAdded = true;
+
+            }
+            // else
+            { //update last bar
+              //                int rn = Helper.GetRandomExact(0, 1);
+              //                if (rn==0)
+              //                {
+                double newClose = lastPrice;// + 100;
+                    last.close = newClose;
+                    if (last.high < newClose)
+                        last.high = newClose;
+                    if (last.low > newClose)
+                        last.low = newClose;
+            }
+
+            keys = new List<int>(pricedata.Keys);
+            return barAdded;
+        }
+
+        public void SelectPeriod1(ConvertDataType datatype)
         {
             switch (datatype)
             {
@@ -214,7 +280,103 @@ namespace BitWhiskey
             }
             keys = new List<int>(pricedata.Keys);
         }
-        public void Convert(bool fromday)
+        public void Convert(ConvertDataType viewType)
+        {
+            List<int> keys15;
+            keys15 = new List<int>(origpricedata.Keys);
+
+            min15pricedata = new Dictionary<int, PriceCandle>();
+            hourpricedata = new Dictionary<int, PriceCandle>();
+            daypricedata = new Dictionary<int, PriceCandle>();
+            weekpricedata = new Dictionary<int, PriceCandle>();
+            monthpricedata = new Dictionary<int, PriceCandle>();
+
+            DateTime dt;
+            PriceCandle lastprice15 = new PriceCandle();
+            ConvertData min15data = new ConvertData(ConvertDataType.BAR_15);
+            ConvertData hourdata = new ConvertData(ConvertDataType.BAR_HOUR);
+            ConvertData daydata = new ConvertData(ConvertDataType.BAR_DAY);
+            ConvertData weekdata = new ConvertData(ConvertDataType.BAR_WEEK);
+            ConvertData monthdata = new ConvertData(ConvertDataType.BAR_MONTH);
+
+            for (int n = 0; n < keys15.Count; n++)
+            {
+                if (n == 486)
+                { }
+                dt = Helper.UnixToDateTime(keys15[n].ToString());
+                //                if (dt.Month == 9 && dt.Day == 15)
+                min15data.prevclose = lastprice15.close;
+                hourdata.prevclose = lastprice15.close;
+                daydata.prevclose = lastprice15.close;
+                weekdata.prevclose = lastprice15.close;
+                monthdata.prevclose = lastprice15.close;
+                lastprice15 = origpricedata[keys15[n]];
+
+                if (viewType == ConvertDataType.BAR_15)
+                {
+                    min15data.SetCurBar(dt, lastprice15);
+                    min15data.ProcessBar(min15pricedata);
+                }
+                else if (viewType == ConvertDataType.BAR_HOUR)
+                {
+                    hourdata.SetCurBar(dt, lastprice15);
+                    hourdata.ProcessBar(hourpricedata);
+
+                }
+                else if (viewType == ConvertDataType.BAR_DAY)
+                {
+                    daydata.SetCurBar(dt, lastprice15);
+                    daydata.ProcessBar(daypricedata);
+
+                }
+                else if (viewType == ConvertDataType.BAR_WEEK)
+                {
+                    weekdata.SetCurBar(dt, lastprice15);
+                    weekdata.ProcessBar(weekpricedata);
+
+                }
+                else if (viewType == ConvertDataType.BAR_MONTH)
+                {
+                    monthdata.SetCurBar(dt, lastprice15);
+                    monthdata.ProcessBar(monthpricedata);
+                }
+
+            }
+            min15data.prevclose = lastprice15.close;
+            hourdata.prevclose = lastprice15.close;
+            daydata.prevclose = lastprice15.close;
+            weekdata.prevclose = lastprice15.close;
+            monthdata.prevclose = lastprice15.close;
+
+            if (viewType == ConvertDataType.BAR_15)
+            {
+                min15data.AddPrice(min15pricedata);
+                pricedata = min15pricedata;
+            }
+            else if (viewType == ConvertDataType.BAR_HOUR)
+            {
+                hourdata.AddPrice(hourpricedata);
+                pricedata = hourpricedata;
+            }
+            else if (viewType == ConvertDataType.BAR_DAY)
+            {
+                daydata.AddPrice(daypricedata);
+                pricedata = daypricedata;
+            }
+            else if (viewType == ConvertDataType.BAR_WEEK)
+            {
+                weekdata.AddPrice(weekpricedata);
+                pricedata = weekpricedata;
+            }
+            else if (viewType == ConvertDataType.BAR_MONTH)
+            {
+                monthdata.AddPrice(monthpricedata);
+                pricedata = monthpricedata;
+            }
+
+        }
+
+        public void Convert1(bool fromday)
         {
             List<int> keys15 ;
             keys15 = new List<int>(origpricedata.Keys);
@@ -392,13 +554,14 @@ namespace BitWhiskey
         int selectedPriceKey = -1;
 
         //buttons
+        /*
         ChartButton buttonMonth;
         ChartButton buttonWeek;
         ChartButton buttonDay;
         ChartButton buttonHour;
         ChartButton buttonMin15;
         ChartButton buttonMin5;
-
+*/
         ChartButton buttonZoomPlus;
         ChartButton buttonZoomMinus;
 
@@ -434,6 +597,7 @@ namespace BitWhiskey
             float bxadd = 3;
             float sx = 26;
             float bsizeh = 18;
+            /*
             buttonMonth = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh-2), "M");
             bx += sx + bxadd;
             buttonWeek = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "W");
@@ -445,9 +609,10 @@ namespace BitWhiskey
             buttonMin15 = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "M15");
             bx += sx + bxadd;
             buttonMin5 = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "M5");
-
             bx += sx + 12;
 //            sx = 30;
+            */
+
             buttonZoomPlus = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "+");
             bx += sx + bxadd;
             buttonZoomMinus = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "-");
@@ -461,8 +626,9 @@ namespace BitWhiskey
         public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType convertFromType, ConvertDataType viewType)
         {
             data = new PriceData();
-            data.SetData(pricedata_, convertFromType);
+            data.SetData(pricedata_, convertFromType, viewType);
 
+            /*
             switch (viewType)
             {
                 case ConvertDataType.BAR_5:
@@ -484,11 +650,16 @@ namespace BitWhiskey
                     SelectButton(buttonMonth.text);
                     break;
             }
+            */
 
-            data.SelectPeriod(viewType);
+            //data.SelectPeriod(viewType);
             ScrollToEnd();
             ReCalc();
 
+        }
+        public void Dispose()
+        {
+            gform.Dispose();
         }
         public void SaveImage(string imagepathfile)
         {
@@ -499,6 +670,13 @@ namespace BitWhiskey
         {
             return data;
        
+        }
+        public void UpdatePrice(double lastPrice)
+        {
+            bool isChartEnd = (lasttick == data.Count() - 1);
+            bool barAdded=data.UpdatePrice(lastPrice);
+            if(barAdded && isChartEnd)
+              ScrollToEnd();
         }
         public void Zoom(bool zoomin)
         {
@@ -571,7 +749,7 @@ namespace BitWhiskey
             scrollEnd = new PointF(x, y);
             scrollChange = new PointF(0,0);
 
-
+            /*
             if( MouseOnButton(buttonMonth))
             {
                 SelectButton(buttonMonth.text);
@@ -608,7 +786,7 @@ namespace BitWhiskey
                 data.SelectPeriod(ConvertDataType.BAR_5);
                 redraw = true;
             }
-
+            */
             if (MouseOnButton(buttonZoomPlus))
             {
                 Zoom(true);
@@ -629,6 +807,7 @@ namespace BitWhiskey
         }
         void SelectButton(string btext)
         {
+            /*
             if(btext==null)
                 return ;
             buttonMonth.Reset();
@@ -644,18 +823,20 @@ namespace BitWhiskey
             if (btext == buttonHour.text) buttonHour.Click();
             if (btext == buttonMin15.text) buttonMin15.Click();
             if (btext == buttonMin5.text) buttonMin5.Click();
+            */
         }
         ChartButton GetSelectedButton()
         {
+            /*
             if(buttonMonth==null)
                 return null;
-
             if (buttonMonth.clicked) return buttonMonth;
             if (buttonWeek.clicked) return buttonWeek;
             if (buttonDay.clicked) return buttonDay;
             if (buttonHour.clicked) return buttonHour;
             if (buttonMin15.clicked) return buttonMin15;
             if (buttonMin5.clicked) return buttonMin5;
+            */
             return null; 
         }
         void CalcMouseSelection()
@@ -807,7 +988,17 @@ namespace BitWhiskey
 
                     p1 = new PointF(pos - barsizex / 2 - barspace / 2, (float)price2.low);
                     p2 = new PointF(pos - barsizex / 2 - barspace / 2, (float)Math.Min(price2.close, price2.open));
+                    if (p1.X == p2.X && p1.Y == p2.Y)
+                        p2.X += 1;
                     AreaDrawLine(pen, p1, p2);
+/*
+                    if(price2.high==price2.low)
+                    {
+                        p1 = new PointF(pos - barsizex / 2 - barspace / 2-1, (float)price2.close);
+                        p2 = new PointF(pos - barsizex / 2 - barspace / 2+1, (float)price2.close);
+                        AreaDrawLine(pen, p1, p2);
+                    }
+                    */
                 }
                 else
                 {
@@ -857,7 +1048,7 @@ namespace BitWhiskey
                     int date1 =keys[n];
                     p.X = pos;
                     p.Y = -style.strLabelFont.Size ;
-                    DateTime unixtime = Helper.UnixToDateTime(date1.ToString());
+                    DateTime unixtime = Helper.UnixToDateTime(date1.ToString()).ToLocalTime();
                     AreaDrawString(style.strLabelBrush, style.strLabelFont, p, unixtime.ToString("dd.MM.yyyy"));
                     cursize=0;
                 }
@@ -897,7 +1088,7 @@ namespace BitWhiskey
                 {
                     PriceCandle price = pricedata[selectedPriceKey];
                     DateTime unixtime = Helper.UnixToDateTime(price.date.ToString());
-                    string strtime = unixtime.ToString("dd.MM.yyyy  HH:mm");
+                    string strtime = unixtime.ToLocalTime().ToString("dd.MM.yyyy  HH:mm");
                     float strwidth=Helper.StringSize(g, style.strLabelSelFont, strtime).Width;
                     p = new PointF(mousedrawx - strwidth/2-3,0);
                     size = new PointF(strwidth+3*2, style.strLabelSelFont.Size * 2f);
@@ -907,17 +1098,33 @@ namespace BitWhiskey
                     p.X = mousedrawx- strwidth / 2;
                     p.Y = -style.strLabelSelFont.Size;
                     AreaDrawString(style.strLabelSelBrush, style.strLabelSelFont, p, strtime);
+
+                    //Date+V+OHLC 
+                    Dictionary<int,PriceCandle> curdata=data.GetData();
+                    PriceCandle priceReal = curdata[selectedPriceKey];
+                    p.X = draww/12;
+                    p.Y = drawh - style.strLabelFont.Size/5;
+                    // string 
+                    string strDescr = string.Format("{0}      VOL: {1}", strtime, ((int)priceReal.volume).ToString());
+                    AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
+                    p.X = draww / 12;
+                    p.Y = drawh - style.strLabelFont.Size  - 8;
+                    strDescr = string.Format("O: {0}    H: {1}    L: {2}    C: {3}", Helper.PriceToString(priceReal.open), Helper.PriceToString(priceReal.high), Helper.PriceToString(priceReal.low), Helper.PriceToString(priceReal.close));
+                    AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
+
                 }
 
             }
 
             // buttons
+            /*
             DrawButton(buttonMonth);
             DrawButton(buttonWeek);
             DrawButton(buttonDay);
             DrawButton(buttonHour);
             DrawButton(buttonMin15);
             DrawButton(buttonMin5);
+            */
             DrawButton(buttonZoomPlus);
             DrawButton(buttonZoomMinus);
 

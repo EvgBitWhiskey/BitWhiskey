@@ -7,16 +7,19 @@ using System.Net;
 using System.IO;
 using System.Configuration;
 using Microsoft.Win32;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace BitWhiskey
 {
 
   public static class Global
   {
-        public static string python = "";
         public static MySettings settingsMain;
         public static SettingsInit settingsInit;
-  }
+        public static TaskScheduler uiScheduler;
+        public static ExchangeManager markets = new ExchangeManager();
+    }
 
 
 }

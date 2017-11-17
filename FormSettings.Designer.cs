@@ -36,11 +36,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPoloniexSecret = new System.Windows.Forms.TextBox();
-            this.buttonActivatePoloniexKey = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxBittrexKey = new System.Windows.Forms.TextBox();
-            this.buttonActivateBittrexKey = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxBittrexSecret = new System.Windows.Forms.TextBox();
@@ -111,26 +109,15 @@
             this.textBoxPoloniexSecret.Size = new System.Drawing.Size(431, 20);
             this.textBoxPoloniexSecret.TabIndex = 5;
             // 
-            // buttonActivatePoloniexKey
-            // 
-            this.buttonActivatePoloniexKey.Location = new System.Drawing.Point(536, 17);
-            this.buttonActivatePoloniexKey.Name = "buttonActivatePoloniexKey";
-            this.buttonActivatePoloniexKey.Size = new System.Drawing.Size(75, 23);
-            this.buttonActivatePoloniexKey.TabIndex = 7;
-            this.buttonActivatePoloniexKey.Text = "Activate";
-            this.buttonActivatePoloniexKey.UseVisualStyleBackColor = true;
-            this.buttonActivatePoloniexKey.Click += new System.EventHandler(this.buttonActivatePoloniexKey_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxPoloniexKey);
-            this.groupBox1.Controls.Add(this.buttonActivatePoloniexKey);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.textBoxPoloniexSecret);
             this.groupBox1.Location = new System.Drawing.Point(3, 31);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(620, 70);
+            this.groupBox1.Size = new System.Drawing.Size(527, 70);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Poloniex";
@@ -138,13 +125,12 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.textBoxBittrexKey);
-            this.groupBox2.Controls.Add(this.buttonActivateBittrexKey);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.textBoxBittrexSecret);
             this.groupBox2.Location = new System.Drawing.Point(3, 107);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(620, 70);
+            this.groupBox2.Size = new System.Drawing.Size(527, 70);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Bittrex";
@@ -155,16 +141,6 @@
             this.textBoxBittrexKey.Name = "textBoxBittrexKey";
             this.textBoxBittrexKey.Size = new System.Drawing.Size(430, 20);
             this.textBoxBittrexKey.TabIndex = 3;
-            // 
-            // buttonActivateBittrexKey
-            // 
-            this.buttonActivateBittrexKey.Location = new System.Drawing.Point(536, 17);
-            this.buttonActivateBittrexKey.Name = "buttonActivateBittrexKey";
-            this.buttonActivateBittrexKey.Size = new System.Drawing.Size(75, 23);
-            this.buttonActivateBittrexKey.TabIndex = 7;
-            this.buttonActivateBittrexKey.Text = "Activate";
-            this.buttonActivateBittrexKey.UseVisualStyleBackColor = true;
-            this.buttonActivateBittrexKey.Click += new System.EventHandler(this.buttonActivateBittrexKey_Click);
             // 
             // label4
             // 
@@ -202,21 +178,22 @@
             this.checkBoxDefLimitTrade.TabIndex = 10;
             this.checkBoxDefLimitTrade.Text = "Default Limit Orders (No auto Buy\\Sell)";
             this.checkBoxDefLimitTrade.UseVisualStyleBackColor = true;
+            this.checkBoxDefLimitTrade.Visible = false;
             // 
             // labelVersion
             // 
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(554, 4);
+            this.labelVersion.Location = new System.Drawing.Point(470, 4);
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(60, 13);
             this.labelVersion.TabIndex = 11;
-            this.labelVersion.Text = "Version 0.1";
+            this.labelVersion.Text = "Version 0.2";
             // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 341);
+            this.ClientSize = new System.Drawing.Size(541, 341);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.checkBoxDefLimitTrade);
             this.Controls.Add(this.groupBox2);
@@ -246,11 +223,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxPoloniexSecret;
-        private System.Windows.Forms.Button buttonActivatePoloniexKey;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox textBoxBittrexKey;
-        private System.Windows.Forms.Button buttonActivateBittrexKey;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxBittrexSecret;

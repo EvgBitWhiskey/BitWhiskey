@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using NLog;
+using System.ComponentModel;
+using System.Data;
 
 
 namespace BitWhiskey
@@ -19,26 +21,79 @@ namespace BitWhiskey
         static public string directoryAppBin;
         static ApplicationPath()
         {
+#if DEBUG
+            directory = @"t:\DevelopNew\Crypt\BitWhiskeyBIN\";
+            directoryAppBin = Path.Combine(directory, @"AppBin");
+#else
             directory = Environment.CurrentDirectory.Replace(@"\bin\Debug","");
             directoryAppBin = Path.Combine(directory, @"AppBin");
+#endif
+
         }
     }
 
     public static class Helper
     {
         public static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Random random = new Random();
+
+        public static int GetRandomExact(int min, int max)
+        {
+            return random.Next(min, max + 1);
+        }
+        public static int GetRandomWithout1(int min, int max)
+        {
+            return random.Next(min, max);
+        }
 
         public static void Init()
         {
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+            CultureInfo.DefaultThreadCurrentCulture = customCulture;
+
+//            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
 
             Global.settingsInit = SettingsInit.Load(Path.Combine(ApplicationPath.directoryAppBin, "init.json"));
             AppSettingsManager settingsManager = new AppSettingsManager();
             string settingsPath = settingsManager.GetSettingsFilePath(Global.settingsInit.currentprofile, "settings.json");
             Global.settingsMain = MySettings.Load(settingsPath);
+        }
+        public static bool IsResultHasErrors(RequestItemGroup requestGroup, bool log = true, bool display = true)
+        {
+            foreach (RequestItem item in requestGroup.items)
+            {
+                if (item.result.error != "")
+                {
+                    string msg = "Error UIErr->" + item.result.error;
+                    if (log)
+                        Helper.logger.Error(msg);
+                    if (display)
+                        Helper.Display(msg);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public static DataTable ToDataTable<T>(IList<T> data)
+        {
+            PropertyDescriptorCollection properties =
+                TypeDescriptor.GetProperties(typeof(T));
+            DataTable table = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
+                table.Columns.Add(prop.Name, typeof(string));
+            //            table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            foreach (T item in data)
+            {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                    row[prop.Name] = prop.GetValue(item) ?? "";
+                //                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                table.Rows.Add(row);
+            }
+            return table;
         }
         public static void LogAndDisplay(Exception ex, string msg = null)
         {
@@ -47,6 +102,15 @@ namespace BitWhiskey
                 dispmsg = ex.Message;
             logger.Error(ex,msg);
             MessageBox.Show(dispmsg);
+        }
+        public static void LogAndDisplay(string msg)
+        {
+            logger.Error(msg);
+            MessageBox.Show(msg);
+        }
+        public static void Display(string msg)
+        {
+            MessageBox.Show(msg);
         }
 
         public static double GetFractionOnly(double num)
@@ -75,7 +139,17 @@ namespace BitWhiskey
             string formatted = String.Format("{0:F8}", price);
             return formatted;
         }
+        /*
+        public static string PriceToStringFinance(double price)
+        {
+            return price.ToString("N1");
+        }
+*/
 
+        public static string ToStandartTicker(string ticker)
+        {
+            return ticker.Replace("-", "_");
+        }
         public static string MakeRelative(string filePath, string referencePath)
         {
             var fileUri = new Uri(filePath);

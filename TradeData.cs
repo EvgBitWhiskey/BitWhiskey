@@ -9,6 +9,19 @@ namespace BitWhiskey
     {
         public string currency { get; set; }
         public double balance { get; set; }
+
+        public Balance()
+        {
+            balance = 0;
+        }
+    }
+
+    public class ExchangeBalance
+    {
+        public string exchangeName { get; set; }
+        public string currency { get; set; }
+        public double balance { get; set; }
+
     }
 
     public class BuyOrder
@@ -20,6 +33,12 @@ namespace BitWhiskey
     {
         public double quantity { get; set; }
         public double rate { get; set; }
+    }
+
+    public class AllOrders
+    {
+        public List<BuyOrder> buyOrders;
+        public List<SellOrder> sellOrders;
     }
 
     public class OpenOrder
@@ -59,6 +78,15 @@ namespace BitWhiskey
         public double bid { get; set; }
         public double ask { get; set; }
         public double last { get; set; }
+    }
+
+    public class MarketCurrent
+    {
+        public string ticker { get; set; }
+        public double lastPrice { get; set; }
+        public double percentChange { get; set; }
+        public double volumeBtc { get; set; }
+        public double volumeUSDT { get; set; }
     }
 
     public class OrderDone

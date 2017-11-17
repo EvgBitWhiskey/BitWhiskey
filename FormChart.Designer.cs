@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChart));
             this.panelChart = new System.Windows.Forms.Panel();
-            this.timerTradeLast = new System.Windows.Forms.Timer(this.components);
             this.listBoxTicker = new System.Windows.Forms.ListBox();
             this.buttonLoadDayChart = new System.Windows.Forms.Button();
-            this.buttonUpdate5M = new System.Windows.Forms.Button();
+            this.buttonLoad15MinChart = new System.Windows.Forms.Button();
+            this.buttonLoadMonthChart = new System.Windows.Forms.Button();
+            this.buttonLoadWeekChart = new System.Windows.Forms.Button();
+            this.buttonLoadHourChart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panelChart
@@ -43,17 +44,12 @@
             this.panelChart.Location = new System.Drawing.Point(2, 28);
             this.panelChart.Margin = new System.Windows.Forms.Padding(2);
             this.panelChart.Name = "panelChart";
-            this.panelChart.Size = new System.Drawing.Size(704, 374);
+            this.panelChart.Size = new System.Drawing.Size(704, 362);
             this.panelChart.TabIndex = 11;
             this.panelChart.Paint += new System.Windows.Forms.PaintEventHandler(this.panelChart_Paint);
             this.panelChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelChart_MouseDown);
             this.panelChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelChart_MouseMove);
             this.panelChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelChart_MouseUp);
-            // 
-            // timerTradeLast
-            // 
-            this.timerTradeLast.Interval = 8000;
-            this.timerTradeLast.Tick += new System.EventHandler(this.timerTradeLast_Tick);
             // 
             // listBoxTicker
             // 
@@ -70,30 +66,63 @@
             // 
             // buttonLoadDayChart
             // 
-            this.buttonLoadDayChart.Location = new System.Drawing.Point(4, 2);
+            this.buttonLoadDayChart.Location = new System.Drawing.Point(88, 2);
             this.buttonLoadDayChart.Name = "buttonLoadDayChart";
-            this.buttonLoadDayChart.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoadDayChart.Size = new System.Drawing.Size(40, 23);
             this.buttonLoadDayChart.TabIndex = 13;
-            this.buttonLoadDayChart.Text = "Day Chart";
+            this.buttonLoadDayChart.Text = "D";
             this.buttonLoadDayChart.UseVisualStyleBackColor = true;
             this.buttonLoadDayChart.Click += new System.EventHandler(this.buttonLoadDayChart_Click);
             // 
-            // buttonUpdate5M
+            // buttonLoad15MinChart
             // 
-            this.buttonUpdate5M.Location = new System.Drawing.Point(100, 2);
-            this.buttonUpdate5M.Name = "buttonUpdate5M";
-            this.buttonUpdate5M.Size = new System.Drawing.Size(76, 23);
-            this.buttonUpdate5M.TabIndex = 14;
-            this.buttonUpdate5M.Text = "Update5M";
-            this.buttonUpdate5M.UseVisualStyleBackColor = true;
-            this.buttonUpdate5M.Click += new System.EventHandler(this.buttonUpdate5M_Click);
+            this.buttonLoad15MinChart.Location = new System.Drawing.Point(170, 2);
+            this.buttonLoad15MinChart.Name = "buttonLoad15MinChart";
+            this.buttonLoad15MinChart.Size = new System.Drawing.Size(41, 23);
+            this.buttonLoad15MinChart.TabIndex = 14;
+            this.buttonLoad15MinChart.Text = "15M";
+            this.buttonLoad15MinChart.UseVisualStyleBackColor = true;
+            this.buttonLoad15MinChart.Click += new System.EventHandler(this.buttonLoad15MinChart_Click);
+            // 
+            // buttonLoadMonthChart
+            // 
+            this.buttonLoadMonthChart.Location = new System.Drawing.Point(2, 2);
+            this.buttonLoadMonthChart.Name = "buttonLoadMonthChart";
+            this.buttonLoadMonthChart.Size = new System.Drawing.Size(40, 23);
+            this.buttonLoadMonthChart.TabIndex = 16;
+            this.buttonLoadMonthChart.Text = "M";
+            this.buttonLoadMonthChart.UseVisualStyleBackColor = true;
+            this.buttonLoadMonthChart.Click += new System.EventHandler(this.buttonLoadMonthChart_Click);
+            // 
+            // buttonLoadWeekChart
+            // 
+            this.buttonLoadWeekChart.Location = new System.Drawing.Point(45, 2);
+            this.buttonLoadWeekChart.Name = "buttonLoadWeekChart";
+            this.buttonLoadWeekChart.Size = new System.Drawing.Size(40, 23);
+            this.buttonLoadWeekChart.TabIndex = 17;
+            this.buttonLoadWeekChart.Text = "W";
+            this.buttonLoadWeekChart.UseVisualStyleBackColor = true;
+            this.buttonLoadWeekChart.Click += new System.EventHandler(this.buttonLoadWeekChart_Click);
+            // 
+            // buttonLoadHourChart
+            // 
+            this.buttonLoadHourChart.Location = new System.Drawing.Point(131, 2);
+            this.buttonLoadHourChart.Name = "buttonLoadHourChart";
+            this.buttonLoadHourChart.Size = new System.Drawing.Size(36, 23);
+            this.buttonLoadHourChart.TabIndex = 18;
+            this.buttonLoadHourChart.Text = "H";
+            this.buttonLoadHourChart.UseVisualStyleBackColor = true;
+            this.buttonLoadHourChart.Click += new System.EventHandler(this.buttonLoadHourChart_Click);
             // 
             // FormChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 406);
-            this.Controls.Add(this.buttonUpdate5M);
+            this.Controls.Add(this.buttonLoadHourChart);
+            this.Controls.Add(this.buttonLoadWeekChart);
+            this.Controls.Add(this.buttonLoadMonthChart);
+            this.Controls.Add(this.buttonLoad15MinChart);
             this.Controls.Add(this.buttonLoadDayChart);
             this.Controls.Add(this.listBoxTicker);
             this.Controls.Add(this.panelChart);
@@ -111,9 +140,11 @@
 
         #endregion
         private System.Windows.Forms.Panel panelChart;
-        private System.Windows.Forms.Timer timerTradeLast;
         private System.Windows.Forms.ListBox listBoxTicker;
         private System.Windows.Forms.Button buttonLoadDayChart;
-        private System.Windows.Forms.Button buttonUpdate5M;
+        private System.Windows.Forms.Button buttonLoad15MinChart;
+        private System.Windows.Forms.Button buttonLoadMonthChart;
+        private System.Windows.Forms.Button buttonLoadWeekChart;
+        private System.Windows.Forms.Button buttonLoadHourChart;
     }
 }

@@ -100,6 +100,7 @@ namespace BitWhiskey
 
     public class Poloniex : Market
     {
+        static readonly object _locker = new object();
         protected static int currentNonce;
 
         public Poloniex()
@@ -110,14 +111,23 @@ namespace BitWhiskey
             publicMethod = "POST";
             keyMethod = "POST";
             includeParametersInRequestAddress = false;
-            currentNonce = Helper.ToUnixTimeStamp(DateTime.UtcNow) - 5;
 
+            int datenonce = Helper.ToUnixTimeStamp(DateTime.UtcNow);
+            lock (_locker)
+            {
+                currentNonce = datenonce;
+            }
             key = "";
             secret = "";
             if (Global.settingsMain.poloniexkey != "")
+            {
                 key = AppCrypt.DecryptData(Global.settingsMain.poloniexkey);
+                haveKey = true;
+            }
             if (Global.settingsMain.poloniexsecret != "")
+            { 
                 secret = AppCrypt.DecryptData(Global.settingsMain.poloniexsecret);
+            }
         }
 
         private void CheckResponseAndThrow(string response)
@@ -125,16 +135,21 @@ namespace BitWhiskey
             if (response.Length > 13 && response.Substring(0, 13).Contains("\"error\""))
             {
                 PError err = Newtonsoft.Json.JsonConvert.DeserializeObject<PError>(response);
-                lastRequestMsg = err.error;
-                lastRequestStatus = false;
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                //lastRequestMsg = err.error;
+                //lastRequestStatus = false;
+                throw new MarketAPIException("Market API Error:" + err.error);
             }
         }
 
     public int GetNonce()
         {
-            currentNonce++;
-            return currentNonce;
+            int nonce = 0;
+            lock (_locker)
+            {
+                currentNonce++;
+                nonce = currentNonce;
+            }
+            return nonce;
             //            return Helper.ToUnixTimeStamp(DateTime.UtcNow);
         }
 
@@ -175,46 +190,60 @@ namespace BitWhiskey
             return "";
         }
 
-        public override void GetOrderBook(string ticker)
+        public override string GetOrderBookBegin(string ticker)
         {
             //https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_NXT&depth=10
             ticker = ToOriginalTicker(ticker);
 
             string parameters = "returnOrderBook&currencyPair=" + ticker + "&nonce=" + GetNonce();
             parameters += "&depth = 10";
+            return parameters;
+
+        }
+        public override AllOrders GetOrderBookEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             POrderBook items = Newtonsoft.Json.JsonConvert.DeserializeObject<POrderBook>(response);
-            buyOrders = new List<BuyOrder>();
-            sellOrders = new List<SellOrder>();
+            AllOrders orders = new AllOrders();
+            orders.buyOrders = new List<BuyOrder>();
+            orders.sellOrders = new List<SellOrder>();
             int n = 0;
             foreach (var item in items.bids)
             {
                 n++;
-                buyOrders.Add(new BuyOrder { quantity = Helper.ToDouble(item[1].ToString()), rate = Helper.ToDouble((string)item[0]) });
+                orders.buyOrders.Add(new BuyOrder { quantity = Helper.ToDouble(item[1].ToString()), rate = Helper.ToDouble((string)item[0]) });
             }
             n = 0;
             foreach (var item in items.asks)
             {
                 n++;
-                sellOrders.Add(new SellOrder { quantity = Helper.ToDouble(item[1].ToString()), rate = Helper.ToDouble((string)item[0]) });
+                orders.sellOrders.Add(new SellOrder { quantity = Helper.ToDouble(item[1].ToString()), rate = Helper.ToDouble((string)item[0]) });
             }
+            orders.sellOrders = orders.sellOrders.OrderBy(o => o.rate).ToList();
+            orders.buyOrders = orders.buyOrders.OrderByDescending(o => o.rate).ToList();
+
+            return orders;
 
         }
-        public override void GetTradePairs()
+        public override string GetTradePairsBegin()
         {
             //https://poloniex.com/public?command=returnCurrencies
             //https://poloniex.com/public?command=returnTicker
             string parameters = "returnTicker&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, TradePair> GetTradePairsEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             dynamic stuff = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
 
-            tradePairs = new Dictionary<string, TradePair>();
+            Dictionary<string, TradePair>  tradePairs = new Dictionary<string, TradePair>();
             int n = 0;
             foreach (var item in stuff)
             {
@@ -226,29 +255,33 @@ namespace BitWhiskey
                     ticker = item.Name,
                     isActive = true
                 };
-//                if (item.Value["disabled"].ToString() == "1")
-//                    pair.isActive = false;
+                //                if (item.Value["disabled"].ToString() == "1")
+                //                    pair.isActive = false;
 
                 Pair pairinfo = new Pair(pair.ticker);
                 pair.currency1 = pairinfo.currency1;
                 pair.currency2 = pairinfo.currency2;
                 tradePairs.Add(pair.ticker, pair);
             }
-
+            return tradePairs;
         }
-        public override void GetTradeHistory(string ticker)
+        public override string GetTradeHistoryBegin(string ticker)
         {
             //https://poloniex.com/public?command=returnTradeHistory&currencyPair=BTC_NXT&start=1410158341&end=1410499372
             ticker = ToOriginalTicker(ticker);
 
             string parameters = "returnTradeHistory&currencyPair=" + ticker + "&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override List<Trade> GetTradeHistoryEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             List<PTradeHistory> items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<PTradeHistory>>(response);
             int n = 0;
-            tradeHistory = new List<Trade>();
+            List<Trade> tradeHistory = new List<Trade>();
             foreach (PTradeHistory item in items)
             {
                 n++;
@@ -260,48 +293,57 @@ namespace BitWhiskey
                     price = Helper.ToDouble(item.rate),
                     total = Helper.ToDouble(item.total),
                     orderType = item.type.ToUpper(),
-                    fillType =""
+                    fillType = ""
                 };
 
                 tradeHistory.Add(trade);
             }
+            tradeHistory = tradeHistory.OrderByDescending(o => o.tradeDate).ToList();
+
+            return tradeHistory;
         }
 
-        public override void GetTradeLast(string ticker)
+        public override string GetTradeLastBegin(string ticker)
         {
             //https://poloniex.com/public?command=returnTicker
             string parameters = "returnTicker&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override TradeLast GetTradeLastEnd(string parameters, string ticker)
+        {
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             dynamic stuff = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
 
-            tradePairs = new Dictionary<string, TradePair>();
-
             Pair tickerinfo = new Pair(ticker);
 
-            tradelast = null;
+            TradeLast tradelast =new TradeLast();
             foreach (var item in stuff)
             {
                 Pair iteminfo = new Pair(item.Name);
-                if(tickerinfo.currency1== iteminfo.currency1 && tickerinfo.currency2 == iteminfo.currency2)
+                if (tickerinfo.currency1 == iteminfo.currency1 && tickerinfo.currency2 == iteminfo.currency2)
                 {
                     tradelast = new TradeLast { ask = Helper.ToDouble((string)item.Value["lowestAsk"]), bid = Helper.ToDouble((string)item.Value["highestBid"]), last = Helper.ToDouble((string)item.Value["last"]) };
-                    return;
+                    break;
                 }
             }
 
+            return tradelast;
         }
-        public override void GetBalances()
+        public override string GetBalancesBegin()
         {
             string parameters = "command=returnBalances" + "&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, Balance> GetBalancesEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
-
             CheckResponseAndThrow(response);
-
             dynamic jdata = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
 
+            Dictionary<string, Balance> balances;
             balances = new Dictionary<string, Balance>();
             int n = 0;
             foreach (var item in jdata)
@@ -309,18 +351,24 @@ namespace BitWhiskey
                 n++;
                 balances.Add(item.Name, new Balance { currency = item.Name, balance = Helper.ToDouble(item.Value.ToString().Replace("\"", "")) });
             }
+
+            return balances;
         }
-        public override void GetOpenOrders(string ticker)
+        public override string GetOpenOrdersBegin(string ticker)
         {
             // returnOpenOrders   
             string parameters = "command=returnOpenOrders&currencyPair=" + ticker + " &nonce=" + GetNonce();
+            return parameters;
+        }
+        public override List<OpenOrder> GetOpenOrdersEnd(string parameters, string ticker)
+        {
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             List<POpenOrders> jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POpenOrders>>(response);
 
-            openOrders = new List<OpenOrder>();
+            List<OpenOrder> openOrders = new List<OpenOrder>();
             foreach (POpenOrders item in jdata)
             {
                 OpenOrder order = new OpenOrder
@@ -342,57 +390,75 @@ namespace BitWhiskey
                 openOrders.Add(order);
 
             }
+            openOrders = openOrders.OrderByDescending(o => o.openedDate).ToList();
+            return openOrders;
         }
-        public override bool OrderCancel(string idOrder)
+        public override string OrderCancelBegin(string idOrder)
         {
             // cancelOrder   
             string parameters = "command=cancelOrder&orderNumber=" + idOrder + "&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override string OrderCancelEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             PCancelOrder jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PCancelOrder>(response);
-            return jdata.success==1;
+            return "";
         }
-        public override bool OrderBuyLimit(string ticker, double rate, double quantity)
+        public override string OrderBuyLimitBegin(string ticker, double rate, double quantity)
         {
             // buy   
             ticker = ToOriginalTicker(ticker);
             string parameters = "command=buy&currencyPair=" + ticker + "&nonce=" + GetNonce();
             parameters += "&amount=" + quantity.ToString();
             parameters += "&rate=" + rate.ToString();
+            return parameters; 
+        }
+        public override string OrderBuyLimitEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             PBuySell jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PBuySell>(response);
-            return true; 
+            return "";
         }
-        public override bool OrderSellLimit(string ticker, double rate, double quantity)
+        public override string OrderSellLimitBegin(string ticker, double rate, double quantity)
         {
             // buy   
             ticker = ToOriginalTicker(ticker);
             string parameters = "command=sell&currencyPair=" + ticker + "&nonce=" + GetNonce();
             parameters += "&amount=" + quantity.ToString();
             parameters += "&rate=" + rate.ToString();
+            return parameters;
+        }
+        public override string OrderSellLimitEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             PBuySell jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PBuySell>(response);
-            return true;
+            return "";
         }
-        public override void GetMyOrdersHistory(string ticker)
+        public override string GetMyOrdersHistoryBegin(string ticker)
         {
             // returnTradeHistory + all   
             string parameters = "command=returnTradeHistory&currencyPair=" + ticker + " &nonce=" + GetNonce();
+            return parameters;
+        }
+        public override List<OrderDone> GetMyOrdersHistoryEnd(string parameters, string ticker)
+        {
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             List<PMyTradeHistory> jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<List<PMyTradeHistory>>(response);
 
-            myOrdersHistory = new List<OrderDone>();
+            List<OrderDone> myOrdersHistory = new List<OrderDone>();
             foreach (PMyTradeHistory item in jdata)
             {
                 OrderDone order = new OrderDone
@@ -415,9 +481,11 @@ namespace BitWhiskey
                 myOrdersHistory.Add(order);
 
             }
+            myOrdersHistory = myOrdersHistory.OrderByDescending(o => o.doneDate).ToList();
+            return myOrdersHistory;
 
         }
-        public override string GetPriceHistoryByPeriod(string ticker, string interval, DateTime start, DateTime end)
+        public override string GetPriceHistoryByPeriodBegin(string ticker, string interval, DateTime start, DateTime end)
         {
             //https://poloniex.com/public?command=returnChartData&currencyPair=USDT_BTC&start=1494304000&end=9999999999&period=900
             ticker = ToOriginalTicker(ticker);
@@ -427,23 +495,63 @@ namespace BitWhiskey
             parameters += "&start=" + Helper.ToUnixTimeStamp(start);
             parameters += "&end=" + Helper.ToUnixTimeStamp(end);
             parameters += "&period=" + interval;
+            return parameters;
+
+        }
+        public override Dictionary<int, PriceCandle> GetPriceHistoryByPeriodEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
 
             List<PPriceHistoryResult> items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<PPriceHistoryResult>>(response);
             int n = 0;
-            priceHistory = new Dictionary<int, PriceCandle>();
+            Dictionary<int, PriceCandle> priceHistory = new Dictionary<int, PriceCandle>();
             foreach (PPriceHistoryResult item in items)
             {
                 if (item.high / item.low > 3000)
                     continue;
                 n++;
-                priceHistory.Add(item.date, new PriceCandle {date=item.date,  open = item.open, high = item.high, low = item.low, close = item.close, volume=item.volume });
+                priceHistory.Add(item.date, new PriceCandle { date = item.date, open = item.open, high = item.high, low = item.low, close = item.close, volume = item.volume });
             }
-            return response;
+            return priceHistory;
 
         }
+        public override string GetMarketCurrentBegin()
+        {
+            //https://poloniex.com/public?command=returnTicker
+            string parameters = "returnTicker&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, MarketCurrent>  GetMarketCurrentEnd(string parameters)
+        {
+            string response = DoPublicRequest(parameters);
+
+            CheckResponseAndThrow(response);
+
+            dynamic stuff = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
+
+            Dictionary<string, MarketCurrent> markets = new Dictionary<string, MarketCurrent>();
+            foreach (var item in stuff)
+            {
+                Pair iteminfo = new Pair(item.Name);
+                MarketCurrent mkt = new MarketCurrent();
+                mkt.ticker = item.Name;
+                mkt.lastPrice = Helper.ToDouble((string)item.Value["last"]);
+                mkt.volumeBtc = 0;
+                mkt.volumeUSDT = 0;
+                if (iteminfo.currency1=="BTC")
+                  mkt.volumeBtc = Helper.ToDouble((string)item.Value["baseVolume"]);
+                else if (iteminfo.currency1 == "USDT")
+                    mkt.volumeUSDT = Helper.ToDouble((string)item.Value["baseVolume"]);
+//                mkt.volumeBtc = Helper.ToDouble((string)item.Value["quoteVolume"]);
+                mkt.percentChange = Helper.ToDouble((string)item.Value["percentChange"])*100.0;
+                markets.Add(item.Name,mkt);
+            }
+
+            return markets;
+        }
+
 
     }
 

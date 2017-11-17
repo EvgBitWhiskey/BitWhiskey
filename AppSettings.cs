@@ -19,16 +19,10 @@ namespace BitWhiskey
     {
         public void Save(string filePath)
         {
-//            string file = Path.Combine(pricedir, ticker + ".txt");
             File.WriteAllText(filePath, Newtonsoft.Json.JsonConvert.SerializeObject(this, new CustomDateTimeConverter()));
-//            File.WriteAllText(fileName, (new JavaScriptSerializer()).Serialize(this));
         }
         public static T Load(string filePath)
         {
-            //            T t = new T();
-            //            if (File.Exists(fileName))
-            //            t = (new JavaScriptSerializer()).Deserialize<T>(File.ReadAllText(fileName));
-            //            return t;
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath), new CustomDateTimeConverter());
        }
     }

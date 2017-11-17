@@ -35,13 +35,15 @@ namespace BitWhiskey
             comboBoxProfile.Items.Clear();
             comboBoxProfile.Items.AddRange(profiles.ToArray());
         }
-
+        
         private void buttonSave_Click(object sender, EventArgs e)
         {
             //            TestSaveStandart();return;
 
-            selSettings.defaultlimitorders = checkBoxDefLimitTrade.Checked;
             string settingsPath = settingsManager.GetSettingsFilePath(comboBoxProfile.Text, "settings.json");
+            selSettings.defaultlimitorders = checkBoxDefLimitTrade.Checked;
+            ActivatePoloniexKey();
+            ActivateBittrexKey();
             selSettings.Save(settingsPath);
             Global.settingsMain = selSettings;
             Global.settingsInit.currentprofile = comboBoxProfile.Text;
@@ -52,10 +54,27 @@ namespace BitWhiskey
         {
             string settingsPath = settingsManager.GetSettingsFilePath(comboBoxProfile.Text, "settings.json");
             selSettings = MySettings.Load(settingsPath);
-            if(selSettings.poloniexkey=="")
-                textBoxPoloniexKey.Text = "0";
+            if (selSettings.poloniexkey == "")
+            {
+                textBoxPoloniexKey.Text = "Empty";
+                textBoxPoloniexSecret.Text = "Empty";
+            }
+            else
+            {
+                textBoxPoloniexKey.Text = "******";
+                textBoxPoloniexSecret.Text = "******";
+            }
+
             if (selSettings.bittrexkey == "")
-                textBoxBittrexKey.Text = "0";
+            {
+                textBoxBittrexKey.Text = "Empty";
+                textBoxBittrexSecret.Text = "Empty";
+            }
+            else
+            {
+                textBoxBittrexKey.Text = "******";
+                textBoxBittrexSecret.Text = "******";
+            }
 
             checkBoxDefLimitTrade.Checked= selSettings.defaultlimitorders;
         }
@@ -66,7 +85,24 @@ namespace BitWhiskey
             if (parent.WindowState == FormWindowState.Minimized)
                 parent.WindowState = FormWindowState.Normal;
         }
+        private void ActivatePoloniexKey()
+        {
+            if (textBoxPoloniexKey.Text != "******" && textBoxPoloniexKey.Text != "Empty")
+            {
+              selSettings.poloniexkey = AppCrypt.EncryptData(textBoxPoloniexKey.Text);
+              selSettings.poloniexsecret = AppCrypt.EncryptData(textBoxPoloniexSecret.Text);
+            }
+        }
+        private void ActivateBittrexKey()
+        {
+            if (textBoxBittrexKey.Text != "******" && textBoxBittrexKey.Text != "Empty")
+            {
+                selSettings.bittrexkey = AppCrypt.EncryptData(textBoxBittrexKey.Text);
+                selSettings.bittrexsecret = AppCrypt.EncryptData(textBoxBittrexSecret.Text);
+            }
+        }
 
+        /*
         private void buttonActivatePoloniexKey_Click(object sender, EventArgs e)
         {
             if (textBoxPoloniexSecret.Text == "")
@@ -91,5 +127,6 @@ namespace BitWhiskey
             MessageBox.Show("Done! Save you profile to apply changes");
 
         }
+        */
     }
 }

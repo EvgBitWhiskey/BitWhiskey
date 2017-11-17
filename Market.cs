@@ -21,23 +21,14 @@ namespace BitWhiskey
         protected string publicMethod = "";
         protected string keyMethod = "";
         protected bool   includeParametersInRequestAddress ;
-        public string lastRequestMsg;
-        public bool lastRequestStatus;
-
-
-        public Dictionary<string, TradePair> tradePairs;
-        public Dictionary<string, Balance> balances;
-        public List<BuyOrder> buyOrders;
-        public List<SellOrder> sellOrders;
-        public List<OpenOrder> openOrders;
-        public List<Trade> tradeHistory;
-        public TradeLast tradelast;
-        public List<OrderDone> myOrdersHistory;
-        public Dictionary<int, PriceCandle> priceHistory;
-
+        protected bool haveKey = false;
 
         public Market()
         {
+        }
+        public virtual bool HaveKey()
+        {
+            return haveKey;
         }
         public virtual string GetResponseForRequest(WebRequest request)
         {
@@ -115,21 +106,36 @@ namespace BitWhiskey
             return GetResponseForRequest(webRequest);
         }
 
-
+        public abstract string MarketName();
         public abstract string ToOriginalTicker(string ticker);
         public abstract string ConvertPriceIntervalParam(string interval);
-        public abstract void GetOrderBook(string ticker);
-        public abstract void GetTradeHistory(string ticker);
-        public abstract void GetTradeLast(string ticker);
-        public abstract void GetBalances();
-        public abstract void GetOpenOrders(string ticker);
-        public abstract void GetTradePairs();
-        public abstract bool OrderCancel(string uuidOrder);
-        public abstract bool OrderBuyLimit(string ticker,double rate,double quantity);
-        public abstract bool OrderSellLimit(string ticker, double rate, double quantity);
-        public abstract void GetMyOrdersHistory(string ticker);
-        public abstract string GetPriceHistoryByPeriod(string ticker,string interval, DateTime start, DateTime end);
-        public abstract string MarketName();
+        public abstract string GetOrderBookBegin(string ticker);
+        public abstract AllOrders GetOrderBookEnd(string parameters);
+        public abstract string GetTradeHistoryBegin(string ticker);
+        public abstract List<Trade> GetTradeHistoryEnd(string parameters);
+        public abstract string GetTradeLastBegin(string ticker);
+        public abstract TradeLast GetTradeLastEnd(string parameters,string ticker);
+        public abstract string GetBalancesBegin();
+        public abstract Dictionary<string, Balance> GetBalancesEnd(string parameters);
+        public abstract string GetOpenOrdersBegin(string ticker);
+        public abstract List<OpenOrder> GetOpenOrdersEnd(string parameters, string ticker);
+        public abstract string GetTradePairsBegin();
+        public abstract Dictionary<string, TradePair> GetTradePairsEnd(string parameters);
+        public abstract string OrderCancelBegin(string uuidOrder);
+        public abstract string OrderCancelEnd(string parameters);
+        public abstract string OrderBuyLimitBegin(string ticker,double rate,double quantity);
+        public abstract string OrderBuyLimitEnd(string parameters);
+        public abstract string OrderSellLimitBegin(string ticker, double rate, double quantity);
+        public abstract string OrderSellLimitEnd(string parameters);
+        public abstract string GetMyOrdersHistoryBegin(string ticker);
+        public abstract List<OrderDone> GetMyOrdersHistoryEnd(string parameters, string ticker);
+        public abstract string GetPriceHistoryByPeriodBegin(string ticker,string interval, DateTime start, DateTime end);
+        public abstract Dictionary<int, PriceCandle> GetPriceHistoryByPeriodEnd(string parameters);
+
+        public abstract string GetMarketCurrentBegin();
+        public abstract Dictionary<string, MarketCurrent> GetMarketCurrentEnd(string parameters);
+
+
 
 
     }

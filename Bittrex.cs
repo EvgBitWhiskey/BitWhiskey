@@ -242,9 +242,10 @@ public class Bittrex24HourSummary
 
     public class Bittrex : Market
     {
-        public Dictionary<string, Bittrex24HourSummary> marketsSummary;
-
+        static readonly object _locker = new object();
         protected static int currentNonce;
+
+        public Dictionary<string, Bittrex24HourSummary> marketsSummary;
 
         public Bittrex()
         {
@@ -254,21 +255,33 @@ public class Bittrex24HourSummary
             publicMethod = "POST";
             keyMethod = "POST";
             includeParametersInRequestAddress = true;
-            currentNonce = Helper.ToUnixTimeStamp(DateTime.UtcNow) - 5;
 
+            int datenonce = Helper.ToUnixTimeStamp(DateTime.UtcNow);
+            lock (_locker)
+            {
+                currentNonce = datenonce;
+            }
 
             key = "";
             secret = "";
+//            Global.settingsMain.bittrexkey = "";
             if (Global.settingsMain.bittrexkey != "")
+            { 
                 key = AppCrypt.DecryptData(Global.settingsMain.bittrexkey);
+                haveKey = true;
+            }
             if (Global.settingsMain.bittrexsecret != "")
                 secret = AppCrypt.DecryptData(Global.settingsMain.bittrexsecret);
         }
         public int GetNonce()
         {
-            currentNonce++;
-            return currentNonce;
-            //            return Helper.ToUnixTimeStamp(DateTime.UtcNow);
+            int nonce = 0;
+            lock (_locker)
+            {
+                currentNonce++;
+                nonce = currentNonce;
+            }
+            return nonce;
         }
         public override string MarketName()
         {
@@ -303,18 +316,23 @@ public class Bittrex24HourSummary
 
             return "";
         }
-        public override void GetBalances()
+        public override string  GetBalancesBegin()
         {
             // account/getbalances?apikey=API_KEY    
             string parameters = "account/getbalances?apikey=" + key + "&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, Balance> GetBalancesEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             BBalances jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BBalances>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
+            Dictionary<string, Balance> balances;
             balances = new Dictionary<string, Balance>();
             int n = 0;
             foreach (var item in jdata.result)
@@ -323,8 +341,10 @@ public class Bittrex24HourSummary
                 balances.Add(item.Currency, new Balance { currency = item.Currency, balance = item.Balance });
             }
 
+            return balances;
         }
-        public override void GetOrderBook(string ticker)
+
+        public override string GetOrderBookBegin(string ticker)
         {
             //https://bittrex.com/api/v2.0//pub/Market/GetMarketOrderBook?market=BTC-LTC&type=both
             //https://bittrex.com/api/v1.1/public/getorderbook?market=BTC-LTC&type=both    
@@ -332,45 +352,61 @@ public class Bittrex24HourSummary
 
             string parameters = "public/getorderbook?market=" + ticker + "&nonce=" + GetNonce();
             parameters += "&type=" + "both";
+            return parameters;
+
+        }
+        public override AllOrders GetOrderBookEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             BOrderBook jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderBook>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            buyOrders = new List<BuyOrder>();
-            sellOrders = new List<SellOrder>();
+            AllOrders orders = new AllOrders();
+            orders.buyOrders = new List<BuyOrder>();
+            orders.sellOrders = new List<SellOrder>();
+
             int n = 0;
             foreach (var item in jdata.result.buy)
             {
                 n++;
-                buyOrders.Add(new BuyOrder { quantity = item.Quantity, rate = item.Rate });
+                orders.buyOrders.Add(new BuyOrder { quantity = item.Quantity, rate = item.Rate });
             }
             n = 0;
             foreach (var item in jdata.result.sell)
             {
                 n++;
-                sellOrders.Add(new SellOrder { quantity = item.Quantity, rate = item.Rate });
+                orders.sellOrders.Add(new SellOrder { quantity = item.Quantity, rate = item.Rate });
             }
 
+            orders.sellOrders = orders.sellOrders.OrderBy(o => o.rate).ToList();
+            orders.buyOrders = orders.buyOrders.OrderByDescending(o => o.rate).ToList();
+
+            return orders;
         }
-        public override void GetOpenOrders(string ticker)
+        public override string GetOpenOrdersBegin(string ticker)
         {
             //https://bittrex.com/api/v1.1/market/getopenorders?apikey=API_KEY&market=BTC-LTC    
             ticker = ToOriginalTicker(ticker);
             string parameters = "market/getopenorders?apikey=" + key + "&nonce=" + GetNonce();
             parameters += "&market=" + ticker;
+            return parameters;
+
+        }
+        public override List<OpenOrder> GetOpenOrdersEnd(string parameters, string ticker)
+        {
             string response = DoKeyRequest(parameters);
 
             BOpenOrders jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOpenOrders>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            openOrders = new List<OpenOrder>();
+            List<OpenOrder>  openOrders = new List<OpenOrder>();
             int n = 0;
             foreach (var item in jdata.result)
             {
@@ -394,22 +430,27 @@ public class Bittrex24HourSummary
                 openOrders.Add(order);
 
             }
-
+            openOrders = openOrders.OrderByDescending(o => o.openedDate).ToList();
+            return openOrders;
         }
-        public override void GetTradePairs()
+        public override string GetTradePairsBegin()
         {
             //https://bittrex.com/api/v2.0/pub/Markets/GetMarkets
             //https://bittrex.com/api/v1.1/public/getmarkets       
             string parameters = "public/getmarkets?nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, TradePair> GetTradePairsEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             BMarkets jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarkets>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            tradePairs = new Dictionary<string, TradePair>();
+            Dictionary<string, TradePair>  tradePairs = new Dictionary<string, TradePair>();
             int n = 0;
             foreach (var item in jdata.result)
             {
@@ -421,27 +462,32 @@ public class Bittrex24HourSummary
                     ticker = item.MarketName,
                     isActive = item.IsActive
                 };
-                pair.ticker = pair.ticker.Replace("-", "_");
+                pair.ticker = Helper.ToStandartTicker(pair.ticker);
                 tradePairs.Add(pair.ticker, pair);
             }
-
+            return tradePairs;
         }
 
 
-        public override void GetTradeHistory(string ticker)
+        public override string GetTradeHistoryBegin(string ticker)
         {
             //https://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-DOGE 
             ticker = ToOriginalTicker(ticker);
             string parameters = "public/getmarkethistory?market=" + ticker + "&nonce=" + GetNonce();
+            return parameters;
+
+        }
+        public override List<Trade> GetTradeHistoryEnd(string parameters)
+        {
             string response = DoPublicRequest(parameters);
 
             BTradeHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeHistory>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            tradeHistory = new List<Trade>();
+            List<Trade>  tradeHistory = new List<Trade>();
             int n = 0;
             foreach (var item in jdata.result)
             {
@@ -459,40 +505,51 @@ public class Bittrex24HourSummary
 
                 tradeHistory.Add(trade);
             }
-
+            tradeHistory = tradeHistory.OrderByDescending(o => o.tradeDate).ToList();
+            return tradeHistory;
         }
 
-        public override void GetTradeLast(string ticker)
+        public override string GetTradeLastBegin(string ticker)
         {
             //https://bittrex.com/api/v1.1/public/getticker?market=BTC-LTC 
             ticker = ToOriginalTicker(ticker);
             string parameters = "public/getticker?market=" + ticker + "&nonce=" + GetNonce();
+            return parameters;
+        }
+        public override TradeLast GetTradeLastEnd(string parameters, string ticker)
+        {
             string response = DoPublicRequest(parameters);
 
             BTradeLast jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeLast>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            tradelast = new TradeLast { ask = jdata.result.Ask, bid = jdata.result.Bid, last = jdata.result.Last };
+            TradeLast tradelast = new TradeLast { ask = jdata.result.Ask, bid = jdata.result.Bid, last = jdata.result.Last };
+
+            return tradelast;
         }
-        public override bool OrderCancel(string uuidOrder)
+        public override string OrderCancelBegin(string uuidOrder)
         {
             //https://bittrex.com/api/v1.1/market/cancel?apikey=API_KEY&uuid=ORDER_UUID     
             string parameters = "market/cancel?apikey=" + key + "&nonce=" + GetNonce();
             parameters += "&uuid=" + uuidOrder;
+            return parameters;
+        }
+        public override string OrderCancelEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            return jdata.success;
+            return "";
         }
-        public override bool OrderBuyLimit(string ticker, double rate, double quantity)
+        public override string OrderBuyLimitBegin(string ticker, double rate, double quantity)
         {
             //https://bittrex.com/api/v1.1/market/buylimit?apikey=API_KEY&market=BTC-LTC&quantity=1.2&rate=1.3   
             ticker = ToOriginalTicker(ticker);
@@ -500,17 +557,22 @@ public class Bittrex24HourSummary
             parameters += "&market=" + ticker;
             parameters += "&quantity=" + quantity.ToString();
             parameters += "&rate=" + rate.ToString();
+
+            return parameters;
+        }
+        public override string OrderBuyLimitEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            return jdata.success;
+            return "";
         }
-        public override bool OrderSellLimit(string ticker, double rate, double quantity)
+        public override string OrderSellLimitBegin(string ticker, double rate, double quantity)
         {
             //https://bittrex.com/api/v1.1/market/selllimit?apikey=API_KEY&market=BTC-LTC&quantity=1.2&rate=1.3   
             ticker = ToOriginalTicker(ticker);
@@ -518,32 +580,41 @@ public class Bittrex24HourSummary
             parameters += "&market=" + ticker;
             parameters += "&quantity=" + quantity.ToString();
             parameters += "&rate=" + rate.ToString();
+            return parameters;
+
+        }
+        public override string OrderSellLimitEnd(string parameters)
+        {
             string response = DoKeyRequest(parameters);
 
             BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
 
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
-            return jdata.success;
-
+                throw new MarketAPIException("Market API Error:" + jdata.message);
+            return "";
         }
-        public override void GetMyOrdersHistory(string ticker)
+        public override string GetMyOrdersHistoryBegin(string ticker)
         {
             //https://bittrex.com/api/v1.1/account/getorderhistory?market=BTC-LTC    
             ticker = ToOriginalTicker(ticker);
             string parameters = "account/getorderhistory?apikey=" + key + "&nonce=" + GetNonce();
             parameters += "&market=" + ticker;
+            return parameters;
+
+        }
+        public override List<OrderDone> GetMyOrdersHistoryEnd(string parameters, string ticker)
+        {
             string response = DoKeyRequest(parameters);
 
             BMyOrdersHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMyOrdersHistory>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
-            myOrdersHistory = new List<OrderDone>();
+            List<OrderDone> myOrdersHistory = new List<OrderDone>();
             int n = 0;
             foreach (var item in jdata.result)
             {
@@ -551,14 +622,14 @@ public class Bittrex24HourSummary
                 OrderDone order = new OrderDone
                 {
                     uuid = item.OrderUuid,
-                    ticker= item.Exchange,
-                    doneDate= item.TimeStamp,
-                    orderType= item.OrderType,
-                    price= item.Limit,
-                    quantity= item.Quantity,
-                    quantityRemaining= item.QuantityRemaining,
-                    commission= item.Commission,
-                    totalSum= item.Price
+                    ticker = item.Exchange,
+                    doneDate = item.TimeStamp,
+                    orderType = item.OrderType,
+                    price = item.Limit,
+                    quantity = item.Quantity,
+                    quantityRemaining = item.QuantityRemaining,
+                    commission = item.Commission,
+                    totalSum = item.Price
                 };
                 if (order.orderType == "LIMIT_SELL")
                     order.orderType = "S";
@@ -568,10 +639,12 @@ public class Bittrex24HourSummary
                 myOrdersHistory.Add(order);
 
             }
+            myOrdersHistory = myOrdersHistory.OrderByDescending(o => o.doneDate).ToList();
+            return myOrdersHistory;
 
         }
 
-        public override string GetPriceHistoryByPeriod(string ticker, string interval, DateTime start, DateTime end)
+        public override string GetPriceHistoryByPeriodBegin(string ticker, string interval, DateTime start, DateTime end)
         {
             //https://bittrex.com/api/v2.0/pub/market/GetTicks?marketName=BTC-LTC&tickInterval=Day
             //https://bittrex.com/api/v2.0/pub/market/GetTicks?marketName=BTC-LTC&tickInterval=fiveMin
@@ -582,30 +655,72 @@ public class Bittrex24HourSummary
             string parameters = "pub/market/GetTicks?nonce=" + GetNonce();
             parameters += "&marketName=" + ticker;
             parameters += "&tickInterval=" + interval;
+            return parameters;
+        }
 
+        public override Dictionary<int, PriceCandle> GetPriceHistoryByPeriodEnd(string parameters)
+        {
             PUBLIC_API = "https://bittrex.com/api/v2.0/";
             string response = DoPublicRequest(parameters);
             PUBLIC_API = "https://bittrex.com/api/v1.1/";
 
             BTicksPriceHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTicksPriceHistory>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
             int n = 0;
-            priceHistory = new Dictionary<int, PriceCandle>();
+            Dictionary<int, PriceCandle>  priceHistory = new Dictionary<int, PriceCandle>();
             foreach (BTicksPriceHistoryResult item in jdata.result)
             {
                 n++;
                 int idate = Helper.ToUnixTimeStamp(item.T);
-                priceHistory.Add(idate, new PriceCandle {date=idate, open = item.O, high = item.H, low = item.L, close = item.C, volume = item.V });
+                priceHistory.Add(idate, new PriceCandle { date = idate, open = item.O, high = item.H, low = item.L, close = item.C, volume = item.V });
             }
 
-            return response;
+            return priceHistory;
         }
 
+        public override string GetMarketCurrentBegin()
+        {
+            //https://bittrex.com/api/v1.1/public/getmarketsummaries         
+            string parameters = "public/getmarketsummaries?nonce=" + GetNonce();
+            return parameters;
+        }
+        public override Dictionary<string, MarketCurrent> GetMarketCurrentEnd(string parameters)
+        {
+            string response = DoPublicRequest(parameters);
 
+            BMarket24HourSummary jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarket24HourSummary>(response);
+            if (!jdata.success)
+                throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            Dictionary<string, MarketCurrent> markets = new Dictionary<string, MarketCurrent>();
+            foreach (var item in jdata.result)
+            {
+                Pair iteminfo = new Pair(Helper.ToStandartTicker(item.MarketName));
+                MarketCurrent mkt = new MarketCurrent();
+                mkt.ticker = Helper.ToStandartTicker(item.MarketName);
+                mkt.lastPrice = item.Last;
+                double prevPrice = item.PrevDay;
+                mkt.volumeBtc = 0;
+                mkt.volumeUSDT = 0;
+                if (iteminfo.currency1 == "BTC")
+                    mkt.volumeBtc = item.BaseVolume;
+                else if (iteminfo.currency1 == "USDT")
+                    mkt.volumeUSDT = item.BaseVolume;
+ //               mkt.volumeBtc = item.Volume; 
+                if (item.PrevDay != 0)
+                    mkt.percentChange = ((item.Last- item.PrevDay) / item.PrevDay) * 100.0;
+                else
+                    mkt.percentChange = 0;
+                markets.Add(mkt.ticker, mkt);
+            }
+
+            return markets;
+        }
+        /*
         public void Get24HourSummary()
         {
             //https://bittrex.com/api/v1.1/public/getmarketsummaries         
@@ -613,10 +728,10 @@ public class Bittrex24HourSummary
             string response = DoPublicRequest(parameters);
 
             BMarket24HourSummary jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarket24HourSummary>(response);
-            lastRequestMsg = jdata.message;
-            lastRequestStatus = jdata.success;
+            //lastRequestMsg = jdata.message;
+            //lastRequestStatus = jdata.success;
             if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + lastRequestMsg);
+                throw new MarketAPIException("Market API Error:" + jdata.message);
 
             marketsSummary = new Dictionary<string, Bittrex24HourSummary>();
             int n = 0;
@@ -644,11 +759,10 @@ public class Bittrex24HourSummary
             }
 
         }
+*/
 
 
     }
-
-
 
 
 }

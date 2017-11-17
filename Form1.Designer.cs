@@ -28,43 +28,79 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.panelChart = new System.Windows.Forms.Panel();
+            this.dgridMarkets = new System.Windows.Forms.DataGridView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripComboBoxMarket = new System.Windows.Forms.ToolStripComboBox();
             this.toolDropDownTickerBtc = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolDropDownTickerUsdt = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButtonChart = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonBalance = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSettings = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelChart = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.dgridMarkets)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panelChart.SuspendLayout();
             this.SuspendLayout();
             // 
-            // timerUpdate
+            // dgridMarkets
             // 
-            this.timerUpdate.Interval = 1100;
-            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
-            // 
-            // panelChart
-            // 
-            this.panelChart.Location = new System.Drawing.Point(1, 32);
-            this.panelChart.Margin = new System.Windows.Forms.Padding(2);
-            this.panelChart.Name = "panelChart";
-            this.panelChart.Size = new System.Drawing.Size(125, 83);
-            this.panelChart.TabIndex = 9;
+            this.dgridMarkets.AllowUserToAddRows = false;
+            this.dgridMarkets.AllowUserToDeleteRows = false;
+            this.dgridMarkets.AllowUserToOrderColumns = true;
+            this.dgridMarkets.AllowUserToResizeRows = false;
+            this.dgridMarkets.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgridMarkets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgridMarkets.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgridMarkets.Location = new System.Drawing.Point(0, 0);
+            this.dgridMarkets.Margin = new System.Windows.Forms.Padding(2);
+            this.dgridMarkets.MultiSelect = false;
+            this.dgridMarkets.Name = "dgridMarkets";
+            this.dgridMarkets.ReadOnly = true;
+            this.dgridMarkets.RowHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgridMarkets.RowTemplate.Height = 24;
+            this.dgridMarkets.RowTemplate.ReadOnly = true;
+            this.dgridMarkets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgridMarkets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgridMarkets.ShowCellToolTips = false;
+            this.dgridMarkets.ShowEditingIcon = false;
+            this.dgridMarkets.Size = new System.Drawing.Size(540, 385);
+            this.dgridMarkets.TabIndex = 9;
+            this.dgridMarkets.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgridMarkets_DataBindingComplete);
             // 
             // toolStrip1
             // 
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.toolStrip1.CanOverflow = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBoxMarket,
             this.toolDropDownTickerBtc,
             this.toolDropDownTickerUsdt,
             this.toolStripButtonChart,
+            this.toolStripButtonBalance,
             this.toolStripButtonSettings});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(431, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(540, 27);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -75,7 +111,7 @@
             "Poloniex",
             "Bittrex"});
             this.toolStripComboBoxMarket.Name = "toolStripComboBoxMarket";
-            this.toolStripComboBoxMarket.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBoxMarket.Size = new System.Drawing.Size(121, 21);
             this.toolStripComboBoxMarket.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxMarket_SelectedIndexChanged);
             // 
             // toolDropDownTickerBtc
@@ -84,7 +120,7 @@
             this.toolDropDownTickerBtc.Image = ((System.Drawing.Image)(resources.GetObject("toolDropDownTickerBtc.Image")));
             this.toolDropDownTickerBtc.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolDropDownTickerBtc.Name = "toolDropDownTickerBtc";
-            this.toolDropDownTickerBtc.Size = new System.Drawing.Size(29, 22);
+            this.toolDropDownTickerBtc.Size = new System.Drawing.Size(29, 20);
             this.toolDropDownTickerBtc.Text = "Trade BTC";
             this.toolDropDownTickerBtc.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolDropDownTickerBtc_DropDownItemClicked);
             // 
@@ -94,7 +130,7 @@
             this.toolDropDownTickerUsdt.Image = ((System.Drawing.Image)(resources.GetObject("toolDropDownTickerUsdt.Image")));
             this.toolDropDownTickerUsdt.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolDropDownTickerUsdt.Name = "toolDropDownTickerUsdt";
-            this.toolDropDownTickerUsdt.Size = new System.Drawing.Size(29, 22);
+            this.toolDropDownTickerUsdt.Size = new System.Drawing.Size(29, 20);
             this.toolDropDownTickerUsdt.Text = "Trade USDT";
             this.toolDropDownTickerUsdt.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolDropDownTickerUsdt_DropDownItemClicked);
             // 
@@ -104,9 +140,19 @@
             this.toolStripButtonChart.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonChart.Image")));
             this.toolStripButtonChart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonChart.Name = "toolStripButtonChart";
-            this.toolStripButtonChart.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonChart.Size = new System.Drawing.Size(23, 20);
             this.toolStripButtonChart.Text = "Price Chart";
             this.toolStripButtonChart.Click += new System.EventHandler(this.toolStripButtonChart_Click);
+            // 
+            // toolStripButtonBalance
+            // 
+            this.toolStripButtonBalance.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonBalance.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonBalance.Image")));
+            this.toolStripButtonBalance.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonBalance.Name = "toolStripButtonBalance";
+            this.toolStripButtonBalance.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonBalance.Text = "Balances";
+            this.toolStripButtonBalance.Click += new System.EventHandler(this.toolStripButtonBalance_Click);
             // 
             // toolStripButtonSettings
             // 
@@ -114,39 +160,60 @@
             this.toolStripButtonSettings.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSettings.Image")));
             this.toolStripButtonSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSettings.Name = "toolStripButtonSettings";
-            this.toolStripButtonSettings.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSettings.Size = new System.Drawing.Size(23, 20);
             this.toolStripButtonSettings.Text = "Settings";
             this.toolStripButtonSettings.Click += new System.EventHandler(this.toolStripButtonSettings_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.toolStrip1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(540, 32);
+            this.panel1.TabIndex = 11;
+            // 
+            // panelChart
+            // 
+            this.panelChart.Controls.Add(this.dgridMarkets);
+            this.panelChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelChart.Location = new System.Drawing.Point(0, 32);
+            this.panelChart.Name = "panelChart";
+            this.panelChart.Size = new System.Drawing.Size(540, 385);
+            this.panelChart.TabIndex = 12;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(431, 275);
-            this.Controls.Add(this.toolStrip1);
+            this.ClientSize = new System.Drawing.Size(540, 417);
             this.Controls.Add(this.panelChart);
+            this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Bit Whiskey";
+            ((System.ComponentModel.ISupportInitialize)(this.dgridMarkets)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panelChart.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer timerUpdate;
-        private System.Windows.Forms.Panel panelChart;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripDropDownButton toolDropDownTickerBtc;
         private System.Windows.Forms.ToolStripDropDownButton toolDropDownTickerUsdt;
         private System.Windows.Forms.ToolStripButton toolStripButtonChart;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxMarket;
         private System.Windows.Forms.ToolStripButton toolStripButtonSettings;
+        private System.Windows.Forms.ToolStripButton toolStripButtonBalance;
+        private System.Windows.Forms.DataGridView dgridMarkets;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelChart;
     }
 }
 
