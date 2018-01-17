@@ -60,11 +60,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alert.cs" />
     <Compile Include="AppCrypt.cs" />
     <Compile Include="AppExceptions.cs" />
+    <Compile Include="ApplicationPath.cs" />
     <Compile Include="AppTimer.cs" />
     <Compile Include="Bittrex.cs" />
     <Compile Include="Chart.cs" />
+    <Compile Include="ConvertData.cs" />
     <Compile Include="Cryptor.cs" />
     <Compile Include="DataGridViewWrapper.cs" />
     <Compile Include="ExchangeManager.cs" />
@@ -73,6 +76,18 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlertAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlertAdd.Designer.cs">
+      <DependentUpon>FormAlertAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlertMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlertMain.Designer.cs">
+      <DependentUpon>FormAlertMain.cs</DependentUpon>
     </Compile>
     <Compile Include="FormBalance.cs">
       <SubType>Form</SubType>
@@ -103,8 +118,10 @@
     <Compile Include="FormTradeRequestHandlers.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Logman.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="AppSettings.cs" />
+    <Compile Include="MarketsState.cs" />
     <Compile Include="Poloniex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +130,12 @@
     <Compile Include="Yobit.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlertAdd.resx">
+      <DependentUpon>FormAlertAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlertMain.resx">
+      <DependentUpon>FormAlertMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBalance.resx">
       <DependentUpon>FormBalance.cs</DependentUpon>
@@ -137,7 +160,16 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="if_business-work_12_2377635.png" />
+    <Content Include="icon-plus-minus.png" />
+    <Content Include="icons8-bitcoin.png" />
+    <Content Include="icons8-coin.png" />
+    <Content Include="icons8-error-50.png" />
+    <Content Include="icons8-gears.png" />
+    <Content Include="icons8-wallet.png" />
     <Content Include="if_CoinSphere-Bitcoin-Red-Casino-Chip-48_134211.ico" />
+    <Content Include="if_CoinSphere-Bitcoin-Red-Casino-Chip-48_134211.png" />
+    <Content Include="if_vector_65_14_473802.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

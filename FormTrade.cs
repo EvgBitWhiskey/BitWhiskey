@@ -18,12 +18,17 @@ namespace BitWhiskey
             UPDATE_IF_VISIBLE=0,
             UPDATE_FORCE = 1
         }
+        List<SellOrder> contrSellOrdersInGrid = null;
+        List<BuyOrder> contrBuyOrdersInGrid = null;
 
         public Form parent;
         Color buttoncolor;
         BlinkControl labelBalanceMarketBold=new BlinkControl();
         BlinkControl labelBalanceBaseBold=new BlinkControl();
         FormTradeLogic tradeLogic;
+
+
+//        var dataViewContrSell;
 
         public FormTrade(Market market,string ticker)
         {
@@ -40,31 +45,34 @@ namespace BitWhiskey
         { }
         private void buttonCollapsePanelOrderBook_Click(object sender, EventArgs e)
         {
-            panelOrderBook.Visible = !panelOrderBook.Visible;
+            panelTabMain.Visible = !panelTabMain.Visible;
+//            panelOrderBook.Visible = !panelOrderBook.Visible;
             ResizeForm();
         }
         private void buttonCollapsePanelTabMain_Click(object sender, EventArgs e)
         {
-            panelTabMain.Visible = !panelTabMain.Visible;
-            ResizeForm();
+//            panelOBookButton.Visible = !panelOBookButton.Visible;
+//            ResizeForm();
         }
         private void ResizeForm()
         {
-            Height = panelTabMain.Top;
+            Height = panelOBookButton.Top;
         }
         private void CollapsePanels(bool collapse)
         {
+            /*
             if (collapse)
             {
                 panelOrderBook.Visible = false;
-                panelTabMain.Visible = false;
+                panelOBookButton.Visible = false;
             }
             else
             {
                 panelOrderBook.Visible = true;
-                panelTabMain.Visible = true;
+                panelOBookButton.Visible = true;
             }
             ResizeForm();
+            */
         }
 
         private void FormTrade_Load(object sender, EventArgs e)
@@ -94,7 +102,7 @@ namespace BitWhiskey
         }
         public void UpdateOrderBook_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             AllOrders orders = (AllOrders)resultResponse.items[0].result.resultData;
 
@@ -119,20 +127,59 @@ namespace BitWhiskey
             }).Take(150).ToList();
             DataGridViewWrapper gvBuy = new DataGridViewWrapper(dgridBuyOrders, true);
             gvBuy.Create(dataViewBuy, columnsSell);
-            gvBuy.AutoSizeFillExcept("amount");
+            // gvBuy.AutoSizeFillExcept("amount");
 
+            // contr orderbook data grid
+            var dataViewContrSell = orders.sellOrders.Select(item => new
+            {
+                price = Helper.PriceToStringBtc(item.rate),
+                amount = Helper.PriceToStringBtc(item.quantity)
+            }).OrderByDescending(o => o.price).Take(150).ToList();
+
+            DataGridViewWrapper gvContrSell = new DataGridViewWrapper(dGridContrSell, true);
+            gvContrSell.Create(dataViewContrSell, columnsSell);
+            dGridContrSell.FirstDisplayedScrollingRowIndex = dGridContrSell.RowCount - 1;
+
+            var dataViewContrBuy = orders.buyOrders.Select(item => new
+            {
+                price = Helper.PriceToStringBtc(item.rate),
+                amount = Helper.PriceToStringBtc(item.quantity)
+            }).Take(150).ToList();
+            DataGridViewWrapper gvContrBuy = new DataGridViewWrapper(dGridContrBuy, true);
+            gvContrBuy.Create(dataViewContrBuy, columnsSell);
+            gvContrBuy.ShowColumnHeaders(false);
+
+        }
+        private void tabPageOrderBookContr_Click(object sender, EventArgs e)
+        {
+        }
+        private void tabMain_Selected(object sender, TabControlEventArgs e)
+        {
+            if(e.TabPageIndex==1)
+            {
+                dGridContrSell.Visible = false;
+                Thread.Sleep(500);
+                dGridContrSell.Visible = true;
+            }
+            /*
+            if (dGridContrSell.RowCount > 0)
+            {
+                dGridContrSell.Rows[dGridContrSell.RowCount - 1].Selected=true;
+                dGridContrSell.FirstDisplayedScrollingRowIndex = dGridContrSell.RowCount - 2;
+            }
+            */
         }
 
         public void UpdateTradeHistory(UpdateAction updateAction = UpdateAction.UPDATE_FORCE)
         {
-            if ((!panelTabMain.Visible || tabMain.SelectedTab!=tabPageTradeHistory) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
+            if ((!panelOrderBook.Visible || tabMain.SelectedTab!=tabPageTradeHistory) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
                 return;
             dgridTradeHistory.DataSource = null;
             tradeLogic.GetTradeHistory(UpdateTradeHistory_UIResultHandler);
         }
         public void UpdateTradeHistory_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             List<Trade> tradeHistory = (List<Trade>)resultResponse.items[0].result.resultData;
 
@@ -160,14 +207,14 @@ namespace BitWhiskey
         }
         public void UpdateMyOpenOrders(UpdateAction updateAction = UpdateAction.UPDATE_FORCE)
         {
-            if ((!panelTabMain.Visible || tabMain.SelectedTab != tabPageMyOrders) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
+            if ((!panelOrderBook.Visible || tabMain.SelectedTab != tabPageMyOrders) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
                 return;
             dgridOpenOrders.DataSource = null;
             tradeLogic.GetMyOpenOrders(UpdateMyOpenOrders_UIResultHandler);
         }
         public void UpdateMyOpenOrders_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             List<OpenOrder> myOpenOrders = (List<OpenOrder>)resultResponse.items[0].result.resultData;
 
@@ -195,14 +242,14 @@ namespace BitWhiskey
 
         public void UpdateMyOrdersHistory(UpdateAction updateAction = UpdateAction.UPDATE_FORCE)
         {
-            if ((!panelTabMain.Visible || tabMain.SelectedTab != tabPageMyOrders) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
+            if ((!panelOrderBook.Visible || tabMain.SelectedTab != tabPageMyOrders) && updateAction == UpdateAction.UPDATE_IF_VISIBLE)
                 return;
             dgridMyOrdersHistory.DataSource = null;
             tradeLogic.GetMyOrdersHistory(UpdateMyOrdersHistory_UIResultHandler);
         }
         public void UpdateMyOrdersHistory_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             List<OrderDone> ordersHistory = (List<OrderDone>)resultResponse.items[0].result.resultData;
 
@@ -234,7 +281,7 @@ namespace BitWhiskey
 
         public void UpdateTradeState_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
 
             Dictionary<string, Balance> balances = (Dictionary<string, Balance>)resultResponse.items[0].result.resultData;
@@ -251,7 +298,8 @@ namespace BitWhiskey
             labelBalanceMarket.Text = tradeLogic.counterCurrencyName;
             labelBalanceBaseValue.Text = Helper.PriceToStringBtc(tradeLogic.balanceBase.balance);
             labelBalanceMarketValue.Text = Helper.PriceToStringBtc(tradeLogic.balanceCounter.balance);
-            labelAmount.Text = "Amount " + tradeLogic.counterCurrencyName;
+            labelAmountBuy.Text =  tradeLogic.counterCurrencyName;
+            labelAmountSell.Text = tradeLogic.counterCurrencyName;
 
             TradeLast tradelast = (TradeLast)resultResponse.items[1].result.resultData;
             tradeLogic.lastMarketPrice = tradelast;
@@ -315,7 +363,7 @@ namespace BitWhiskey
         }
         public void buttonCancellAllOrders_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             List<OpenOrder> myOpenOrders = (List<OpenOrder>)resultResponse.items[0].result.resultData;
             foreach (OpenOrder order in myOpenOrders)
@@ -326,32 +374,60 @@ namespace BitWhiskey
         }
         public void CancellOrder_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             //            List<OpenOrder> myOpenOrders = (List<OpenOrder>)resultResponse.result.resultData;
             UpdateMyOpenOrders();
         }
-        private bool CheckTradeFields()
+        private bool CheckTradeFieldsBuy()
         {
-            if (!Helper.IsDouble(textAmount.Text))
+            if (!Helper.IsDouble(textAmountBuy.Text))
             {
                 MessageBox.Show("Amount is Invalid");
                 return false;
             }
-            if (!Helper.IsDouble(textPrice.Text))
+            if (!Helper.IsDouble(textPriceBuy.Text))
             {
                 MessageBox.Show("Price is Invalid");
                 return false;
             }
 
-            double quantity = Helper.ToDouble(textAmount.Text);
+            double quantity = Helper.ToDouble(textAmountBuy.Text);
             if (quantity <= 0)
             {
                 MessageBox.Show("Amount must be > 0");
                 return false;
             }
 
-            double price = Helper.ToDouble(textPrice.Text);
+            double price = Helper.ToDouble(textPriceBuy.Text);
+            if (price <= 0)
+            {
+                MessageBox.Show("Price must be > 0");
+                return false;
+            }
+            return true;
+        }
+        private bool CheckTradeFieldsSell()
+        {
+            if (!Helper.IsDouble(textAmountSell.Text))
+            {
+                MessageBox.Show("Amount is Invalid");
+                return false;
+            }
+            if (!Helper.IsDouble(textPriceSell.Text))
+            {
+                MessageBox.Show("Price is Invalid");
+                return false;
+            }
+
+            double quantity = Helper.ToDouble(textAmountSell.Text);
+            if (quantity <= 0)
+            {
+                MessageBox.Show("Amount must be > 0");
+                return false;
+            }
+
+            double price = Helper.ToDouble(textPriceSell.Text);
             if (price <= 0)
             {
                 MessageBox.Show("Price must be > 0");
@@ -361,10 +437,10 @@ namespace BitWhiskey
         }
         private void buttonBuy_Click(object sender, EventArgs e)
         {
-            if (!CheckTradeFields())
+            if (!CheckTradeFieldsBuy())
                 return;
-            double quantity = Helper.ToDouble(textAmount.Text);
-            double price = Helper.ToDouble(textPrice.Text);
+            double quantity = Helper.ToDouble(textAmountBuy.Text);
+            double price = Helper.ToDouble(textPriceBuy.Text);
 
             string msg;
             msg = tradeLogic.BuyLimit(quantity, price, Buy_UIResultHandler);
@@ -387,16 +463,16 @@ namespace BitWhiskey
         }
         public void Buy_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             UpdateMyOpenOrders();
         }
         private void buttonSell_Click(object sender, EventArgs e)
         {
-            if (!CheckTradeFields())
+            if (!CheckTradeFieldsSell())
                 return;
-            double quantity = Helper.ToDouble(textAmount.Text);
-            double price = Helper.ToDouble(textPrice.Text);
+            double quantity = Helper.ToDouble(textAmountSell.Text);
+            double price = Helper.ToDouble(textPriceSell.Text);
 
             string msg;
             msg = tradeLogic.SellLimit(quantity, price, Sell_UIResultHandler);
@@ -405,30 +481,30 @@ namespace BitWhiskey
         }
         public void Sell_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             UpdateMyOpenOrders();
         }
 
         private void buttonSetAskPrice_Click(object sender, EventArgs e)
         {
-            if (!Helper.IsDouble(textAmount.Text))
+            if (!Helper.IsDouble(textAmountBuy.Text))
             {   MessageBox.Show("Amount is Invalid");   return;       }
             //            tradeLogic.GetLastMarketPrice(SetAsk_UIResultHandler);
-            textPrice.Text = "";
+            textPriceBuy.Text = "";
             tradeLogic.GetOrderBook(SetAsk_UIResultHandler);
         }
         public void SetAsk_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             //            TradeLast tradelast = (TradeLast)resultResponse.result.resultData;
             //            if (tradelast.ask != 0) textPrice.Text = Helper.PriceToStringBtc(tradelast.ask);
             AllOrders orders = (AllOrders)resultResponse.items[0].result.resultData;
 
             double quantityToBuy = 0;
-            if (Helper.IsDouble(textAmount.Text))
-                quantityToBuy = Helper.ToDouble(textAmount.Text);
+            if (Helper.IsDouble(textAmountBuy.Text))
+                quantityToBuy = Helper.ToDouble(textAmountBuy.Text);
             else
             {
                 MessageBox.Show("Amount is Invalid");
@@ -439,33 +515,73 @@ namespace BitWhiskey
             if (sellOrders.Count > 0)
             {
 //                double price = tradeLogic.LastAskFromOrderBook(quantity);
-                  textPrice.Text = Helper.PriceToStringBtc(sellOrders[0].rate);
+                  textPriceBuy.Text = Helper.PriceToStringBtc(sellOrders[0].rate);
             }
 
         }
 
         private void buttonSetBidPrice_Click(object sender, EventArgs e)
         {
-            textPrice.Text = "";
+            textPriceSell.Text = "";
             tradeLogic.GetOrderBook(SetBid_UIResultHandler);
         }
         public void SetBid_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             AllOrders orders = (AllOrders)resultResponse.items[0].result.resultData;
 
             double quantityToSell = 0;
-            if (Helper.IsDouble(textAmount.Text))
-                quantityToSell = Helper.ToDouble(textAmount.Text);
+            if (Helper.IsDouble(textAmountSell.Text))
+                quantityToSell = Helper.ToDouble(textAmountSell.Text);
             else
             {  MessageBox.Show("Amount is Invalid");  return;  }
 
             List<BuyOrder> buyOrders = orders.buyOrders.Where(o => o.quantity >= quantityToSell).OrderByDescending(o => o.rate).ToList();
             if (buyOrders.Count > 0)
-                textPrice.Text = Helper.PriceToStringBtc(buyOrders[0].rate);
+                textPriceSell.Text = Helper.PriceToStringBtc(buyOrders[0].rate);
         }
 
+        private void buttonSellAmountAll_Click(object sender, EventArgs e)
+        {
+            textAmountSell.Text = Helper.PriceToStringBtc(tradeLogic.balanceCounter.balance);
+        }
 
+        private void buttonSellAmount50_Click(object sender, EventArgs e)
+        {
+            textAmountSell.Text = Helper.PriceToStringBtc(tradeLogic.balanceCounter.balance/2);
+        }
+
+        private void buttonBuyAmountAll_Click(object sender, EventArgs e)
+        {
+            textAmountBuy.Text = "0";
+            if (tradeLogic.lastMarketPrice!=null)
+            {
+                double ask=tradeLogic.lastMarketPrice.ask;
+                double balanceBase=tradeLogic.balanceBase.balance;
+                double amount = balanceBase / ask;
+                textAmountBuy.Text = Helper.PriceToStringBtc(amount*0.98);
+            }
+        }
+
+        private void buttonBuyAmount50_Click(object sender, EventArgs e)
+        {
+            textAmountBuy.Text = "0";
+            if (tradeLogic.lastMarketPrice != null)
+            {
+                double ask = tradeLogic.lastMarketPrice.ask;
+                double balanceBase = tradeLogic.balanceBase.balance;
+                double amount = balanceBase / ask;
+                textAmountBuy.Text = Helper.PriceToStringBtc(amount/2);
+            }
+        }
+
+        private void buttonShowGraphic_Click(object sender, EventArgs e)
+        {
+            FormChart form = new FormChart(ExchangeManager.GetMarketByMarketName(tradeLogic.GetMarketName()), tradeLogic.ticker);
+            form.parent = this;
+            form.Show();
+
+        }
     }
 }

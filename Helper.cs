@@ -1,40 +1,24 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Globalization;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+//using System.Threading;
+//using System.Diagnostics;
 using System.IO;
-using NLog;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Globalization;
 using System.ComponentModel;
 using System.Data;
 
 
 namespace BitWhiskey
 {
-    public class ApplicationPath
-    {
-        static public string directory;
-        static public string directoryAppBin;
-        static ApplicationPath()
-        {
-#if DEBUG
-            directory = @"t:\DevelopNew\Crypt\BitWhiskeyBIN\";
-            directoryAppBin = Path.Combine(directory, @"AppBin");
-#else
-            directory = Environment.CurrentDirectory.Replace(@"\bin\Debug","");
-            directoryAppBin = Path.Combine(directory, @"AppBin");
-#endif
-
-        }
-    }
 
     public static class Helper
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
+        private static CultureInfo svSECultureInfo = CultureInfo.CreateSpecificCulture("sv-SE");
+
         private static Random random = new Random();
 
         public static int GetRandomExact(int min, int max)
@@ -54,28 +38,6 @@ namespace BitWhiskey
             CultureInfo.DefaultThreadCurrentCulture = customCulture;
 
 //            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
-
-            Global.settingsInit = SettingsInit.Load(Path.Combine(ApplicationPath.directoryAppBin, "init.json"));
-            AppSettingsManager settingsManager = new AppSettingsManager();
-            string settingsPath = settingsManager.GetSettingsFilePath(Global.settingsInit.currentprofile, "settings.json");
-            Global.settingsMain = MySettings.Load(settingsPath);
-        }
-        public static bool IsResultHasErrors(RequestItemGroup requestGroup, bool log = true, bool display = true)
-        {
-            foreach (RequestItem item in requestGroup.items)
-            {
-                if (item.result.error != "")
-                {
-                    string msg = "Error UIErr->" + item.result.error;
-                    if (log)
-                        Helper.logger.Error(msg);
-                    if (display)
-                        Helper.Display(msg);
-                    return true;
-                }
-            }
-
-            return false;
         }
         public static DataTable ToDataTable<T>(IList<T> data)
         {
@@ -94,19 +56,6 @@ namespace BitWhiskey
                 table.Rows.Add(row);
             }
             return table;
-        }
-        public static void LogAndDisplay(Exception ex, string msg = null)
-        {
-            string dispmsg = msg;
-            if (dispmsg == null)
-                dispmsg = ex.Message;
-            logger.Error(ex,msg);
-            MessageBox.Show(dispmsg);
-        }
-        public static void LogAndDisplay(string msg)
-        {
-            logger.Error(msg);
-            MessageBox.Show(msg);
         }
         public static void Display(string msg)
         {
@@ -156,6 +105,13 @@ namespace BitWhiskey
             var referenceUri = new Uri(referencePath);
             return referenceUri.MakeRelativeUri(fileUri).ToString();
         }
+        public static string PriceToStringFinance(double price)
+        {
+            string pricestr = "";
+            pricestr = price.ToString("N2", svSECultureInfo);
+            return pricestr;
+        }
+
         public static string PriceToString(double price)
         {
             string pricestr = "";
@@ -208,12 +164,16 @@ namespace BitWhiskey
             int unixTimestamp = (int)((date.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
             return unixTimestamp;
         }
-        public static SizeF StringSize(Graphics g, Font font, string s)
+        public static SizeF StringSize( Font font, string s)//Graphics g,
         {
-            /*      using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
-                return graphics.MeasureString("Hello there", new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point));
-            }*/
-            return g.MeasureString(s, font);
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new Bitmap(1, 1)))
+            return graphics.MeasureString("Hello there", new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Point));
+           
+//            return g.MeasureString(s, font);
+        }
+        public static Color ColorAlpha(Color c,int alpha)
+        {
+            return Color.FromArgb(alpha,c.R,c.G,c.B);
         }
         public static double ToDouble(string strnumber)
         {

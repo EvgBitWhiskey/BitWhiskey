@@ -17,6 +17,7 @@ namespace BitWhiskey
     public class MarketCurrentView
     {
         public string ticker { get; set; }
+        public double origPrice { get; set; }
         public double lastPrice { get; set; }
         public double lastPriceUSD { get; set; }
         public double percentChange { get; set; }

@@ -34,6 +34,14 @@ namespace BitWhiskey
         {
             pathProfiles = Path.Combine(ApplicationPath.directory, @"AppBin\Profiles");
         }
+        public static void LoadSettings()
+        {
+            Global.settingsInit = SettingsInit.Load(Path.Combine(ApplicationPath.directoryAppBin, "init.json"));
+            AppSettingsManager settingsManager = new AppSettingsManager();
+            string settingsPath = settingsManager.GetSettingsFilePath(Global.settingsInit.currentprofile, "settings.json");
+            Global.settingsMain = MySettings.Load(settingsPath);
+        }
+
         public string  GetProfileDir(string profileName)
         {
             return Path.Combine(pathProfiles, profileName);

@@ -16,15 +16,24 @@ namespace BitWhiskey
         public Color backColor;
         public Pen barUp = new Pen(Color.FromArgb(63, 170, 57));// new Pen(Color.FromArgb(73,192,67));
         public Pen barDown = new Pen(Color.FromArgb(200, 11,11));
+        public Pen volbarUp = new Pen(Helper.ColorAlpha(Color.LightBlue,120));
+        public Pen volbarDown = new Pen(Helper.ColorAlpha(Color.LightPink,120));
         public Pen SelLine = Pens.Pink;
         
         public Brush barUpBrush;
         public Brush barDownBrush;
+
+        public Brush volbarUpBrush ;
+        public Brush volbarDownBrush;
+
         public Brush strLabelBrush;
+        public Font strLabelFont = new Font(FontFamily.GenericSansSerif, 8);
+
         public Brush strLabelSelBrush;
-        
-        public Font  strLabelFont=new Font(FontFamily.GenericSansSerif,8);
         public Font strLabelSelFont = new Font(FontFamily.GenericSansSerif, 8);
+
+        public Brush strLastPriceBrush = new SolidBrush(Color.DarkTurquoise);
+        public Font strLastPriceFont = new Font(new FontFamily("Arial"), 11);
 
 
         public BChartStyle()
@@ -33,506 +42,159 @@ namespace BitWhiskey
             backColor = Color.Black;
             barUpBrush = new SolidBrush(barUp.Color);
             barDownBrush = new SolidBrush(barDown.Color);
+            volbarUpBrush = new SolidBrush(volbarUp.Color);
+            volbarDownBrush = new SolidBrush(volbarDown.Color);
             strLabelBrush = new SolidBrush(Color.LightGray);
             strLabelSelBrush = new SolidBrush(Color.Green);
         }
     }
-    public enum ConvertDataType
+    public class DrawContext
     {
-        BAR_5,
-        BAR_15,
-        BAR_HOUR,
-        BAR_DAY,
-        BAR_WEEK,
-        BAR_MONTH
-    }
-    public class ConvertData
-    {
-        ConvertDataType datatype;
-        public bool created = false;
-//        public int hour = -1;
-        public int lastperiod = -1;
-        public DateTime lastdate = DateTime.Now;
-        public PriceCandle lastprice = new PriceCandle();
-        public double prevclose = 0;
-        PriceCandle lastprice15 = new PriceCandle();
-        DateTime dt;
+        Graphics gform;
+        Graphics g = null;
+        Bitmap bmap;
 
-        public ConvertData(ConvertDataType datatype_)
+        public float xFormPos = 0;
+        public float yFormPos = 0;
+        public float areaxmax = 0;
+        public float areaymax = 0;
+
+        // draw rect
+        public float xstart = 0;
+        public float ystart = 0;
+        public float xend = 0;
+        public float yend = 0;
+        public float draww = 0;
+        public float drawh = 0;
+
+        //markers labels
+        public float LeftOffset = 0;
+        public float RightOffset = 0;
+        public float TopOffset = 0;
+        public float DownOffset = 0;
+
+        public DrawContext(Graphics gform_, float xmax_, float ymax_, float xFormPos_, float yFormPos_,
+            float LeftOffset_, float RightOffset_, float TopOffset_, float DownOffset_)
         {
-            datatype = datatype_;
+            gform = gform_;
+            bmap = new Bitmap((int)xmax_, (int)ymax_);
+            g = Graphics.FromImage(bmap);
+            areaxmax = xmax_;
+            areaymax = ymax_;
+            xFormPos = xFormPos_;
+            yFormPos = yFormPos_;
+
+            LeftOffset = LeftOffset_;
+            RightOffset = RightOffset_;
+            TopOffset = TopOffset_;
+            DownOffset = DownOffset_;
+
+            xstart = LeftOffset;
+            ystart = DownOffset;
+            xend = areaxmax - RightOffset;
+            yend = areaymax - TopOffset;
+            draww = xend - xstart;
+            drawh = yend - ystart;
+
         }
-        public int HourPeriodNumber(DateTime date, int period)
+        
+        public void Dispose()
         {
-            int minute = date.Minute;
-            int periodnum = (minute /period); 
-            return periodnum;
+            gform.Dispose();
         }
-
-        public void ProcessBar(Dictionary<int, PriceCandle> pricedata)
+        
+        public void SaveImage(string imagepathfile, ImageFormat format)
         {
-            int period = 0;
-
-            switch (datatype)
-            {
-                case ConvertDataType.BAR_15:
-                    period = HourPeriodNumber(dt,15);
-                    break;
-                case ConvertDataType.BAR_HOUR:
-                    period = dt.Hour;
-                    break;
-                case ConvertDataType.BAR_DAY:
-                    period = dt.Day;
-                    break;
-                case ConvertDataType.BAR_WEEK:
-                    period = Helper.WeekNumber(dt);
-                    break;
-                case ConvertDataType.BAR_MONTH:
-                    period = dt.Month;
-                    break;
-            }
-            if (period != lastperiod)
-            {
-                AddPrice(pricedata);
-                CreatePrice();
-            }
+            bmap.Save(imagepathfile, format);
+        }
+        public void Clear(Color color)
+        {
+            g.Clear(color);
+        }
+        public void DrawToScreen()
+        {
+            gform.DrawImage(bmap, (int)xFormPos, (int)yFormPos);
+        }
+        public void DrawRectangle(Pen pen, Brush brush, PointF pos, PointF size, bool fill)
+        {
+            pos.Y = pos.Y + size.Y;
+            pos = ToArea(pos);
+            if (fill)
+                g.FillRectangle(brush, pos.X, pos.Y, size.X, size.Y);
             else
-                AddBar();
+                g.DrawRectangle(pen, pos.X, pos.Y, size.X, size.Y);
         }
-        public void SetCurBar(DateTime dt_, PriceCandle lastprice15_)
+        public void DrawString(Brush brush, Font font, PointF pos, string s)
         {
-            lastprice15 = lastprice15_;
-            dt = dt_;
+            pos = ToArea(pos);
+            g.DrawString(s, font, brush, pos);
         }
-        public void CreatePrice()
+        public PointF ToArea(PointF p)
         {
-            created = true;
+            return new PointF(p.X + xFormPos, areaymax - p.Y);
+        }
 
-            switch (datatype)
-            {
-                case ConvertDataType.BAR_15:
-                    lastperiod = HourPeriodNumber(dt, 15);
-                    lastdate = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, lastperiod*15, 0);
-                    break;
-                case ConvertDataType.BAR_HOUR:
-                    lastperiod = dt.Hour;
-                    lastdate = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0);
-                    break;
-                case ConvertDataType.BAR_DAY:
-                    lastperiod = dt.Day;
-                    lastdate = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
-                    break;
-                case ConvertDataType.BAR_WEEK:
-                    lastperiod = Helper.WeekNumber(dt);
-                    lastdate = Helper.WeekDate(dt.Year, lastperiod).AddDays(-1);
-                    /*
-                    DateTime d1 = new DateTime(2017, 1, 1).AddDays(34 * 7);
-                    DateTime d2 = new DateTime(2017, 1, 1).AddDays(52 * 7);
-
-                    lastperiod = Helper.WeekNumber(new DateTime(2017, 1, 15));
-                    DateTime d3 = new DateTime(2017, 1, 1).AddDays(lastperiod * 7-1);
-*/
-                    break;
-                case ConvertDataType.BAR_MONTH:
-                    lastperiod = dt.Month;
-                    lastdate = new DateTime(dt.Year, dt.Month, 1, 0, 0, 0);
-                    break;
-            }
+        //AreaDraw... - draw inside area, without offsets
+        public void AreaDrawString(Brush brush, Font font, PointF pos, string s)
+        {
+            pos = ToDrawArea(pos);
+            g.DrawString(s, font, brush, pos);
+        }
+        public void AreaDrawRectangle(Pen pen, Brush brush, PointF pos, PointF size, bool fill)
+        {
+            pos.Y = pos.Y + size.Y;
+            pos = ToDrawArea(pos);
+            if (fill)
+                g.FillRectangle(brush, pos.X, pos.Y, size.X, size.Y);
+            else
+                g.DrawRectangle(pen, pos.X, pos.Y, size.X, size.Y);
+        }
+        public void AreaDrawLine(Pen pen, PointF p1, PointF p2)
+        {
+            p1 = ToDrawArea(p1);
+            p2 = ToDrawArea(p2);
+            g.DrawLine(pen, p1, p2);
+        }
+        public PointF ToDrawArea(PointF p)
+        {
+            return new PointF(p.X + xstart, areaymax - DownOffset - p.Y);
+        }
 
 
-            lastprice = new PriceCandle();
-            lastprice.open = lastprice15.open;
-            lastprice.high = lastprice15.high;
-            lastprice.low = lastprice15.low;
-            lastprice.volume = lastprice15.volume;
-            lastprice.date = lastprice15.date;
-        }
-        public void AddPrice(Dictionary<int, PriceCandle> pricedata)
-        {
-            if (created)
-            {
-                lastprice.close = prevclose;
-                pricedata.Add(Helper.ToUnixTimeStamp(lastdate), lastprice);
-            }
-        }
-        public void AddBar()
-        {
-            lastprice.high = Math.Max(lastprice.high, lastprice15.high);
-            lastprice.low = Math.Min(lastprice.low, lastprice15.low);
-            lastprice.volume += lastprice15.volume;
-        }
     }
-    public class PriceData
+
+    public class PriceDrawPlugin
     {
-        List<int> keys;
-        Dictionary<int, PriceCandle> pricedata;
-        Dictionary<int, PriceCandle> normpricedata;
-
-        Dictionary<int, PriceCandle> origpricedata;
-        Dictionary<int, PriceCandle> min15pricedata;
-        Dictionary<int, PriceCandle> hourpricedata;
-        Dictionary<int, PriceCandle> daypricedata;
-        Dictionary<int, PriceCandle> weekpricedata;
-        Dictionary<int, PriceCandle> monthpricedata;
-
-        ConvertDataType curViewType;
-        public PriceData()
+        DrawContext draw;
+        public PriceDrawPlugin(DrawContext draw_)
+        {
+            draw = draw_;
+        }
+        public void BeforeDraw()
         {
         }
-        public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType datatype, ConvertDataType viewType)
+        public void AfterDraw()
         {
-            origpricedata = pricedata_;
-            curViewType = viewType;
-            Convert(viewType);
-            keys = new List<int>(pricedata.Keys);
-
-            //            SelectPeriod(datatype);
-        }
-        public bool UpdatePrice(double lastPrice)
-        {
-            bool barAdded = false;
-            PriceCandle last = pricedata.Last().Value;
-            int lastPriceDateUnix = pricedata.Keys.Max();
-            DateTime lastPriceDate = Helper.UnixToDateTime(lastPriceDateUnix);
-
-            int unixPeriod = 0;
-            switch (curViewType)
-            {
-                case ConvertDataType.BAR_5:
-                    unixPeriod = 15 * 60;
-                    break;
-                case ConvertDataType.BAR_15:
-                    unixPeriod = 15 * 60;
-                    break;
-                case ConvertDataType.BAR_HOUR:
-                    unixPeriod = 60 * 60;
-                    break;
-                case ConvertDataType.BAR_DAY:
-                    unixPeriod = 24*60 * 60;
-                    break;
-                case ConvertDataType.BAR_WEEK:
-                    unixPeriod = 7*24 * 60 * 60;
-                    break;
-                case ConvertDataType.BAR_MONTH:
-                    unixPeriod = DateTime.DaysInMonth(lastPriceDate.Year, lastPriceDate.Month) * 24 * 60 * 60;
-                    break;
-            }
-
-
-            int curDateUnix = Helper.ToUnixTimeStamp(DateTime.UtcNow);
-            if (curDateUnix >= lastPriceDateUnix + unixPeriod)
-            { //create new bar
-                PriceCandle newbar = new PriceCandle();
-                newbar.close = lastPrice;
-                newbar.open = last.close;
-                newbar.high =Math.Max(last.close, lastPrice);
-                newbar.low = Math.Min(last.close, lastPrice);
-                newbar.volume = 666;
-                newbar.date = lastPriceDateUnix + unixPeriod;
-                pricedata.Add(newbar.date, newbar);
-                barAdded = true;
-
-            }
-            // else
-            { //update last bar
-              //                int rn = Helper.GetRandomExact(0, 1);
-              //                if (rn==0)
-              //                {
-                double newClose = lastPrice;// + 100;
-                    last.close = newClose;
-                    if (last.high < newClose)
-                        last.high = newClose;
-                    if (last.low > newClose)
-                        last.low = newClose;
-            }
-
-            keys = new List<int>(pricedata.Keys);
-            return barAdded;
-        }
-
-        public void SelectPeriod1(ConvertDataType datatype)
-        {
-            switch (datatype)
-            {
-                case ConvertDataType.BAR_5:
-                      pricedata = origpricedata;
-                    break;
-                case ConvertDataType.BAR_15:
-                    if (min15pricedata != null)
-                        pricedata = min15pricedata;
-                    break;
-                case ConvertDataType.BAR_HOUR:
-                    if (hourpricedata != null)
-                        pricedata = hourpricedata;
-                    break;
-                case ConvertDataType.BAR_DAY:
-                    if (daypricedata != null)
-                        pricedata = daypricedata;
-                    break;
-                case ConvertDataType.BAR_WEEK:
-                    if (weekpricedata != null)
-                        pricedata = weekpricedata;
-                    break;
-                case ConvertDataType.BAR_MONTH:
-                    if (monthpricedata != null)
-                        pricedata = monthpricedata;
-                    break;
-            }
-            keys = new List<int>(pricedata.Keys);
-        }
-        public void Convert(ConvertDataType viewType)
-        {
-            List<int> keys15;
-            keys15 = new List<int>(origpricedata.Keys);
-
-            min15pricedata = new Dictionary<int, PriceCandle>();
-            hourpricedata = new Dictionary<int, PriceCandle>();
-            daypricedata = new Dictionary<int, PriceCandle>();
-            weekpricedata = new Dictionary<int, PriceCandle>();
-            monthpricedata = new Dictionary<int, PriceCandle>();
-
-            DateTime dt;
-            PriceCandle lastprice15 = new PriceCandle();
-            ConvertData min15data = new ConvertData(ConvertDataType.BAR_15);
-            ConvertData hourdata = new ConvertData(ConvertDataType.BAR_HOUR);
-            ConvertData daydata = new ConvertData(ConvertDataType.BAR_DAY);
-            ConvertData weekdata = new ConvertData(ConvertDataType.BAR_WEEK);
-            ConvertData monthdata = new ConvertData(ConvertDataType.BAR_MONTH);
-
-            for (int n = 0; n < keys15.Count; n++)
-            {
-                if (n == 486)
-                { }
-                dt = Helper.UnixToDateTime(keys15[n].ToString());
-                //                if (dt.Month == 9 && dt.Day == 15)
-                min15data.prevclose = lastprice15.close;
-                hourdata.prevclose = lastprice15.close;
-                daydata.prevclose = lastprice15.close;
-                weekdata.prevclose = lastprice15.close;
-                monthdata.prevclose = lastprice15.close;
-                lastprice15 = origpricedata[keys15[n]];
-
-                if (viewType == ConvertDataType.BAR_15)
-                {
-                    min15data.SetCurBar(dt, lastprice15);
-                    min15data.ProcessBar(min15pricedata);
-                }
-                else if (viewType == ConvertDataType.BAR_HOUR)
-                {
-                    hourdata.SetCurBar(dt, lastprice15);
-                    hourdata.ProcessBar(hourpricedata);
-
-                }
-                else if (viewType == ConvertDataType.BAR_DAY)
-                {
-                    daydata.SetCurBar(dt, lastprice15);
-                    daydata.ProcessBar(daypricedata);
-
-                }
-                else if (viewType == ConvertDataType.BAR_WEEK)
-                {
-                    weekdata.SetCurBar(dt, lastprice15);
-                    weekdata.ProcessBar(weekpricedata);
-
-                }
-                else if (viewType == ConvertDataType.BAR_MONTH)
-                {
-                    monthdata.SetCurBar(dt, lastprice15);
-                    monthdata.ProcessBar(monthpricedata);
-                }
-
-            }
-            min15data.prevclose = lastprice15.close;
-            hourdata.prevclose = lastprice15.close;
-            daydata.prevclose = lastprice15.close;
-            weekdata.prevclose = lastprice15.close;
-            monthdata.prevclose = lastprice15.close;
-
-            if (viewType == ConvertDataType.BAR_15)
-            {
-                min15data.AddPrice(min15pricedata);
-                pricedata = min15pricedata;
-            }
-            else if (viewType == ConvertDataType.BAR_HOUR)
-            {
-                hourdata.AddPrice(hourpricedata);
-                pricedata = hourpricedata;
-            }
-            else if (viewType == ConvertDataType.BAR_DAY)
-            {
-                daydata.AddPrice(daypricedata);
-                pricedata = daypricedata;
-            }
-            else if (viewType == ConvertDataType.BAR_WEEK)
-            {
-                weekdata.AddPrice(weekpricedata);
-                pricedata = weekpricedata;
-            }
-            else if (viewType == ConvertDataType.BAR_MONTH)
-            {
-                monthdata.AddPrice(monthpricedata);
-                pricedata = monthpricedata;
-            }
-
-        }
-
-        public void Convert1(bool fromday)
-        {
-            List<int> keys15 ;
-            keys15 = new List<int>(origpricedata.Keys);
-
-            min15pricedata = new Dictionary<int, PriceCandle>();
-            hourpricedata = new Dictionary<int, PriceCandle>();
-            if (!fromday)
-                daypricedata = new Dictionary<int, PriceCandle>();
-            weekpricedata = new Dictionary<int, PriceCandle>();
-            monthpricedata = new Dictionary<int, PriceCandle>();
-
-            DateTime dt;
-            PriceCandle lastprice15 = new PriceCandle();
-            ConvertData min15data = new ConvertData(ConvertDataType.BAR_15);
-            ConvertData hourdata = new ConvertData(ConvertDataType.BAR_HOUR);
-            ConvertData daydata = new ConvertData(ConvertDataType.BAR_DAY);
-            ConvertData weekdata = new ConvertData(ConvertDataType.BAR_WEEK);
-            ConvertData monthdata = new ConvertData(ConvertDataType.BAR_MONTH);
-
-            for (int n = 0; n < keys15.Count; n++)
-            {
-                if(n==486)
-                { }
-                dt = Helper.UnixToDateTime(keys15[n].ToString());
-//                if (dt.Month == 9 && dt.Day == 15)
-                min15data.prevclose = lastprice15.close;
-                hourdata.prevclose = lastprice15.close;
-                daydata.prevclose = lastprice15.close;
-                weekdata.prevclose = lastprice15.close;
-                monthdata.prevclose = lastprice15.close;
-                lastprice15 = origpricedata[keys15[n]];
-
-                if (!fromday)
-                {
-                    min15data.SetCurBar(dt, lastprice15);
-                    min15data.ProcessBar(min15pricedata);
-
-                    hourdata.SetCurBar(dt, lastprice15);
-                    hourdata.ProcessBar(hourpricedata);
-
-                    daydata.SetCurBar(dt, lastprice15);
-                    daydata.ProcessBar(daypricedata);
-                }
-
-                weekdata.SetCurBar(dt, lastprice15);
-                weekdata.ProcessBar(weekpricedata);
-
-                monthdata.SetCurBar(dt, lastprice15);
-                monthdata.ProcessBar(monthpricedata);
-
-            }
-            if (!fromday)
-            {
-                min15data.prevclose = lastprice15.close;
-                hourdata.prevclose = lastprice15.close;
-                daydata.prevclose = lastprice15.close;
-
-                min15data.AddPrice(min15pricedata);
-                hourdata.AddPrice(hourpricedata);
-                daydata.AddPrice(daypricedata);
-            }
-            weekdata.prevclose = lastprice15.close;
-            monthdata.prevclose = lastprice15.close;
-
-            weekdata.AddPrice(weekpricedata);
-            monthdata.AddPrice(monthpricedata);
-        }
-        public List<int> GetKeys()
-        {
-            return keys;
-        }
-        public Dictionary<int, PriceCandle> GetData()
-        {
-            return pricedata;
-        }
-        public Dictionary<int, PriceCandle> GetNormalizeData()
-        {
-            return normpricedata;
-        }
-        public int Count()
-        {
-            return keys.Count;
-        }
-        public void NormalizeData(double minprice, double yzoomcoeff)
-        {
-            normpricedata = new Dictionary<int, PriceCandle>();
-
-            foreach (int key in keys)
-            {
-                PriceCandle p = pricedata[key];
-                PriceCandle pnew = p.Copy();
-                pnew.open = (pnew.open - minprice) / yzoomcoeff;
-                pnew.high = (pnew.high - minprice) / yzoomcoeff;
-                pnew.low = (pnew.low - minprice) / yzoomcoeff;
-                pnew.close = (pnew.close - minprice) / yzoomcoeff;
-//                pnew.date = key;
-                normpricedata.Add(key, pnew);
-            }
+           // draw.AreaDrawLine(Pens.Blue,new PointF(0, 0), new PointF(draw.draww, draw.drawh));
         }
 
     }
-    public class ChartButton
-    {
-        public PointF pos ;
-        public PointF size;
-        public string text = "";
-        public bool clicked = false;
 
-        public ChartButton(PointF pos_, PointF size_, string text_)
-        {
-           pos = pos_;
-            size = size_;
-            text = text_;
-        }
-        public void Click()
-        {
-            clicked = true;
-        }
-        public void Reset()
-        {
-            clicked = false;
-        }
-    }
     public class PriceChart
     {
         string chartCaption;
-        Graphics gform;
-        Graphics g = null;
-        Bitmap bmap ;
         BChartStyle style = new BChartStyle();
         PriceData data;
-
-        float xFormPos = 0;
-        float yFormPos = 0;
-        float areaxmax = 0;
-        float areaymax = 0;
-        // draw rect
-        float xstart = 0;
-        float ystart = 0;
-        float xend = 0;
-        float yend = 0;
-        float draww = 0;
-        float drawh = 0;
-
-        //markers labels
-        float LeftOffset = 0;
-        float RightOffset = 0;
-        float TopOffset = 0;
-        float DownOffset = 0;
+        PriceDrawPlugin plugin;
 
         float yzoomcoeff = 1;
-
         // max min data
         double maxprice = 0;
         double minprice = double.MaxValue;
 
+        float volzoomcoeff = 1;
+        double maxvol = 0;
+        double minvol = double.MaxValue;
 
         float barsizex = 5;
         int lasttick =0;
@@ -550,21 +212,11 @@ namespace BitWhiskey
         float mousedrawy = 0;
         float mouseareax = 0;
         float mouseareay = 0;
-        int buttonstate = 0;
         int selectedPriceKey = -1;
 
-        //buttons
-        /*
-        ChartButton buttonMonth;
-        ChartButton buttonWeek;
-        ChartButton buttonDay;
-        ChartButton buttonHour;
-        ChartButton buttonMin15;
-        ChartButton buttonMin5;
-*/
-        ChartButton buttonZoomPlus;
-        ChartButton buttonZoomMinus;
+        bool drawVolume = true;
 
+        DrawContext draw;
 
         public PriceChart(string chartCaption_,Graphics gform_, float xFormPos_, float yFormPos_, float xmax_, float ymax_)
         {
@@ -573,98 +225,36 @@ namespace BitWhiskey
         }
         public void Init(Graphics gform_,float xFormPos_, float yFormPos_, float xmax_, float ymax_)
         {
-            gform = gform_;
-            xFormPos = xFormPos_;
-            yFormPos = yFormPos_;
-            areaxmax = xmax_;
-            areaymax = ymax_;
-
-            LeftOffset = 5;
-            RightOffset = 85;
-            TopOffset = 22;
-            DownOffset = 23;
-
-            xstart = LeftOffset;
-            ystart = DownOffset;
-            xend = areaxmax - RightOffset;
-            yend = areaymax - TopOffset;
-            draww = xend - xstart;
-            drawh = yend - ystart;
-
-            ChartButton selButton = GetSelectedButton();
-
-            float bx = 4;
-            float bxadd = 3;
-            float sx = 26;
-            float bsizeh = 18;
-            /*
-            buttonMonth = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh-2), "M");
-            bx += sx + bxadd;
-            buttonWeek = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "W");
-            bx += sx + bxadd;
-            buttonDay = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "D");
-            bx += sx + bxadd;
-            buttonHour = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "H");
-            bx += sx + bxadd;
-            buttonMin15 = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "M15");
-            bx += sx + bxadd;
-            buttonMin5 = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "M5");
-            bx += sx + 12;
-//            sx = 30;
-            */
-
-            buttonZoomPlus = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "+");
-            bx += sx + bxadd;
-            buttonZoomMinus = new ChartButton(new PointF(bx, areaymax - bsizeh), new PointF(sx, bsizeh - 2), "-");
-
-            bmap = new Bitmap((int)areaxmax, (int)areaymax);
-            g = Graphics.FromImage(bmap);
-
-            if(selButton!=null)
-              SelectButton(selButton.text);
+            draw = new DrawContext(gform_, xmax_, ymax_, xFormPos_, yFormPos_,5,85,22,23);
+            plugin = new PriceDrawPlugin(draw);
         }
         public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType convertFromType, ConvertDataType viewType)
         {
             data = new PriceData();
             data.SetData(pricedata_, convertFromType, viewType);
 
-            /*
-            switch (viewType)
-            {
-                case ConvertDataType.BAR_5:
-                    SelectButton(buttonMin5.text);
-                    break;
-                case ConvertDataType.BAR_15:
-                    SelectButton(buttonMin15.text);
-                    break;
-                case ConvertDataType.BAR_HOUR:
-                    SelectButton(buttonHour.text);
-                    break;
-                case ConvertDataType.BAR_DAY:
-                    SelectButton(buttonDay.text);
-                    break;
-                case ConvertDataType.BAR_WEEK:
-                    SelectButton(buttonWeek.text);
-                    break;
-                case ConvertDataType.BAR_MONTH:
-                    SelectButton(buttonMonth.text);
-                    break;
-            }
-            */
-
-            //data.SelectPeriod(viewType);
             ScrollToEnd();
             ReCalc();
 
         }
+        public void ShowVolume(bool showVolume)
+        {
+            drawVolume = showVolume;
+        }
+        public float GetVolumeDrawH()
+        {
+            return draw.drawh/4.0f;
+        }
+
         public void Dispose()
         {
-            gform.Dispose();
+            draw.Dispose();
         }
+        
         public void SaveImage(string imagepathfile)
         {
             ReDrawFull();
-            bmap.Save(imagepathfile, ImageFormat.Png);
+            draw.SaveImage(imagepathfile, ImageFormat.Png);
         }
         public PriceData GetPriceData()
         {
@@ -704,7 +294,7 @@ namespace BitWhiskey
             }
             if (lasttick >= data.Count())
                 lasttick = data.Count() - 1;
-            starttick = lasttick - (int)(draww / barsizex);
+            starttick = lasttick - (int)(draw.draww / barsizex);
             if (starttick < 0)
                 starttick = 0;
 
@@ -736,108 +326,21 @@ namespace BitWhiskey
         }
         public void MouseClick(int x, int y,int buttonstate_)
         {
-
-            buttonstate = buttonstate_;
-            bool redraw = false;
-
             scrollActive = false;
-            if (buttonstate != 1)
+            if (buttonstate_ != 1)
                 return;
 
             scrollActive = true;
             scrollStart = new PointF(x, y);
             scrollEnd = new PointF(x, y);
             scrollChange = new PointF(0,0);
-
-            /*
-            if( MouseOnButton(buttonMonth))
-            {
-                SelectButton(buttonMonth.text);
-                data.SelectPeriod(ConvertDataType.BAR_MONTH);
-                redraw = true;
-            }
-            else if (MouseOnButton(buttonWeek))
-            {
-                SelectButton(buttonWeek.text);
-                data.SelectPeriod(ConvertDataType.BAR_WEEK);
-               redraw = true;
-            }
-            else if (MouseOnButton(buttonDay))
-            {
-                SelectButton(buttonDay.text);
-                data.SelectPeriod(ConvertDataType.BAR_DAY);
-                redraw = true;
-            }
-            else if (MouseOnButton(buttonHour))
-            {
-                SelectButton(buttonHour.text);
-                data.SelectPeriod(ConvertDataType.BAR_HOUR);
-                redraw = true;
-            }
-            else if (MouseOnButton(buttonMin15))
-            {
-                SelectButton(buttonMin15.text);
-                data.SelectPeriod(ConvertDataType.BAR_15);
-                redraw = true;
-            }
-            else if (MouseOnButton(buttonMin5))
-            {
-                SelectButton(buttonMin5.text);
-                data.SelectPeriod(ConvertDataType.BAR_5);
-                redraw = true;
-            }
-            */
-            if (MouseOnButton(buttonZoomPlus))
-            {
-                Zoom(true);
-                ReDrawFull();
-            }
-            if (MouseOnButton(buttonZoomMinus))
-            {
-                Zoom(false);
-                ReDrawFull();
-            }
-
-            if (redraw)
-            {
-                ScrollToEnd();
-                ReDrawFull();
-            }
-
         }
-        void SelectButton(string btext)
+        public void ClearMouseSelection()
         {
-            /*
-            if(btext==null)
-                return ;
-            buttonMonth.Reset();
-            buttonWeek.Reset();
-            buttonDay.Reset();
-            buttonHour.Reset();
-            buttonMin15.Reset();
-            buttonMin5.Reset();
-
-            if (btext== buttonMonth.text) buttonMonth.Click();
-            if (btext == buttonWeek.text) buttonWeek.Click();
-            if (btext == buttonDay.text) buttonDay.Click();
-            if (btext == buttonHour.text) buttonHour.Click();
-            if (btext == buttonMin15.text) buttonMin15.Click();
-            if (btext == buttonMin5.text) buttonMin5.Click();
-            */
-        }
-        ChartButton GetSelectedButton()
-        {
-            /*
-            if(buttonMonth==null)
-                return null;
-            if (buttonMonth.clicked) return buttonMonth;
-            if (buttonWeek.clicked) return buttonWeek;
-            if (buttonDay.clicked) return buttonDay;
-            if (buttonHour.clicked) return buttonHour;
-            if (buttonMin15.clicked) return buttonMin15;
-            if (buttonMin5.clicked) return buttonMin5;
-            */
-            return null; 
+            mousedrawx = -1;
+            mousedrawy = -1;
+            mouseareax = -1;
+            mouseareay = -1;
         }
         void CalcMouseSelection()
         {
@@ -847,84 +350,93 @@ namespace BitWhiskey
             mouseareax = -1;
             mouseareay = -1;
 
-            if (mousex >= xFormPos + LeftOffset && mousex <= xFormPos + LeftOffset + draww)
-                if (mousey >= yFormPos + TopOffset && mousey <= yFormPos + TopOffset + drawh)
+            if (mousex >= draw.xFormPos + draw.LeftOffset && mousex <= draw.xFormPos + draw.LeftOffset + draw.draww)
+                if (mousey >= draw.yFormPos + draw.TopOffset && mousey <= draw.yFormPos + draw.TopOffset + draw.drawh)
                 {
-                    mousedrawx =(int)( mousex - (xFormPos + LeftOffset));
-                    mousedrawy = (int)((yFormPos + TopOffset+drawh) - mousey);
+                    mousedrawx =(int)( mousex - (draw.xFormPos + draw.LeftOffset));
+                    mousedrawy = (int)((draw.yFormPos + draw.TopOffset + draw.drawh) - mousey);
                 }
 
-            if (mousex >= xFormPos  && mousex <= xFormPos + areaxmax)
-                if (mousey >= yFormPos && mousey <= yFormPos + areaymax)
+            if (mousex >= draw.xFormPos  && mousex <= draw.xFormPos + draw.areaxmax)
+                if (mousey >= draw.yFormPos && mousey <= draw.yFormPos + draw.areaymax)
                 {
-                    mouseareax = (int)(mousex - xFormPos);
-                    mouseareay = (int)((yFormPos + areaymax) - mousey);
+                    mouseareax = (int)(mousex - draw.xFormPos);
+                    mouseareay = (int)((draw.yFormPos + draw.areaymax) - mousey);
                 }
 
         }
-        public void ReDrawFull()
+        public void Resize(Graphics gform_, float xFormPos_, float yFormPos_, float xmax_, float ymax_)
         {
-            ReCalc();
-            ReDraw();
+            Init(gform_, xFormPos_, yFormPos_, xmax_, ymax_);
         }
         public void ReCalc()
         {
             CalcScroll();
             PrepareChart();
         }
+        public void ReDrawFull()
+        {
+            ReCalc();
+            ReDraw();
+        }
     
-        public void Resize(Graphics gform_, float xFormPos_, float yFormPos_, float xmax_, float ymax_)
-    {
-        Init(gform_,xFormPos_, yFormPos_, xmax_, ymax_);
-    }
     public void ReDraw()
         {
 
-            g.Clear(style.backColor);
+            draw.Clear(style.backColor);
+
+            plugin.BeforeDraw();
 
             DrawMainChart();
             DrawPrice();
-            
-            DrawUpdate();
 
-        }
-        void DrawUpdate()
-        {
-            gform.DrawImage(bmap, (int)xFormPos, (int)yFormPos);
+            plugin.AfterDraw();
+
+            draw.DrawToScreen();
+
         }
         void PrepareChart()
         {
             maxprice = 0;
             minprice = double.MaxValue;
 
+            maxvol = 0;
+            minvol = double.MaxValue;
+
             Dictionary<int, PriceCandle> pricedata = data.GetData();
-            List<int> keys = data.GetKeys(); 
+            List<int> keys = data.GetKeys();
             for (int n = starttick; n <= lasttick; n++)
             {
                 int key1 = keys[n];
-//                int date1 = key1;
+                //                int date1 = key1;
                 PriceCandle price1 = pricedata[key1];
                 if (price1.open > maxprice)
                     maxprice = price1.open;
                 if (price1.high > maxprice)
-                                        maxprice = price1.high;
-                    if (price1.low > maxprice)
-                                          maxprice = price1.low;
-                        if (price1.close > maxprice)
-                                            maxprice = price1.close;
+                    maxprice = price1.high;
+                if (price1.low > maxprice)
+                    maxprice = price1.low;
+                if (price1.close > maxprice)
+                    maxprice = price1.close;
+                if (price1.volume > maxvol)
+                    maxvol = price1.volume;
 
                 if (price1.open < minprice)
                     minprice = price1.open;
                 if (price1.high < minprice)
-                                        minprice = price1.high;
-                    if (price1.low < minprice)
-                                            minprice = price1.low;
-                        if (price1.close < minprice)
-                                              minprice = price1.close;
+                    minprice = price1.high;
+                if (price1.low < minprice)
+                    minprice = price1.low;
+                if (price1.close < minprice)
+                    minprice = price1.close;
+                if (price1.volume < minvol)
+                    minvol = price1.volume;
 
             }
-            yzoomcoeff = (float)(maxprice-minprice) / drawh;
-            data.NormalizeData(minprice, yzoomcoeff);
+            yzoomcoeff = (float)(maxprice-minprice) / draw.drawh;
+            float voldrawh=GetVolumeDrawH();
+            volzoomcoeff = (float)(maxvol - minvol) / voldrawh;
+            data.NormalizeData(minprice, yzoomcoeff, minvol, volzoomcoeff);
 
         }
         double NormalizePrice(double pricedata)
@@ -940,13 +452,21 @@ namespace BitWhiskey
             Dictionary<int, PriceCandle> pricedata = data.GetNormalizeData();
             List<int> keys = data.GetKeys();
             
-            float pos = draww;
+            float pos = draw.draww;
             selectedPriceKey=-1;
+
+            Dictionary<int, PriceCandle> realData = data.GetData();
+            PriceCandle lastPrice = realData.Last().Value; //[keys[lasttick]];
+            string strLastPrice = Helper.PriceToString(lastPrice.close);
+            draw.DrawString(style.strLastPriceBrush, style.strLastPriceFont, new PointF(draw.draww - 80, draw.areaymax ), strLastPrice);
 
             for (int n = lasttick; n > starttick; n--)
             {
                 Pen pen = style.barUp;
                 Brush brush = style.barUpBrush;
+
+                Pen volpen = style.volbarUp;
+                Brush volbrush = style.volbarUpBrush;
 
                 int key1 = keys[n - 1];
                 int date1 = key1;
@@ -959,6 +479,8 @@ namespace BitWhiskey
                 {
                     pen = style.barDown;
                     brush = style.barDownBrush;
+                    volpen = style.volbarDown;
+                    volbrush = style.volbarDownBrush;
                     fill = true;
                 }
                 float barspace = 0;
@@ -978,36 +500,55 @@ namespace BitWhiskey
                 {
                     barspace = 2;
                     float realbarsize = barsizex - barspace;
-                    PointF p = new PointF(pos - barsizex, (float)Math.Min(price2.close, price2.open));
-                    PointF size = new PointF(realbarsize, (float)Math.Abs(price2.close - price2.open));
-                    AreaDrawRectangle(pen, brush, p, size, fill);
+
+                    PointF p;
+                    PointF size;
+                    // volume
+                    if (drawVolume)
+                    {
+                        p = new PointF(pos - barsizex - 1, (float)0);
+                        size = new PointF(realbarsize + 1, (float)price2.volume);
+                        draw.AreaDrawRectangle(volpen, volbrush, p, size, true);
+                    }
+                    // price
+                    p = new PointF(pos - barsizex, (float)Math.Min(price2.close, price2.open));
+                    size = new PointF(realbarsize, (float)Math.Abs(price2.close - price2.open));
+                    draw.AreaDrawRectangle(pen, brush, p, size, fill);
 
                     PointF p1 = new PointF(pos - barsizex / 2 - barspace / 2, (float)price2.high);
                     PointF p2 = new PointF(pos - barsizex / 2 - barspace / 2, (float)Math.Max(price2.close, price2.open));
-                    AreaDrawLine(pen, p1, p2);
+                    draw.AreaDrawLine(pen, p1, p2);
 
                     p1 = new PointF(pos - barsizex / 2 - barspace / 2, (float)price2.low);
                     p2 = new PointF(pos - barsizex / 2 - barspace / 2, (float)Math.Min(price2.close, price2.open));
                     if (p1.X == p2.X && p1.Y == p2.Y)
                         p2.X += 1;
-                    AreaDrawLine(pen, p1, p2);
-/*
-                    if(price2.high==price2.low)
-                    {
-                        p1 = new PointF(pos - barsizex / 2 - barspace / 2-1, (float)price2.close);
-                        p2 = new PointF(pos - barsizex / 2 - barspace / 2+1, (float)price2.close);
-                        AreaDrawLine(pen, p1, p2);
-                    }
-                    */
+                    draw.AreaDrawLine(pen, p1, p2);
                 }
                 else
                 {
-                    PointF p1 = new PointF(pos - barsizex / 2, (float)price2.low);
-                    PointF p2 = new PointF(pos - barsizex / 2, (float)price2.high);
+                    PointF p1;
+                    PointF p2;
+
+                    // volume
+                    if (drawVolume)
+                    {
+                        p1 = new PointF(pos - barsizex / 2, (float)0);
+                        p2 = new PointF(pos - barsizex / 2, (float)price2.volume);
+                        if (p1.X == p2.X && p1.Y == p2.Y)
+                            p2.Y += 1;
+                        draw.AreaDrawLine(volpen, p1, p2);
+                    }
+
+                    // price
+                    p1 = new PointF(pos - barsizex / 2, (float)price2.low);
+                    p2 = new PointF(pos - barsizex / 2, (float)price2.high);
                     if (p1.X == p2.X && p1.Y == p2.Y)
                         p2.Y += 1;
-                    AreaDrawLine(pen, p1, p2);
+                    draw.AreaDrawLine(pen, p1, p2);
+
                 }
+
                 pos -= barsizex;
             }
         }
@@ -1016,10 +557,10 @@ namespace BitWhiskey
             // price rect
             int dx = 3;
             PointF p = new PointF(-dx,- dx);
-            PointF size = new PointF(draww + dx * 2, drawh + dx * 2);
-            AreaDrawRectangle(Pens.RosyBrown, Brushes.Red, p, size, false);
+            PointF size = new PointF(draw.draww + dx * 2, draw.drawh + dx * 2);
+            draw.AreaDrawRectangle(Pens.RosyBrown, Brushes.Red, p, size, false);
 
-            // right price levels
+            // draw right price levels
             int plevelcount = 7;
             double startplevel = minprice;
             double endplevel = maxprice;
@@ -1028,16 +569,38 @@ namespace BitWhiskey
             double curplevel = startplevel;
             for (int n = 0; n <= plevelcount; n++)
             {
-                p = new PointF(draww + 10, (float)NormalizePrice(curplevel) + style.strLabelFont.Size/2);
+                p = new PointF(draw.draww + 10, (float)NormalizePrice(curplevel) + style.strLabelFont.Size/2);
                 string pricestr = Helper.PriceToString(curplevel);
-                AreaDrawString(style.strLabelBrush, style.strLabelFont, p, pricestr);
+                draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, pricestr);
                  curplevel += priceadd;
             }
+
+            // draw left volume levels
+            if (drawVolume)
+            {
+                float voldrawh = GetVolumeDrawH();
+                p = new PointF(draw.LeftOffset, (float)voldrawh + style.strLabelFont.Size / 2);
+                string volstr = Helper.PriceToStringFinance(maxvol);
+                draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, volstr);
+
+                p = new PointF(draw.LeftOffset, (float)voldrawh * (2f / 3f) + style.strLabelFont.Size / 2);
+                volstr = Helper.PriceToStringFinance(maxvol * (2f / 3f));
+                draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, volstr);
+
+                p = new PointF(draw.LeftOffset, (float)voldrawh * (1f / 3f) + style.strLabelFont.Size / 2);
+                volstr = Helper.PriceToStringFinance(maxvol * (1f / 3f));
+                draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, volstr);
+
+                p = new PointF(draw.LeftOffset, (float)voldrawh * (1f / 6f) + style.strLabelFont.Size / 2);
+                volstr = Helper.PriceToStringFinance(maxvol * (1f / 6f));
+                draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, volstr);
+            }
+
 
             // down data labels
             int datesize = 90;
             float cursize = 0;
-            float pos = draww - barsizex;
+            float pos = draw.draww - barsizex;
             Dictionary<int, PriceCandle> pricedata = data.GetNormalizeData();
             List<int> keys = data.GetKeys();
             for (int n = lasttick; n > starttick; n--)
@@ -1049,153 +612,88 @@ namespace BitWhiskey
                     p.X = pos;
                     p.Y = -style.strLabelFont.Size ;
                     DateTime unixtime = Helper.UnixToDateTime(date1.ToString()).ToLocalTime();
-                    AreaDrawString(style.strLabelBrush, style.strLabelFont, p, unixtime.ToString("dd.MM.yyyy"));
+                    draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, unixtime.ToString("dd.MM.yyyy"));
                     cursize=0;
                 }
                 pos -= barsizex;
             }
 
-            // mouse selection
+            Dictionary<int, PriceCandle> curdata = data.GetData();
+            PriceCandle lastpriceReal = curdata.Last().Value;// [curdata.Count - 1];
+            PriceCandle lastprice = pricedata.Last().Value;
+            // rectangle with last price
+            float ry = (float)lastprice.close - style.strLastPriceFont.Size;
+            p = new PointF(draw.draww + 10, ry);
+            size = new PointF(draw.RightOffset, style.strLastPriceFont.Size * 2f);
+            draw.AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, true);
+            draw.AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, false);
+            p = new PointF(draw.draww + 10, ry + style.strLastPriceFont.Size * 2);
+            string pricestrreal = Helper.PriceToString(lastpriceReal.close);
+            draw.AreaDrawString(style.strLastPriceBrush, style.strLastPriceFont, p, pricestrreal);
 
+            // mouse selection
             if (mousedrawx != -1)
             {
+
                 PointF p1 = new PointF(0, mousedrawy);
-                PointF p2 = new PointF(draww, mousedrawy);
+                PointF p2 = new PointF(draw.draww, mousedrawy);
                 float[] dashValues = { 5, 8 };
                 Pen dashPen = new Pen(style.SelLine.Color);
                 dashPen.DashPattern = dashValues;
-                AreaDrawLine(dashPen, p1, p2);
+                draw.AreaDrawLine(dashPen, p1, p2);
 
+                // rectangle with selected price
                 float sy = mousedrawy - style.strLabelSelFont.Size;
-                p = new PointF(draww+10,sy);
-                size = new PointF(RightOffset, style.strLabelSelFont.Size * 2f);
-                AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, true);
-                AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, false);
+                p = new PointF(draw.draww +10,sy);
+                size = new PointF(draw.RightOffset, style.strLabelSelFont.Size * 2f);
+                draw.AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, true);
+                draw.AreaDrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, false);
 
-                p = new PointF(draww + 10, sy + style.strLabelSelFont.Size * 2);
+                p = new PointF(draw.draww + 10, sy + style.strLabelSelFont.Size * 2);
                 string pricestr = Helper.PriceToString(DeNormalizePrice(mousedrawy));
-                AreaDrawString(style.strLabelSelBrush, style.strLabelSelFont, p, pricestr);
+                draw.AreaDrawString(style.strLabelSelBrush, style.strLabelSelFont, p, pricestr);
 
                 // vertical
                 p1 = new PointF(mousedrawx,0);
-                p2 = new PointF(mousedrawx, drawh);
+                p2 = new PointF(mousedrawx, draw.drawh);
                 float[] dashValuesV = { 4, 11 };
                 dashPen = new Pen(style.SelLine.Color);
                 dashPen.DashPattern = dashValuesV;
-                AreaDrawLine(dashPen, p1, p2);
+                draw.AreaDrawLine(dashPen, p1, p2);
 
                 if (selectedPriceKey != -1)
                 {
+                    PriceCandle priceReal = curdata[selectedPriceKey];
                     PriceCandle price = pricedata[selectedPriceKey];
                     DateTime unixtime = Helper.UnixToDateTime(price.date.ToString());
                     string strtime = unixtime.ToLocalTime().ToString("dd.MM.yyyy  HH:mm");
-                    float strwidth=Helper.StringSize(g, style.strLabelSelFont, strtime).Width;
+                    float strwidth=Helper.StringSize(style.strLabelSelFont, strtime).Width;
                     p = new PointF(mousedrawx - strwidth/2-3,0);
-                    size = new PointF(strwidth+3*2, style.strLabelSelFont.Size * 2f);
-                    DrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, true);
-                    DrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, false);
+                    size = new PointF(strwidth+13*2, style.strLabelSelFont.Size * 2f);
+                    draw.DrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, true);
+                    draw.DrawRectangle(Pens.RosyBrown, Brushes.Black, p, size, false);
 
                     p.X = mousedrawx- strwidth / 2;
                     p.Y = -style.strLabelSelFont.Size;
-                    AreaDrawString(style.strLabelSelBrush, style.strLabelSelFont, p, strtime);
+                    draw.AreaDrawString(style.strLabelSelBrush, style.strLabelSelFont, p, strtime);
 
                     //Date+V+OHLC 
-                    Dictionary<int,PriceCandle> curdata=data.GetData();
-                    PriceCandle priceReal = curdata[selectedPriceKey];
-                    p.X = draww/12;
-                    p.Y = drawh - style.strLabelFont.Size/5;
+                    p.X = draw.draww /12;
+                    p.Y = draw.drawh - style.strLabelFont.Size/5;
                     // string 
                     string strDescr = string.Format("{0}      VOL: {1}", strtime, ((int)priceReal.volume).ToString());
-                    AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
-                    p.X = draww / 12;
-                    p.Y = drawh - style.strLabelFont.Size  - 8;
+                    draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
+                    p.X = draw.draww / 12;
+                    p.Y = draw.drawh - style.strLabelFont.Size  - 8;
                     strDescr = string.Format("O: {0}    H: {1}    L: {2}    C: {3}", Helper.PriceToString(priceReal.open), Helper.PriceToString(priceReal.high), Helper.PriceToString(priceReal.low), Helper.PriceToString(priceReal.close));
-                    AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
+                    draw.AreaDrawString(style.strLabelBrush, style.strLabelFont, p, strDescr);
 
                 }
 
             }
 
-            // buttons
-            /*
-            DrawButton(buttonMonth);
-            DrawButton(buttonWeek);
-            DrawButton(buttonDay);
-            DrawButton(buttonHour);
-            DrawButton(buttonMin15);
-            DrawButton(buttonMin5);
-            */
-            DrawButton(buttonZoomPlus);
-            DrawButton(buttonZoomMinus);
+            draw.DrawString(style.strLabelBrush, style.strLabelFont, new PointF(draw.draww +10 , draw.areaymax - style.strLabelSelFont.Size/2), chartCaption);
 
-
-            DrawString(style.strLabelBrush, style.strLabelFont, new PointF(draww+10 , areaymax - style.strLabelSelFont.Size/2), chartCaption);
-
-        }
-
-        private bool MouseOnButton(ChartButton button)
-        {
-            if (mouseareax >= button.pos.X && mouseareax <= button.pos.X + button.size.X)
-                if (mouseareay >= button.pos.Y && mouseareay <= button.pos.Y + button.size.Y)
-                {
-                    return true;
-                }
-
-            return false;
-        }
-        private void DrawButton(ChartButton button)
-        {
-            if(button.clicked)
-              DrawRectangle(Pens.Red, Brushes.LightCoral, button.pos, button.size, true);
-            else
-                DrawRectangle(Pens.Red, Brushes.DarkGray, button.pos, button.size, true);
-            PointF pos = new PointF(button.pos.X, button.pos.Y + button.size.Y);
-            SizeF strsize=Helper.StringSize(g, style.strLabelSelFont, button.text);
-            pos.X += button.size.X / 2 - strsize.Width / 2;
-            DrawString(Brushes.Black, style.strLabelSelFont,pos,button.text);
-        }
-        private void DrawRectangle(Pen pen, Brush brush, PointF pos, PointF size, bool fill)
-        {
-            pos.Y = pos.Y + size.Y;
-            pos = ToArea(pos);
-            if (fill)
-                g.FillRectangle(brush, pos.X, pos.Y, size.X, size.Y);
-            else
-                g.DrawRectangle(pen, pos.X, pos.Y, size.X, size.Y);
-        }
-        private void DrawString(Brush brush, Font font, PointF pos, string s)
-        {
-            pos = ToArea(pos);
-            g.DrawString(s, font, brush, pos);
-        }
-        private PointF ToArea(PointF p)
-        {
-            return new PointF(p.X + xFormPos, areaymax - p.Y);
-        }
-
-        private void AreaDrawString(Brush brush, Font font, PointF pos, string s)
-        {
-            pos = ToDrawArea(pos);
-            g.DrawString(s,font,brush, pos);
-        }
-        private void AreaDrawRectangle(Pen pen, Brush brush, PointF pos, PointF size, bool fill)
-        {
-            pos.Y = pos.Y + size.Y;
-            pos = ToDrawArea(pos);
-            if (fill)
-                g.FillRectangle(brush, pos.X, pos.Y, size.X, size.Y);
-            else
-                g.DrawRectangle(pen, pos.X, pos.Y, size.X, size.Y);
-        }
-        private void AreaDrawLine(Pen pen, PointF p1, PointF p2)
-        {
-            p1 = ToDrawArea(p1);
-            p2 = ToDrawArea(p2);
-            g.DrawLine(pen, p1, p2);
-        }
-        private PointF ToDrawArea(PointF p)
-        {
-            return new PointF(p.X + xstart, areaymax-DownOffset - p.Y);
         }
     }
 }

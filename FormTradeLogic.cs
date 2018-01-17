@@ -25,7 +25,7 @@ namespace BitWhiskey
         public Balance prevBalanceBase = new Balance();
         public Balance prevBalanceCounter = new Balance();
 
-        public TradeLast lastMarketPrice;
+        public TradeLast lastMarketPrice=null;
 
         protected Market market;
 

@@ -82,6 +82,25 @@ namespace BitWhiskey
             }
             queue.Add(itemgroup);
         }
+
+        public static bool IsResultHasErrors(RequestItemGroup requestGroup, bool log = true, bool display = true)
+        {
+            foreach (RequestItem item in requestGroup.items)
+            {
+                if (item.result.error != "")
+                {
+                    string msg = "Error UIErr->" + item.result.error;
+                    if (log)
+                        Logman.logger.Error(msg);
+                    if (display)
+                        Helper.Display(msg);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 
     public class RequestConsumer
@@ -123,27 +142,52 @@ namespace BitWhiskey
                 foreach (RequestItem reqitem in itemgroup.items)
                 {
                     elapsedTime.Add(stopTimer.ElapsedMilliseconds);
-                    if (elapsedTime.Count > 10)
+                    if (elapsedTime.Count > 19)
                         elapsedTime.RemoveAt(0);
                 }
                 var taskList = new List<Task>();
                 foreach (RequestItem reqitem in itemgroup.items)
                 {
                     var task = Task.Run(() => reqitem.ProcessResultAction(reqitem));
+                    /*                    var task = Task.Run(() =>
+                    {try  {  reqitem.ProcessResultAction(reqitem);}catch (Exception e)
+                        {  //                              reqitem.result.error         }     }              );
+                        */
                     taskList.Add(task);
                 }
-                Task.WaitAll(taskList.ToArray());
-                Task.Factory.StartNew(() =>
+                try
                 {
-                    try
-                    {
-                        itemgroup.ProcessResultUIAction(itemgroup);
-                    }
-                    catch (ObjectDisposedException ex)
-                    {
-                    }
+                    Task.WaitAll(taskList.ToArray());
+                }
+                catch (Exception e)
+                {
+                    string msg = "Unhandled Thread ProcessResultAction error -> " + e.Message;
+                    Logman.logger.Error(e, msg);
+                }
 
-                }, CancellationToken.None, TaskCreationOptions.None, Global.uiScheduler).Wait();
+                try
+                {
+                   Task.Factory.StartNew(() =>
+                   {
+                     try
+                     {
+                         itemgroup.ProcessResultUIAction(itemgroup);
+                     }
+                     catch (ObjectDisposedException ex)
+                     {
+                     }
+                     catch (Exception e)
+                     {
+                           string msg = "UI Not Handled error -> " + e.Message;
+                           Logman.logger.Error(e,msg);
+                     }
+                   }, CancellationToken.None, TaskCreationOptions.None, Global.uiScheduler).Wait();
+                }
+                catch (Exception e)
+                {
+                    string msg = "UI Not Handled error -> " + e.Message;
+                    Logman.logger.Error(e, msg);
+                }
 
             }
 

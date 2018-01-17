@@ -59,5 +59,15 @@ namespace BitWhiskey.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_business_work_12_2377635 {
+            get {
+                object obj = ResourceManager.GetObject("if_business-work_12_2377635", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

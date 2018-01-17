@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dgridMarkets = new System.Windows.Forms.DataGridView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -41,6 +41,7 @@
             this.toolStripButtonSettings = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelChart = new System.Windows.Forms.Panel();
+            this.toolStripButtonAlerts = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgridMarkets)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -54,14 +55,14 @@
             this.dgridMarkets.AllowUserToOrderColumns = true;
             this.dgridMarkets.AllowUserToResizeRows = false;
             this.dgridMarkets.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridMarkets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgridMarkets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridMarkets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgridMarkets.Location = new System.Drawing.Point(0, 0);
@@ -70,11 +71,11 @@
             this.dgridMarkets.Name = "dgridMarkets";
             this.dgridMarkets.ReadOnly = true;
             this.dgridMarkets.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridMarkets.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgridMarkets.RowTemplate.Height = 24;
             this.dgridMarkets.RowTemplate.ReadOnly = true;
             this.dgridMarkets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -96,6 +97,7 @@
             this.toolDropDownTickerUsdt,
             this.toolStripButtonChart,
             this.toolStripButtonBalance,
+            this.toolStripButtonAlerts,
             this.toolStripButtonSettings});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -182,6 +184,16 @@
             this.panelChart.Size = new System.Drawing.Size(540, 385);
             this.panelChart.TabIndex = 12;
             // 
+            // toolStripButtonAlerts
+            // 
+            this.toolStripButtonAlerts.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAlerts.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAlerts.Image")));
+            this.toolStripButtonAlerts.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAlerts.Name = "toolStripButtonAlerts";
+            this.toolStripButtonAlerts.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonAlerts.Text = "Alerts";
+            this.toolStripButtonAlerts.Click += new System.EventHandler(this.toolStripButtonAlerts_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,6 +226,7 @@
         private System.Windows.Forms.DataGridView dgridMarkets;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panelChart;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAlerts;
     }
 }
 

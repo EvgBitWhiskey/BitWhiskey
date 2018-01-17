@@ -61,19 +61,27 @@ namespace BitWhiskey
 //            gridView.DefaultCellStyle.SelectionForeColor = gridView.DefaultCellStyle.ForeColor;
             gridView.ClearSelection();
         }
+        public void ShowColumnHeaders(bool show=true)
+        {
+            gridView.ColumnHeadersVisible=show;
+        }
         public void AutoSizeFillExcept(string displayedCellsField)
         {
-            gridView.Columns[displayedCellsField].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             foreach (DataGridViewColumn col in gridView.Columns)
             {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                if(col.Name== displayedCellsField)
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                if (col.Name== displayedCellsField)
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
         public void AutoSizeDisplayedExcept(string displayedCellsField)
         {
-            gridView.Columns[displayedCellsField].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            foreach (DataGridViewColumn col in gridView.Columns)
+            {
+//                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+//                if (col.Name == displayedCellsField)
+//                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
         }
         public void RowColorByCondition(string field, string condValue, Color color)
         {

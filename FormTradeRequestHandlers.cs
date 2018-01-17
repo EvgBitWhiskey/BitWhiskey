@@ -18,7 +18,7 @@ namespace BitWhiskey
         {
             request.result.error = "Request:" + request.requestString;
             request.result.exception = ex;
-            Helper.logger.Error(ex, request.result.error);
+            Logman.logger.Error(ex, request.result.error);
         }
 
         public void GetBalances_RequestHandler(RequestItem request)

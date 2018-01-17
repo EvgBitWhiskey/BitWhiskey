@@ -81,7 +81,7 @@ namespace BitWhiskey
 
         public void UpdateBalances_UIResultHandler(RequestItemGroup resultResponse)
         {
-            if (Helper.IsResultHasErrors(resultResponse))
+            if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             
             Dictionary<string, Balance> balancesDict = (Dictionary<string, Balance>)resultResponse.items[0].result.resultData;

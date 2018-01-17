@@ -187,7 +187,7 @@
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(60, 13);
             this.labelVersion.TabIndex = 11;
-            this.labelVersion.Text = "Version 0.2";
+            this.labelVersion.Text = "Version 0.3";
             // 
             // FormSettings
             // 

@@ -29,27 +29,30 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTrade));
-            this.panelBalance = new System.Windows.Forms.Panel();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.panelRequestTracker = new System.Windows.Forms.Panel();
+            this.dGridRequests = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
             this.labelBalanceMarketValue = new System.Windows.Forms.Label();
             this.labelBalanceMarket = new System.Windows.Forms.Label();
             this.labelBalanceBaseValue = new System.Windows.Forms.Label();
             this.labelBalanceBase = new System.Windows.Forms.Label();
             this.buttonUpdateOrderBook = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelBalance = new System.Windows.Forms.Panel();
             this.buttonSetAskPrice = new System.Windows.Forms.Button();
             this.buttonSetBidPrice = new System.Windows.Forms.Button();
             this.labelAverage = new System.Windows.Forms.Label();
             this.buttonSell = new System.Windows.Forms.Button();
             this.labelSpread = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textPrice = new System.Windows.Forms.TextBox();
-            this.labelPrice = new System.Windows.Forms.Label();
-            this.textAmount = new System.Windows.Forms.TextBox();
-            this.labelAmount = new System.Windows.Forms.Label();
+            this.textPriceBuy = new System.Windows.Forms.TextBox();
+            this.labelPriceBuy = new System.Windows.Forms.Label();
+            this.textAmountBuy = new System.Windows.Forms.TextBox();
+            this.labelAmountBuy = new System.Windows.Forms.Label();
             this.buttonBuy = new System.Windows.Forms.Button();
             this.buttonUpdateTradeHistory = new System.Windows.Forms.Button();
             this.dgridTradeHistory = new System.Windows.Forms.DataGridView();
@@ -70,19 +73,37 @@
             this.buttonMyOrdersHistory = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.tabMain = new System.Windows.Forms.TabControl();
+            this.tabPageOrderBook = new System.Windows.Forms.TabPage();
+            this.panelOrderBook = new System.Windows.Forms.Panel();
+            this.tabPageOrderBookContr = new System.Windows.Forms.TabPage();
             this.tabPageTradeHistory = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabPageMyOrders = new System.Windows.Forms.TabPage();
             this.panelMyOrdersHistory = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
+            this.panelBuySell = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelPriceSell = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textPriceSell = new System.Windows.Forms.TextBox();
+            this.textAmountSell = new System.Windows.Forms.TextBox();
+            this.labelAmountSell = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelAmountCaption = new System.Windows.Forms.Label();
             this.buttonCollapsePanelOrderBook = new System.Windows.Forms.Button();
-            this.panelOrderBook = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.buttonCollapsePanelTabMain = new System.Windows.Forms.Button();
+            this.panelOBookButton = new System.Windows.Forms.Panel();
             this.panelTabMain = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dGridContrSell = new System.Windows.Forms.DataGridView();
+            this.dGridContrBuy = new System.Windows.Forms.DataGridView();
+            this.buttonSellAmountAll = new System.Windows.Forms.Button();
+            this.buttonSellAmount50 = new System.Windows.Forms.Button();
+            this.buttonBuyAmount50 = new System.Windows.Forms.Button();
+            this.buttonBuyAmountAll = new System.Windows.Forms.Button();
+            this.buttonShowGraphic = new System.Windows.Forms.Button();
+            this.panelRequestTracker.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridRequests)).BeginInit();
             this.panelBalance.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgridTradeHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgridSellOrders)).BeginInit();
             this.panelActiveOrders.SuspendLayout();
@@ -90,35 +111,61 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgridMyOrdersHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgridBuyOrders)).BeginInit();
             this.tabMain.SuspendLayout();
+            this.tabPageOrderBook.SuspendLayout();
+            this.panelOrderBook.SuspendLayout();
+            this.tabPageOrderBookContr.SuspendLayout();
             this.tabPageTradeHistory.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabPageMyOrders.SuspendLayout();
             this.panelMyOrdersHistory.SuspendLayout();
-            this.panel6.SuspendLayout();
-            this.panelOrderBook.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.panelBuySell.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panelOBookButton.SuspendLayout();
             this.panelTabMain.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).BeginInit();
             this.SuspendLayout();
             // 
-            // panelBalance
+            // panelRequestTracker
             // 
-            this.panelBalance.Controls.Add(this.label7);
-            this.panelBalance.Controls.Add(this.labelBalanceMarketValue);
-            this.panelBalance.Controls.Add(this.labelBalanceMarket);
-            this.panelBalance.Controls.Add(this.labelBalanceBaseValue);
-            this.panelBalance.Controls.Add(this.labelBalanceBase);
-            this.panelBalance.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelBalance.Location = new System.Drawing.Point(0, 0);
-            this.panelBalance.Margin = new System.Windows.Forms.Padding(2);
-            this.panelBalance.Name = "panelBalance";
-            this.panelBalance.Size = new System.Drawing.Size(473, 24);
-            this.panelBalance.TabIndex = 0;
+            this.panelRequestTracker.Controls.Add(this.dGridRequests);
+            this.panelRequestTracker.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelRequestTracker.Location = new System.Drawing.Point(0, 0);
+            this.panelRequestTracker.Margin = new System.Windows.Forms.Padding(2);
+            this.panelRequestTracker.Name = "panelRequestTracker";
+            this.panelRequestTracker.Size = new System.Drawing.Size(492, 31);
+            this.panelRequestTracker.TabIndex = 0;
+            // 
+            // dGridRequests
+            // 
+            this.dGridRequests.AllowUserToAddRows = false;
+            this.dGridRequests.AllowUserToDeleteRows = false;
+            this.dGridRequests.AllowUserToResizeRows = false;
+            this.dGridRequests.BackgroundColor = System.Drawing.Color.LightSteelBlue;
+            this.dGridRequests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridRequests.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dGridRequests.Location = new System.Drawing.Point(0, 0);
+            this.dGridRequests.Margin = new System.Windows.Forms.Padding(2);
+            this.dGridRequests.MultiSelect = false;
+            this.dGridRequests.Name = "dGridRequests";
+            this.dGridRequests.ReadOnly = true;
+            this.dGridRequests.RowHeadersVisible = false;
+            this.dGridRequests.RowTemplate.Height = 24;
+            this.dGridRequests.RowTemplate.ReadOnly = true;
+            this.dGridRequests.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dGridRequests.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dGridRequests.ShowCellToolTips = false;
+            this.dGridRequests.ShowEditingIcon = false;
+            this.dGridRequests.Size = new System.Drawing.Size(492, 30);
+            this.dGridRequests.TabIndex = 8;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1, 6);
+            this.label7.Location = new System.Drawing.Point(3, 3);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(54, 13);
@@ -129,7 +176,7 @@
             // 
             this.labelBalanceMarketValue.AutoSize = true;
             this.labelBalanceMarketValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelBalanceMarketValue.Location = new System.Drawing.Point(303, 2);
+            this.labelBalanceMarketValue.Location = new System.Drawing.Point(305, -1);
             this.labelBalanceMarketValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceMarketValue.Name = "labelBalanceMarketValue";
             this.labelBalanceMarketValue.Size = new System.Drawing.Size(16, 18);
@@ -141,7 +188,7 @@
             this.labelBalanceMarket.AutoSize = true;
             this.labelBalanceMarket.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelBalanceMarket.ForeColor = System.Drawing.Color.MediumOrchid;
-            this.labelBalanceMarket.Location = new System.Drawing.Point(246, 2);
+            this.labelBalanceMarket.Location = new System.Drawing.Point(248, -1);
             this.labelBalanceMarket.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceMarket.Name = "labelBalanceMarket";
             this.labelBalanceMarket.Size = new System.Drawing.Size(16, 18);
@@ -152,7 +199,7 @@
             // 
             this.labelBalanceBaseValue.AutoSize = true;
             this.labelBalanceBaseValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelBalanceBaseValue.Location = new System.Drawing.Point(113, 2);
+            this.labelBalanceBaseValue.Location = new System.Drawing.Point(115, -1);
             this.labelBalanceBaseValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceBaseValue.Name = "labelBalanceBaseValue";
             this.labelBalanceBaseValue.Size = new System.Drawing.Size(16, 18);
@@ -164,7 +211,7 @@
             this.labelBalanceBase.AutoSize = true;
             this.labelBalanceBase.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelBalanceBase.ForeColor = System.Drawing.Color.BlueViolet;
-            this.labelBalanceBase.Location = new System.Drawing.Point(64, 2);
+            this.labelBalanceBase.Location = new System.Drawing.Point(66, -1);
             this.labelBalanceBase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceBase.Name = "labelBalanceBase";
             this.labelBalanceBase.Size = new System.Drawing.Size(16, 18);
@@ -182,50 +229,45 @@
             this.buttonUpdateOrderBook.UseVisualStyleBackColor = true;
             this.buttonUpdateOrderBook.Click += new System.EventHandler(this.buttonUpdateOrderBook_Click);
             // 
-            // panel1
+            // panelBalance
             // 
-            this.panel1.Controls.Add(this.buttonSetAskPrice);
-            this.panel1.Controls.Add(this.buttonSetBidPrice);
-            this.panel1.Controls.Add(this.labelAverage);
-            this.panel1.Controls.Add(this.buttonSell);
-            this.panel1.Controls.Add(this.labelSpread);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.textPrice);
-            this.panel1.Controls.Add(this.labelPrice);
-            this.panel1.Controls.Add(this.textAmount);
-            this.panel1.Controls.Add(this.labelAmount);
-            this.panel1.Controls.Add(this.buttonBuy);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(473, 96);
-            this.panel1.TabIndex = 1;
+            this.panelBalance.Controls.Add(this.label7);
+            this.panelBalance.Controls.Add(this.labelBalanceMarketValue);
+            this.panelBalance.Controls.Add(this.labelBalanceBase);
+            this.panelBalance.Controls.Add(this.labelBalanceMarket);
+            this.panelBalance.Controls.Add(this.labelBalanceBaseValue);
+            this.panelBalance.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelBalance.Location = new System.Drawing.Point(0, 31);
+            this.panelBalance.Margin = new System.Windows.Forms.Padding(2);
+            this.panelBalance.Name = "panelBalance";
+            this.panelBalance.Size = new System.Drawing.Size(492, 19);
+            this.panelBalance.TabIndex = 1;
             // 
             // buttonSetAskPrice
             // 
-            this.buttonSetAskPrice.Location = new System.Drawing.Point(221, 3);
+            this.buttonSetAskPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSetAskPrice.Location = new System.Drawing.Point(156, 8);
             this.buttonSetAskPrice.Name = "buttonSetAskPrice";
-            this.buttonSetAskPrice.Size = new System.Drawing.Size(39, 23);
+            this.buttonSetAskPrice.Size = new System.Drawing.Size(78, 24);
             this.buttonSetAskPrice.TabIndex = 0;
-            this.buttonSetAskPrice.Text = "ASK";
+            this.buttonSetAskPrice.Text = "Market Price";
             this.buttonSetAskPrice.UseVisualStyleBackColor = true;
             this.buttonSetAskPrice.Click += new System.EventHandler(this.buttonSetAskPrice_Click);
             // 
             // buttonSetBidPrice
             // 
-            this.buttonSetBidPrice.Location = new System.Drawing.Point(264, 3);
+            this.buttonSetBidPrice.Location = new System.Drawing.Point(158, 9);
             this.buttonSetBidPrice.Name = "buttonSetBidPrice";
-            this.buttonSetBidPrice.Size = new System.Drawing.Size(36, 23);
+            this.buttonSetBidPrice.Size = new System.Drawing.Size(78, 24);
             this.buttonSetBidPrice.TabIndex = 12;
-            this.buttonSetBidPrice.Text = "BID";
+            this.buttonSetBidPrice.Text = "Market Price";
             this.buttonSetBidPrice.UseVisualStyleBackColor = true;
             this.buttonSetBidPrice.Click += new System.EventHandler(this.buttonSetBidPrice_Click);
             // 
             // labelAverage
             // 
             this.labelAverage.AutoSize = true;
-            this.labelAverage.Location = new System.Drawing.Point(1, 80);
+            this.labelAverage.Location = new System.Drawing.Point(4, 100);
             this.labelAverage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAverage.Name = "labelAverage";
             this.labelAverage.Size = new System.Drawing.Size(47, 13);
@@ -236,10 +278,10 @@
             // 
             this.buttonSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonSell.ForeColor = System.Drawing.Color.Blue;
-            this.buttonSell.Location = new System.Drawing.Point(251, 53);
+            this.buttonSell.Location = new System.Drawing.Point(9, 73);
             this.buttonSell.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSell.Name = "buttonSell";
-            this.buttonSell.Size = new System.Drawing.Size(204, 25);
+            this.buttonSell.Size = new System.Drawing.Size(221, 26);
             this.buttonSell.TabIndex = 10;
             this.buttonSell.Text = "SELL";
             this.buttonSell.UseVisualStyleBackColor = true;
@@ -249,7 +291,7 @@
             // 
             this.labelSpread.AutoSize = true;
             this.labelSpread.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSpread.Location = new System.Drawing.Point(204, 64);
+            this.labelSpread.Location = new System.Drawing.Point(267, 100);
             this.labelSpread.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelSpread.Name = "labelSpread";
             this.labelSpread.Size = new System.Drawing.Size(14, 15);
@@ -259,63 +301,63 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(205, 50);
+            this.label5.Location = new System.Drawing.Point(224, 101);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(39, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "spread";
             // 
-            // textPrice
+            // textPriceBuy
             // 
-            this.textPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textPrice.Location = new System.Drawing.Point(110, 2);
-            this.textPrice.Margin = new System.Windows.Forms.Padding(2);
-            this.textPrice.Name = "textPrice";
-            this.textPrice.Size = new System.Drawing.Size(108, 23);
-            this.textPrice.TabIndex = 4;
-            this.textPrice.Text = "0";
+            this.textPriceBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textPriceBuy.Location = new System.Drawing.Point(58, 8);
+            this.textPriceBuy.Margin = new System.Windows.Forms.Padding(2);
+            this.textPriceBuy.Name = "textPriceBuy";
+            this.textPriceBuy.Size = new System.Drawing.Size(94, 23);
+            this.textPriceBuy.TabIndex = 4;
+            this.textPriceBuy.Text = "0";
             // 
-            // labelPrice
+            // labelPriceBuy
             // 
-            this.labelPrice.AutoSize = true;
-            this.labelPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPrice.Location = new System.Drawing.Point(4, 4);
-            this.labelPrice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelPrice.Name = "labelPrice";
-            this.labelPrice.Size = new System.Drawing.Size(40, 17);
-            this.labelPrice.TabIndex = 3;
-            this.labelPrice.Text = "Price";
+            this.labelPriceBuy.AutoSize = true;
+            this.labelPriceBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelPriceBuy.Location = new System.Drawing.Point(2, 10);
+            this.labelPriceBuy.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelPriceBuy.Name = "labelPriceBuy";
+            this.labelPriceBuy.Size = new System.Drawing.Size(40, 17);
+            this.labelPriceBuy.TabIndex = 3;
+            this.labelPriceBuy.Text = "Price";
             // 
-            // textAmount
+            // textAmountBuy
             // 
-            this.textAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textAmount.Location = new System.Drawing.Point(110, 27);
-            this.textAmount.Margin = new System.Windows.Forms.Padding(2);
-            this.textAmount.Name = "textAmount";
-            this.textAmount.Size = new System.Drawing.Size(107, 23);
-            this.textAmount.TabIndex = 2;
-            this.textAmount.Text = "0";
+            this.textAmountBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textAmountBuy.Location = new System.Drawing.Point(57, 41);
+            this.textAmountBuy.Margin = new System.Windows.Forms.Padding(2);
+            this.textAmountBuy.Name = "textAmountBuy";
+            this.textAmountBuy.Size = new System.Drawing.Size(95, 23);
+            this.textAmountBuy.TabIndex = 2;
+            this.textAmountBuy.Text = "0";
             // 
-            // labelAmount
+            // labelAmountBuy
             // 
-            this.labelAmount.AutoSize = true;
-            this.labelAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelAmount.Location = new System.Drawing.Point(5, 29);
-            this.labelAmount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelAmount.Name = "labelAmount";
-            this.labelAmount.Size = new System.Drawing.Size(56, 17);
-            this.labelAmount.TabIndex = 1;
-            this.labelAmount.Text = "Amount";
+            this.labelAmountBuy.AutoSize = true;
+            this.labelAmountBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelAmountBuy.Location = new System.Drawing.Point(8, 52);
+            this.labelAmountBuy.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAmountBuy.Name = "labelAmountBuy";
+            this.labelAmountBuy.Size = new System.Drawing.Size(36, 17);
+            this.labelAmountBuy.TabIndex = 1;
+            this.labelAmountBuy.Text = "ETH";
             // 
             // buttonBuy
             // 
             this.buttonBuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonBuy.ForeColor = System.Drawing.Color.Blue;
-            this.buttonBuy.Location = new System.Drawing.Point(2, 53);
+            this.buttonBuy.Location = new System.Drawing.Point(8, 73);
             this.buttonBuy.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBuy.Name = "buttonBuy";
-            this.buttonBuy.Size = new System.Drawing.Size(199, 25);
+            this.buttonBuy.Size = new System.Drawing.Size(221, 26);
             this.buttonBuy.TabIndex = 20;
             this.buttonBuy.Text = "BUY";
             this.buttonBuy.UseVisualStyleBackColor = true;
@@ -338,14 +380,14 @@
             this.dgridTradeHistory.AllowUserToDeleteRows = false;
             this.dgridTradeHistory.AllowUserToResizeRows = false;
             this.dgridTradeHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgridTradeHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridTradeHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgridTradeHistory.Location = new System.Drawing.Point(0, 0);
@@ -354,18 +396,18 @@
             this.dgridTradeHistory.Name = "dgridTradeHistory";
             this.dgridTradeHistory.ReadOnly = true;
             this.dgridTradeHistory.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgridTradeHistory.RowTemplate.Height = 24;
             this.dgridTradeHistory.RowTemplate.ReadOnly = true;
             this.dgridTradeHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgridTradeHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridTradeHistory.ShowCellToolTips = false;
             this.dgridTradeHistory.ShowEditingIcon = false;
-            this.dgridTradeHistory.Size = new System.Drawing.Size(459, 156);
+            this.dgridTradeHistory.Size = new System.Drawing.Size(478, 295);
             this.dgridTradeHistory.TabIndex = 8;
             // 
             // dgridSellOrders
@@ -386,7 +428,7 @@
             this.dgridSellOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridSellOrders.ShowCellToolTips = false;
             this.dgridSellOrders.ShowEditingIcon = false;
-            this.dgridSellOrders.Size = new System.Drawing.Size(231, 133);
+            this.dgridSellOrders.Size = new System.Drawing.Size(231, 286);
             this.dgridSellOrders.TabIndex = 7;
             // 
             // label4
@@ -423,7 +465,7 @@
             this.panelActiveOrders.Location = new System.Drawing.Point(3, 3);
             this.panelActiveOrders.Margin = new System.Windows.Forms.Padding(2);
             this.panelActiveOrders.Name = "panelActiveOrders";
-            this.panelActiveOrders.Size = new System.Drawing.Size(459, 88);
+            this.panelActiveOrders.Size = new System.Drawing.Size(478, 160);
             this.panelActiveOrders.TabIndex = 10;
             // 
             // buttonUpdateMyOpenOrders
@@ -442,8 +484,6 @@
             this.dgridOpenOrders.AllowUserToDeleteRows = false;
             this.dgridOpenOrders.AllowUserToResizeColumns = false;
             this.dgridOpenOrders.AllowUserToResizeRows = false;
-            this.dgridOpenOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgridOpenOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridOpenOrders.Location = new System.Drawing.Point(2, 25);
             this.dgridOpenOrders.Margin = new System.Windows.Forms.Padding(2);
@@ -457,7 +497,7 @@
             this.dgridOpenOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridOpenOrders.ShowCellToolTips = false;
             this.dgridOpenOrders.ShowEditingIcon = false;
-            this.dgridOpenOrders.Size = new System.Drawing.Size(450, 59);
+            this.dgridOpenOrders.Size = new System.Drawing.Size(469, 127);
             this.dgridOpenOrders.TabIndex = 7;
             this.dgridOpenOrders.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgridOpenOrders_CellContentClick);
             // 
@@ -503,7 +543,7 @@
             this.dgridMyOrdersHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridMyOrdersHistory.ShowCellToolTips = false;
             this.dgridMyOrdersHistory.ShowEditingIcon = false;
-            this.dgridMyOrdersHistory.Size = new System.Drawing.Size(449, 63);
+            this.dgridMyOrdersHistory.Size = new System.Drawing.Size(469, 112);
             this.dgridMyOrdersHistory.TabIndex = 9;
             // 
             // dgridBuyOrders
@@ -512,7 +552,7 @@
             this.dgridBuyOrders.AllowUserToDeleteRows = false;
             this.dgridBuyOrders.AllowUserToResizeRows = false;
             this.dgridBuyOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgridBuyOrders.Location = new System.Drawing.Point(239, 25);
+            this.dgridBuyOrders.Location = new System.Drawing.Point(242, 24);
             this.dgridBuyOrders.Margin = new System.Windows.Forms.Padding(2);
             this.dgridBuyOrders.MultiSelect = false;
             this.dgridBuyOrders.Name = "dgridBuyOrders";
@@ -524,7 +564,7 @@
             this.dgridBuyOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridBuyOrders.ShowCellToolTips = false;
             this.dgridBuyOrders.ShowEditingIcon = false;
-            this.dgridBuyOrders.Size = new System.Drawing.Size(230, 132);
+            this.dgridBuyOrders.Size = new System.Drawing.Size(232, 286);
             this.dgridBuyOrders.TabIndex = 10;
             // 
             // label1
@@ -542,6 +582,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.SystemColors.Control;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label6.ForeColor = System.Drawing.Color.Blue;
             this.label6.Location = new System.Drawing.Point(243, 6);
@@ -553,12 +594,12 @@
             // 
             // timerTradeLast
             // 
-            this.timerTradeLast.Interval = 10000;
+            this.timerTradeLast.Interval = 8000;
             this.timerTradeLast.Tick += new System.EventHandler(this.timerTradeLast_Tick);
             // 
             // timerTradeHistory
             // 
-            this.timerTradeHistory.Interval = 57000;
+            this.timerTradeHistory.Interval = 18000;
             this.timerTradeHistory.Tick += new System.EventHandler(this.timerTradeHistory_Tick);
             // 
             // buttonMyOrdersHistory
@@ -584,94 +625,28 @@
             // 
             // tabMain
             // 
+            this.tabMain.Controls.Add(this.tabPageOrderBook);
+            this.tabMain.Controls.Add(this.tabPageOrderBookContr);
             this.tabMain.Controls.Add(this.tabPageTradeHistory);
             this.tabMain.Controls.Add(this.tabPageMyOrders);
-            this.tabMain.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Location = new System.Drawing.Point(0, 0);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(473, 214);
+            this.tabMain.Size = new System.Drawing.Size(492, 353);
             this.tabMain.TabIndex = 13;
+            this.tabMain.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabMain_Selected);
             // 
-            // tabPageTradeHistory
+            // tabPageOrderBook
             // 
-            this.tabPageTradeHistory.Controls.Add(this.panel4);
-            this.tabPageTradeHistory.Controls.Add(this.panel3);
-            this.tabPageTradeHistory.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTradeHistory.Name = "tabPageTradeHistory";
-            this.tabPageTradeHistory.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTradeHistory.Size = new System.Drawing.Size(465, 188);
-            this.tabPageTradeHistory.TabIndex = 0;
-            this.tabPageTradeHistory.Text = "Market";
-            this.tabPageTradeHistory.UseVisualStyleBackColor = true;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.dgridTradeHistory);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(3, 29);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(459, 156);
-            this.panel4.TabIndex = 17;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.buttonUpdateTradeHistory);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(459, 26);
-            this.panel3.TabIndex = 16;
-            // 
-            // tabPageMyOrders
-            // 
-            this.tabPageMyOrders.Controls.Add(this.panelMyOrdersHistory);
-            this.tabPageMyOrders.Controls.Add(this.panelActiveOrders);
-            this.tabPageMyOrders.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMyOrders.Name = "tabPageMyOrders";
-            this.tabPageMyOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMyOrders.Size = new System.Drawing.Size(465, 188);
-            this.tabPageMyOrders.TabIndex = 1;
-            this.tabPageMyOrders.Text = "My Orders";
-            this.tabPageMyOrders.UseVisualStyleBackColor = true;
-            // 
-            // panelMyOrdersHistory
-            // 
-            this.panelMyOrdersHistory.Controls.Add(this.label8);
-            this.panelMyOrdersHistory.Controls.Add(this.buttonMyOrdersHistory);
-            this.panelMyOrdersHistory.Controls.Add(this.dgridMyOrdersHistory);
-            this.panelMyOrdersHistory.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelMyOrdersHistory.Location = new System.Drawing.Point(3, 91);
-            this.panelMyOrdersHistory.Name = "panelMyOrdersHistory";
-            this.panelMyOrdersHistory.Size = new System.Drawing.Size(459, 94);
-            this.panelMyOrdersHistory.TabIndex = 12;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.buttonCollapsePanelOrderBook);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(0, 120);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(473, 22);
-            this.panel6.TabIndex = 15;
-            // 
-            // buttonCollapsePanelOrderBook
-            // 
-            this.buttonCollapsePanelOrderBook.BackColor = System.Drawing.Color.LightBlue;
-            this.buttonCollapsePanelOrderBook.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonCollapsePanelOrderBook.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCollapsePanelOrderBook.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonCollapsePanelOrderBook.Image = ((System.Drawing.Image)(resources.GetObject("buttonCollapsePanelOrderBook.Image")));
-            this.buttonCollapsePanelOrderBook.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCollapsePanelOrderBook.Location = new System.Drawing.Point(0, 0);
-            this.buttonCollapsePanelOrderBook.Name = "buttonCollapsePanelOrderBook";
-            this.buttonCollapsePanelOrderBook.Size = new System.Drawing.Size(473, 22);
-            this.buttonCollapsePanelOrderBook.TabIndex = 0;
-            this.buttonCollapsePanelOrderBook.Text = "Order Book";
-            this.buttonCollapsePanelOrderBook.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCollapsePanelOrderBook.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonCollapsePanelOrderBook.UseVisualStyleBackColor = false;
-            this.buttonCollapsePanelOrderBook.Click += new System.EventHandler(this.buttonCollapsePanelOrderBook_Click);
+            this.tabPageOrderBook.Controls.Add(this.panelOrderBook);
+            this.tabPageOrderBook.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOrderBook.Name = "tabPageOrderBook";
+            this.tabPageOrderBook.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOrderBook.Size = new System.Drawing.Size(484, 327);
+            this.tabPageOrderBook.TabIndex = 2;
+            this.tabPageOrderBook.Text = "Order Book";
+            this.tabPageOrderBook.UseVisualStyleBackColor = true;
             // 
             // panelOrderBook
             // 
@@ -682,46 +657,328 @@
             this.panelOrderBook.Controls.Add(this.label2);
             this.panelOrderBook.Controls.Add(this.label6);
             this.panelOrderBook.Controls.Add(this.label1);
-            this.panelOrderBook.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelOrderBook.Location = new System.Drawing.Point(0, 142);
+            this.panelOrderBook.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelOrderBook.Location = new System.Drawing.Point(3, 3);
             this.panelOrderBook.Name = "panelOrderBook";
-            this.panelOrderBook.Size = new System.Drawing.Size(473, 160);
+            this.panelOrderBook.Size = new System.Drawing.Size(478, 321);
             this.panelOrderBook.TabIndex = 18;
             // 
-            // panel2
+            // tabPageOrderBookContr
             // 
-            this.panel2.Controls.Add(this.buttonCollapsePanelTabMain);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 302);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(473, 22);
-            this.panel2.TabIndex = 19;
+            this.tabPageOrderBookContr.Controls.Add(this.panel1);
+            this.tabPageOrderBookContr.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOrderBookContr.Name = "tabPageOrderBookContr";
+            this.tabPageOrderBookContr.Size = new System.Drawing.Size(484, 327);
+            this.tabPageOrderBookContr.TabIndex = 3;
+            this.tabPageOrderBookContr.Text = "O Book Contr";
+            this.tabPageOrderBookContr.UseVisualStyleBackColor = true;
+            this.tabPageOrderBookContr.Click += new System.EventHandler(this.tabPageOrderBookContr_Click);
             // 
-            // buttonCollapsePanelTabMain
+            // tabPageTradeHistory
             // 
-            this.buttonCollapsePanelTabMain.BackColor = System.Drawing.Color.LightBlue;
-            this.buttonCollapsePanelTabMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonCollapsePanelTabMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCollapsePanelTabMain.Image = ((System.Drawing.Image)(resources.GetObject("buttonCollapsePanelTabMain.Image")));
-            this.buttonCollapsePanelTabMain.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCollapsePanelTabMain.Location = new System.Drawing.Point(0, 0);
-            this.buttonCollapsePanelTabMain.Name = "buttonCollapsePanelTabMain";
-            this.buttonCollapsePanelTabMain.Size = new System.Drawing.Size(473, 22);
-            this.buttonCollapsePanelTabMain.TabIndex = 1;
-            this.buttonCollapsePanelTabMain.Text = "Trade Windows";
-            this.buttonCollapsePanelTabMain.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCollapsePanelTabMain.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonCollapsePanelTabMain.UseVisualStyleBackColor = false;
-            this.buttonCollapsePanelTabMain.Click += new System.EventHandler(this.buttonCollapsePanelTabMain_Click);
+            this.tabPageTradeHistory.Controls.Add(this.panel4);
+            this.tabPageTradeHistory.Controls.Add(this.panel3);
+            this.tabPageTradeHistory.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTradeHistory.Name = "tabPageTradeHistory";
+            this.tabPageTradeHistory.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTradeHistory.Size = new System.Drawing.Size(484, 327);
+            this.tabPageTradeHistory.TabIndex = 0;
+            this.tabPageTradeHistory.Text = "Market History";
+            this.tabPageTradeHistory.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.dgridTradeHistory);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(3, 29);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(478, 295);
+            this.panel4.TabIndex = 17;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.buttonUpdateTradeHistory);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(478, 26);
+            this.panel3.TabIndex = 16;
+            // 
+            // tabPageMyOrders
+            // 
+            this.tabPageMyOrders.Controls.Add(this.panelMyOrdersHistory);
+            this.tabPageMyOrders.Controls.Add(this.panelActiveOrders);
+            this.tabPageMyOrders.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMyOrders.Name = "tabPageMyOrders";
+            this.tabPageMyOrders.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMyOrders.Size = new System.Drawing.Size(484, 327);
+            this.tabPageMyOrders.TabIndex = 1;
+            this.tabPageMyOrders.Text = "My Orders";
+            this.tabPageMyOrders.UseVisualStyleBackColor = true;
+            // 
+            // panelMyOrdersHistory
+            // 
+            this.panelMyOrdersHistory.Controls.Add(this.label8);
+            this.panelMyOrdersHistory.Controls.Add(this.buttonMyOrdersHistory);
+            this.panelMyOrdersHistory.Controls.Add(this.dgridMyOrdersHistory);
+            this.panelMyOrdersHistory.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelMyOrdersHistory.Location = new System.Drawing.Point(3, 163);
+            this.panelMyOrdersHistory.Name = "panelMyOrdersHistory";
+            this.panelMyOrdersHistory.Size = new System.Drawing.Size(478, 145);
+            this.panelMyOrdersHistory.TabIndex = 12;
+            // 
+            // panelBuySell
+            // 
+            this.panelBuySell.Controls.Add(this.groupBox2);
+            this.panelBuySell.Controls.Add(this.groupBox1);
+            this.panelBuySell.Controls.Add(this.labelAverage);
+            this.panelBuySell.Controls.Add(this.labelSpread);
+            this.panelBuySell.Controls.Add(this.label5);
+            this.panelBuySell.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelBuySell.Location = new System.Drawing.Point(0, 50);
+            this.panelBuySell.Name = "panelBuySell";
+            this.panelBuySell.Size = new System.Drawing.Size(492, 117);
+            this.panelBuySell.TabIndex = 15;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.buttonSellAmount50);
+            this.groupBox2.Controls.Add(this.buttonSellAmountAll);
+            this.groupBox2.Controls.Add(this.labelPriceSell);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.textPriceSell);
+            this.groupBox2.Controls.Add(this.textAmountSell);
+            this.groupBox2.Controls.Add(this.labelAmountSell);
+            this.groupBox2.Controls.Add(this.buttonSell);
+            this.groupBox2.Controls.Add(this.buttonSetBidPrice);
+            this.groupBox2.Location = new System.Drawing.Point(242, -3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(241, 104);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            // 
+            // labelPriceSell
+            // 
+            this.labelPriceSell.AutoSize = true;
+            this.labelPriceSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelPriceSell.Location = new System.Drawing.Point(3, 9);
+            this.labelPriceSell.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelPriceSell.Name = "labelPriceSell";
+            this.labelPriceSell.Size = new System.Drawing.Size(40, 17);
+            this.labelPriceSell.TabIndex = 24;
+            this.labelPriceSell.Text = "Price";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(2, 33);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(56, 17);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "Amount";
+            // 
+            // textPriceSell
+            // 
+            this.textPriceSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textPriceSell.Location = new System.Drawing.Point(59, 7);
+            this.textPriceSell.Margin = new System.Windows.Forms.Padding(2);
+            this.textPriceSell.Name = "textPriceSell";
+            this.textPriceSell.Size = new System.Drawing.Size(94, 23);
+            this.textPriceSell.TabIndex = 25;
+            this.textPriceSell.Text = "0";
+            // 
+            // textAmountSell
+            // 
+            this.textAmountSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textAmountSell.Location = new System.Drawing.Point(58, 40);
+            this.textAmountSell.Margin = new System.Windows.Forms.Padding(2);
+            this.textAmountSell.Name = "textAmountSell";
+            this.textAmountSell.Size = new System.Drawing.Size(95, 23);
+            this.textAmountSell.TabIndex = 23;
+            this.textAmountSell.Text = "0";
+            // 
+            // labelAmountSell
+            // 
+            this.labelAmountSell.AutoSize = true;
+            this.labelAmountSell.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelAmountSell.Location = new System.Drawing.Point(9, 51);
+            this.labelAmountSell.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAmountSell.Name = "labelAmountSell";
+            this.labelAmountSell.Size = new System.Drawing.Size(36, 17);
+            this.labelAmountSell.TabIndex = 22;
+            this.labelAmountSell.Text = "ETH";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonBuyAmount50);
+            this.groupBox1.Controls.Add(this.labelPriceBuy);
+            this.groupBox1.Controls.Add(this.buttonBuyAmountAll);
+            this.groupBox1.Controls.Add(this.labelAmountCaption);
+            this.groupBox1.Controls.Add(this.textPriceBuy);
+            this.groupBox1.Controls.Add(this.buttonSetAskPrice);
+            this.groupBox1.Controls.Add(this.textAmountBuy);
+            this.groupBox1.Controls.Add(this.labelAmountBuy);
+            this.groupBox1.Controls.Add(this.buttonBuy);
+            this.groupBox1.Location = new System.Drawing.Point(4, -3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(239, 104);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
+            // 
+            // labelAmountCaption
+            // 
+            this.labelAmountCaption.AutoSize = true;
+            this.labelAmountCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelAmountCaption.Location = new System.Drawing.Point(1, 34);
+            this.labelAmountCaption.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAmountCaption.Name = "labelAmountCaption";
+            this.labelAmountCaption.Size = new System.Drawing.Size(56, 17);
+            this.labelAmountCaption.TabIndex = 21;
+            this.labelAmountCaption.Text = "Amount";
+            // 
+            // buttonCollapsePanelOrderBook
+            // 
+            this.buttonCollapsePanelOrderBook.BackColor = System.Drawing.Color.LightBlue;
+            this.buttonCollapsePanelOrderBook.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonCollapsePanelOrderBook.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonCollapsePanelOrderBook.Image = ((System.Drawing.Image)(resources.GetObject("buttonCollapsePanelOrderBook.Image")));
+            this.buttonCollapsePanelOrderBook.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCollapsePanelOrderBook.Location = new System.Drawing.Point(4, 0);
+            this.buttonCollapsePanelOrderBook.Name = "buttonCollapsePanelOrderBook";
+            this.buttonCollapsePanelOrderBook.Size = new System.Drawing.Size(121, 27);
+            this.buttonCollapsePanelOrderBook.TabIndex = 0;
+            this.buttonCollapsePanelOrderBook.Text = "Show Trade Tabs";
+            this.buttonCollapsePanelOrderBook.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCollapsePanelOrderBook.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonCollapsePanelOrderBook.UseVisualStyleBackColor = false;
+            this.buttonCollapsePanelOrderBook.Click += new System.EventHandler(this.buttonCollapsePanelOrderBook_Click);
+            // 
+            // panelOBookButton
+            // 
+            this.panelOBookButton.Controls.Add(this.buttonShowGraphic);
+            this.panelOBookButton.Controls.Add(this.buttonCollapsePanelOrderBook);
+            this.panelOBookButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelOBookButton.Location = new System.Drawing.Point(0, 167);
+            this.panelOBookButton.Name = "panelOBookButton";
+            this.panelOBookButton.Size = new System.Drawing.Size(492, 27);
+            this.panelOBookButton.TabIndex = 20;
             // 
             // panelTabMain
             // 
             this.panelTabMain.Controls.Add(this.tabMain);
             this.panelTabMain.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTabMain.Location = new System.Drawing.Point(0, 324);
+            this.panelTabMain.Location = new System.Drawing.Point(0, 194);
             this.panelTabMain.Name = "panelTabMain";
-            this.panelTabMain.Size = new System.Drawing.Size(473, 218);
-            this.panelTabMain.TabIndex = 20;
+            this.panelTabMain.Size = new System.Drawing.Size(492, 353);
+            this.panelTabMain.TabIndex = 21;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dGridContrBuy);
+            this.panel1.Controls.Add(this.dGridContrSell);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(484, 327);
+            this.panel1.TabIndex = 0;
+            // 
+            // dGridContrSell
+            // 
+            this.dGridContrSell.AllowUserToAddRows = false;
+            this.dGridContrSell.AllowUserToDeleteRows = false;
+            this.dGridContrSell.AllowUserToResizeRows = false;
+            this.dGridContrSell.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridContrSell.Location = new System.Drawing.Point(6, 4);
+            this.dGridContrSell.Margin = new System.Windows.Forms.Padding(2);
+            this.dGridContrSell.MultiSelect = false;
+            this.dGridContrSell.Name = "dGridContrSell";
+            this.dGridContrSell.ReadOnly = true;
+            this.dGridContrSell.RowHeadersVisible = false;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.dGridContrSell.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            this.dGridContrSell.RowTemplate.Height = 24;
+            this.dGridContrSell.RowTemplate.ReadOnly = true;
+            this.dGridContrSell.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dGridContrSell.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dGridContrSell.ShowCellToolTips = false;
+            this.dGridContrSell.ShowEditingIcon = false;
+            this.dGridContrSell.Size = new System.Drawing.Size(290, 156);
+            this.dGridContrSell.TabIndex = 8;
+            // 
+            // dGridContrBuy
+            // 
+            this.dGridContrBuy.AllowUserToAddRows = false;
+            this.dGridContrBuy.AllowUserToDeleteRows = false;
+            this.dGridContrBuy.AllowUserToResizeRows = false;
+            this.dGridContrBuy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridContrBuy.Location = new System.Drawing.Point(7, 161);
+            this.dGridContrBuy.Margin = new System.Windows.Forms.Padding(2);
+            this.dGridContrBuy.MultiSelect = false;
+            this.dGridContrBuy.Name = "dGridContrBuy";
+            this.dGridContrBuy.ReadOnly = true;
+            this.dGridContrBuy.RowHeadersVisible = false;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.dGridContrBuy.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            this.dGridContrBuy.RowTemplate.Height = 24;
+            this.dGridContrBuy.RowTemplate.ReadOnly = true;
+            this.dGridContrBuy.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dGridContrBuy.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dGridContrBuy.ShowCellToolTips = false;
+            this.dGridContrBuy.ShowEditingIcon = false;
+            this.dGridContrBuy.Size = new System.Drawing.Size(289, 158);
+            this.dGridContrBuy.TabIndex = 9;
+            // 
+            // buttonSellAmountAll
+            // 
+            this.buttonSellAmountAll.Location = new System.Drawing.Point(158, 40);
+            this.buttonSellAmountAll.Name = "buttonSellAmountAll";
+            this.buttonSellAmountAll.Size = new System.Drawing.Size(31, 24);
+            this.buttonSellAmountAll.TabIndex = 27;
+            this.buttonSellAmountAll.Text = "All";
+            this.buttonSellAmountAll.UseVisualStyleBackColor = true;
+            this.buttonSellAmountAll.Click += new System.EventHandler(this.buttonSellAmountAll_Click);
+            // 
+            // buttonSellAmount50
+            // 
+            this.buttonSellAmount50.Location = new System.Drawing.Point(193, 39);
+            this.buttonSellAmount50.Name = "buttonSellAmount50";
+            this.buttonSellAmount50.Size = new System.Drawing.Size(43, 24);
+            this.buttonSellAmount50.TabIndex = 28;
+            this.buttonSellAmount50.Text = "50 %";
+            this.buttonSellAmount50.UseVisualStyleBackColor = true;
+            this.buttonSellAmount50.Click += new System.EventHandler(this.buttonSellAmount50_Click);
+            // 
+            // buttonBuyAmount50
+            // 
+            this.buttonBuyAmount50.Location = new System.Drawing.Point(190, 41);
+            this.buttonBuyAmount50.Name = "buttonBuyAmount50";
+            this.buttonBuyAmount50.Size = new System.Drawing.Size(42, 24);
+            this.buttonBuyAmount50.TabIndex = 30;
+            this.buttonBuyAmount50.Text = "50 %";
+            this.buttonBuyAmount50.UseVisualStyleBackColor = true;
+            this.buttonBuyAmount50.Click += new System.EventHandler(this.buttonBuyAmount50_Click);
+            // 
+            // buttonBuyAmountAll
+            // 
+            this.buttonBuyAmountAll.Location = new System.Drawing.Point(155, 42);
+            this.buttonBuyAmountAll.Name = "buttonBuyAmountAll";
+            this.buttonBuyAmountAll.Size = new System.Drawing.Size(29, 24);
+            this.buttonBuyAmountAll.TabIndex = 29;
+            this.buttonBuyAmountAll.Text = "All";
+            this.buttonBuyAmountAll.UseVisualStyleBackColor = true;
+            this.buttonBuyAmountAll.Click += new System.EventHandler(this.buttonBuyAmountAll_Click);
+            // 
+            // buttonShowGraphic
+            // 
+            this.buttonShowGraphic.Image = global::BitWhiskey.Properties.Resources.if_business_work_12_2377635;
+            this.buttonShowGraphic.Location = new System.Drawing.Point(137, 0);
+            this.buttonShowGraphic.Name = "buttonShowGraphic";
+            this.buttonShowGraphic.Size = new System.Drawing.Size(28, 27);
+            this.buttonShowGraphic.TabIndex = 1;
+            this.buttonShowGraphic.UseVisualStyleBackColor = true;
+            this.buttonShowGraphic.Click += new System.EventHandler(this.buttonShowGraphic_Click);
             // 
             // FormTrade
             // 
@@ -729,24 +986,24 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(473, 548);
+            this.ClientSize = new System.Drawing.Size(492, 572);
             this.Controls.Add(this.panelTabMain);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panelOrderBook);
-            this.Controls.Add(this.panel6);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelOBookButton);
+            this.Controls.Add(this.panelBuySell);
             this.Controls.Add(this.panelBalance);
+            this.Controls.Add(this.panelRequestTracker);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "FormTrade";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trade";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormTrade_FormClosed);
             this.Load += new System.EventHandler(this.FormTrade_Load);
+            this.panelRequestTracker.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dGridRequests)).EndInit();
             this.panelBalance.ResumeLayout(false);
             this.panelBalance.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgridTradeHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgridSellOrders)).EndInit();
             this.panelActiveOrders.ResumeLayout(false);
@@ -755,32 +1012,42 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgridMyOrdersHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgridBuyOrders)).EndInit();
             this.tabMain.ResumeLayout(false);
+            this.tabPageOrderBook.ResumeLayout(false);
+            this.panelOrderBook.ResumeLayout(false);
+            this.panelOrderBook.PerformLayout();
+            this.tabPageOrderBookContr.ResumeLayout(false);
             this.tabPageTradeHistory.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tabPageMyOrders.ResumeLayout(false);
             this.panelMyOrdersHistory.ResumeLayout(false);
             this.panelMyOrdersHistory.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panelOrderBook.ResumeLayout(false);
-            this.panelOrderBook.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.panelBuySell.ResumeLayout(false);
+            this.panelBuySell.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.panelOBookButton.ResumeLayout(false);
             this.panelTabMain.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panelBalance;
+        private System.Windows.Forms.Panel panelRequestTracker;
         private System.Windows.Forms.Label labelBalanceBase;
         private System.Windows.Forms.Label labelBalanceBaseValue;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelBalance;
         private System.Windows.Forms.Button buttonBuy;
-        private System.Windows.Forms.Label labelAmount;
-        private System.Windows.Forms.TextBox textAmount;
-        private System.Windows.Forms.TextBox textPrice;
-        private System.Windows.Forms.Label labelPrice;
+        private System.Windows.Forms.Label labelAmountBuy;
+        private System.Windows.Forms.TextBox textAmountBuy;
+        private System.Windows.Forms.TextBox textPriceBuy;
+        private System.Windows.Forms.Label labelPriceBuy;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dgridSellOrders;
@@ -809,17 +1076,35 @@
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabPageTradeHistory;
         private System.Windows.Forms.TabPage tabPageMyOrders;
-        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panelBuySell;
         private System.Windows.Forms.Button buttonCollapsePanelOrderBook;
         private System.Windows.Forms.Panel panelOrderBook;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panelTabMain;
+        private System.Windows.Forms.Panel panelOBookButton;
         private System.Windows.Forms.Panel panelMyOrdersHistory;
-        private System.Windows.Forms.Button buttonCollapsePanelTabMain;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button buttonSetBidPrice;
         private System.Windows.Forms.Button buttonSetAskPrice;
         private System.Windows.Forms.Button buttonUpdateMyOpenOrders;
+        private System.Windows.Forms.Panel panelTabMain;
+        private System.Windows.Forms.DataGridView dGridRequests;
+        private System.Windows.Forms.Label labelAmountCaption;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label labelPriceSell;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textPriceSell;
+        private System.Windows.Forms.TextBox textAmountSell;
+        private System.Windows.Forms.Label labelAmountSell;
+        private System.Windows.Forms.TabPage tabPageOrderBook;
+        private System.Windows.Forms.TabPage tabPageOrderBookContr;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dGridContrSell;
+        private System.Windows.Forms.DataGridView dGridContrBuy;
+        private System.Windows.Forms.Button buttonSellAmountAll;
+        private System.Windows.Forms.Button buttonSellAmount50;
+        private System.Windows.Forms.Button buttonBuyAmount50;
+        private System.Windows.Forms.Button buttonBuyAmountAll;
+        private System.Windows.Forms.Button buttonShowGraphic;
     }
 }
