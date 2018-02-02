@@ -11,6 +11,12 @@ using Newtonsoft.Json;
 
 namespace BitWhiskey
 {
+    public class MarketOptions
+    {
+        public bool AllPairRatesSupported = true;
+        public bool ChartDataSupported = true;
+    }
+
     public abstract class Market
     {
         protected string key="";
@@ -23,12 +29,18 @@ namespace BitWhiskey
         protected bool   includeParametersInRequestAddress ;
         protected bool haveKey = false;
 
+        protected MarketOptions options = new MarketOptions();
+
         public Market()
         {
         }
         public virtual bool HaveKey()
         {
             return haveKey;
+        }
+        public virtual MarketOptions Options()
+        {
+            return options;
         }
         public virtual string GetResponseForRequest(WebRequest request)
         {
@@ -104,6 +116,10 @@ namespace BitWhiskey
         {
             WebRequest webRequest = CreatePublicRequest(publicMethod, parameters);
             return GetResponseForRequest(webRequest);
+        }
+        public virtual string ToUITicker(string ticker)
+        {
+            return ticker;
         }
 
         public abstract string MarketName();

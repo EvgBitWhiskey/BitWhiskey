@@ -44,8 +44,14 @@
             this.textBoxBittrexSecret = new System.Windows.Forms.TextBox();
             this.checkBoxDefLimitTrade = new System.Windows.Forms.CheckBox();
             this.labelVersion = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBoxYobitKey = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxYobitSecret = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -172,7 +178,7 @@
             this.checkBoxDefLimitTrade.AutoSize = true;
             this.checkBoxDefLimitTrade.Checked = true;
             this.checkBoxDefLimitTrade.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDefLimitTrade.Location = new System.Drawing.Point(7, 185);
+            this.checkBoxDefLimitTrade.Location = new System.Drawing.Point(7, 268);
             this.checkBoxDefLimitTrade.Name = "checkBoxDefLimitTrade";
             this.checkBoxDefLimitTrade.Size = new System.Drawing.Size(208, 17);
             this.checkBoxDefLimitTrade.TabIndex = 10;
@@ -187,13 +193,59 @@
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(60, 13);
             this.labelVersion.TabIndex = 11;
-            this.labelVersion.Text = "Version 0.3";
+            this.labelVersion.Text = "Version 0.4";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBoxYobitKey);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.textBoxYobitSecret);
+            this.groupBox3.Location = new System.Drawing.Point(3, 183);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(527, 70);
+            this.groupBox3.TabIndex = 10;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Yobit";
+            // 
+            // textBoxYobitKey
+            // 
+            this.textBoxYobitKey.Location = new System.Drawing.Point(86, 17);
+            this.textBoxYobitKey.Name = "textBoxYobitKey";
+            this.textBoxYobitKey.Size = new System.Drawing.Size(430, 20);
+            this.textBoxYobitKey.TabIndex = 3;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(5, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(45, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "API Key";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(4, 46);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "API Secret";
+            // 
+            // textBoxYobitSecret
+            // 
+            this.textBoxYobitSecret.Location = new System.Drawing.Point(85, 43);
+            this.textBoxYobitSecret.Name = "textBoxYobitSecret";
+            this.textBoxYobitSecret.Size = new System.Drawing.Size(431, 20);
+            this.textBoxYobitSecret.TabIndex = 5;
             // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 341);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.checkBoxDefLimitTrade);
             this.Controls.Add(this.groupBox2);
@@ -209,6 +261,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,5 +285,10 @@
         private System.Windows.Forms.TextBox textBoxBittrexSecret;
         private System.Windows.Forms.CheckBox checkBoxDefLimitTrade;
         private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox textBoxYobitKey;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBoxYobitSecret;
     }
 }

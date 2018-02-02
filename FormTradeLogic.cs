@@ -42,6 +42,10 @@ namespace BitWhiskey
         {
             return market.MarketName();
         }
+        public virtual Market GetMarket()
+        {
+            return market;
+        }
         public virtual void SendRequestToQueue(string requestString, Action<RequestItem> ProcessResultAction,Action<RequestItemGroup> ProcessResultUIAction,RequestParams reqparam=null)
         {
             RequestItemGroup itemgroup = new RequestItemGroup(ProcessResultUIAction);
@@ -70,12 +74,16 @@ namespace BitWhiskey
         }
         public virtual void UpdateTradeStateRequest(Action<RequestItemGroup> ProcessResultUIAction)
         {
+            string usdTicker = "USD_BTC";
+            if (Global.marketsState.curMarketPairs[GetMarketName()].ContainsKey("USDT_BTC"))
+                usdTicker = "USDT_BTC";
+
             RequestParams reqparam = new RequestParams() { ticker = this.ticker };
             RequestItemGroup itemgroup = new RequestItemGroup(ProcessResultUIAction);
             itemgroup.AddItem(market.GetBalancesBegin(), tradeHandlers.GetBalances_RequestHandler);
             itemgroup.AddItem(market.GetTradeLastBegin(ticker), tradeHandlers.GetTradeLast_RequestHandler, reqparam);
-            RequestParams reqparamusd = new RequestParams() { ticker = "USDT_BTC" };
-            itemgroup.AddItem(market.GetTradeLastBegin("USDT_BTC"), tradeHandlers.GetTradeLast_RequestHandler, reqparamusd);
+            RequestParams reqparamusd = new RequestParams() { ticker = usdTicker };
+            itemgroup.AddItem(market.GetTradeLastBegin(usdTicker), tradeHandlers.GetTradeLast_RequestHandler, reqparamusd);
             RequestConsumer.requestManager.AddItemGroup(GetMarketName(), itemgroup);
         }
 
@@ -115,9 +123,13 @@ namespace BitWhiskey
         }
         public virtual void GetLastMarketPriceBtcUsdt(Action<RequestItemGroup> ProcessResultUIAction)
         {
-            RequestParams reqparam = new RequestParams() { ticker = "USDT_BTC" };
-            SendRequestToQueue(market.GetTradeLastBegin("USDT_BTC"), tradeHandlers.GetTradeLast_RequestHandler, ProcessResultUIAction, reqparam);
-//            lastbtcInUsdtPrice = market.tradelast;
+            string usdTicker = "USD_BTC";
+            if (Global.marketsState.curMarketPairs[GetMarketName()].ContainsKey("USDT_BTC"))
+                usdTicker = "USDT_BTC";
+            RequestParams reqparam = new RequestParams() { ticker = usdTicker };
+            SendRequestToQueue(market.GetTradeLastBegin(usdTicker), tradeHandlers.GetTradeLast_RequestHandler, ProcessResultUIAction, reqparam);
+
+            //            lastbtcInUsdtPrice = market.tradelast;
         }
         //            market.GetPriceHistoryByPeriod(ticker, "Min5", DateTime.Now.AddDays(-6), DateTime.Now.AddYears(10));
         public virtual void GetPriceHistoryByPeriod(string interval, DateTime start, DateTime end,Action<RequestItemGroup> ProcessResultUIAction)

@@ -27,8 +27,8 @@ namespace BitWhiskey
         BlinkControl labelBalanceBaseBold=new BlinkControl();
         FormTradeLogic tradeLogic;
 
-
-//        var dataViewContrSell;
+        DataGridViewExWrapper gvMyOpenOrders;
+        //        var dataViewContrSell;
 
         public FormTrade(Market market,string ticker)
         {
@@ -41,8 +41,6 @@ namespace BitWhiskey
             if (parent.WindowState == FormWindowState.Minimized)
                 parent.WindowState = FormWindowState.Normal;
         }
-        private void dgridOpenOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        { }
         private void buttonCollapsePanelOrderBook_Click(object sender, EventArgs e)
         {
             panelTabMain.Visible = !panelTabMain.Visible;
@@ -89,6 +87,8 @@ namespace BitWhiskey
 
             timerTradeLast.Enabled = true;
             timerTradeHistory.Enabled = true;
+            if(!tradeLogic.GetMarket().Options().ChartDataSupported)
+              buttonShowGraphic.Enabled = false;
         }
 
         public void UpdateOrderBook(UpdateAction updateAction=UpdateAction.UPDATE_FORCE)
@@ -220,12 +220,33 @@ namespace BitWhiskey
 
             var dataView = myOpenOrders.Select(item => new
             {
+                openUuid=item.openUuid,
                 date = item.openedDate,
                 orderType = item.orderType,
                 price = Helper.PriceToStringBtc(item.price),
                 amount = Helper.PriceToStringBtc(item.quantity),
                 remain = Helper.PriceToStringBtc(item.quantityRemaining)
             }).ToList();
+
+            GVButtonColumn buttDeleteRow = new GVButtonColumn("delete", "", "c_button", "Cancel");
+            List<GVColumn> columns = new List<GVColumn>()
+            {
+                new GVColumn( "openUuid", "Order Id","string") ,
+                new GVColumn( "date", "Date","string") ,
+                new GVColumn( "orderType", "Type","string") ,
+                new GVColumn( "price", "Price","string") ,
+                new GVColumn( "amount", "Amount","string") ,
+                new GVColumn( "remain", "Remain","string"),
+                buttDeleteRow
+            };
+            //            GVState gvstate = new GVState();
+            if (gvMyOpenOrders == null)
+                gvMyOpenOrders = new DataGridViewExWrapper();
+            gvMyOpenOrders.Create(dgridOpenOrders, dataView, columns, true);
+            gvMyOpenOrders.AutoSizeFillExcept("date");
+            gvMyOpenOrders.RowColorByCondition("orderType", "SELL LIMIT", Color.LightPink);
+
+            /*
             List<DGVColumn> columns = new List<DGVColumn>()
             {
                 new DGVColumn( "date", "Date","string") ,
@@ -238,6 +259,19 @@ namespace BitWhiskey
             gv.Create(dataView, columns);
             gv.AutoSizeDisplayedExcept("price");
             gv.RowColorByCondition("orderType", "SELL LIMIT", Color.LightPink);
+            */
+        }
+        private void dgridOpenOrders_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (gvMyOpenOrders.Column(e.ColumnIndex).Name == "delete")
+            {
+                string orderid = (string)gvMyOpenOrders.CellValue("openUuid", e.RowIndex);
+                dgridOpenOrders.Rows.Remove(dgridOpenOrders.Rows[e.RowIndex]);
+                tradeLogic.CancellMyOrder(new OpenOrder() {openUuid=orderid }, CancellOrder_UIResultHandler);
+                UpdateMyOpenOrders();
+            }
         }
 
         public void UpdateMyOrdersHistory(UpdateAction updateAction = UpdateAction.UPDATE_FORCE)
@@ -323,7 +357,7 @@ namespace BitWhiskey
             double averageBtcPrice = (trade.ask + trade.bid) / 2;
             double btcInUsd = (lastbtcInUsdtPrice.bid + lastbtcInUsdtPrice.ask) / 2;
             double averageUsdPrice = averageBtcPrice;
-            if (tradeLogic.baseCurrencyName != "USDT")
+            if (tradeLogic.baseCurrencyName != "USDT" && tradeLogic.baseCurrencyName != "USD")
                 averageUsdPrice = averageBtcPrice * btcInUsd;
             labelAverage.Text = "Average: " + Helper.PriceToStringBtc(averageBtcPrice) + " = " + Helper.PriceToString(averageUsdPrice) + "$";
 
@@ -371,13 +405,14 @@ namespace BitWhiskey
                 tradeLogic.CancellMyOrder(order, CancellOrder_UIResultHandler);
                 break;
             }
+            //UpdateMyOpenOrders();
         }
         public void CancellOrder_UIResultHandler(RequestItemGroup resultResponse)
         {
             if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             //            List<OpenOrder> myOpenOrders = (List<OpenOrder>)resultResponse.result.resultData;
-            UpdateMyOpenOrders();
+            //UpdateMyOpenOrders();
         }
         private bool CheckTradeFieldsBuy()
         {

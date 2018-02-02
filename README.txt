@@ -15,6 +15,11 @@ Github https://github.com/EvgBitWhiskey/BitWhiskey/releases
 https://bitcointalk.org/index.php?topic=2422687.0
 ## Change Log
 
+v0.4
+- Yobit added
+- Balances, Alerts - many improvements
+- Main Window - sorting fixed
+
 v0.3
 - Volumes added in Chart
 - 5 min Chart added

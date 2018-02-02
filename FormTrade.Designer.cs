@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTrade));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelRequestTracker = new System.Windows.Forms.Panel();
             this.dGridRequests = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
@@ -76,6 +77,9 @@
             this.tabPageOrderBook = new System.Windows.Forms.TabPage();
             this.panelOrderBook = new System.Windows.Forms.Panel();
             this.tabPageOrderBookContr = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dGridContrBuy = new System.Windows.Forms.DataGridView();
+            this.dGridContrSell = new System.Windows.Forms.DataGridView();
             this.tabPageTradeHistory = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -83,24 +87,21 @@
             this.panelMyOrdersHistory = new System.Windows.Forms.Panel();
             this.panelBuySell = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonSellAmount50 = new System.Windows.Forms.Button();
+            this.buttonSellAmountAll = new System.Windows.Forms.Button();
             this.labelPriceSell = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.textPriceSell = new System.Windows.Forms.TextBox();
             this.textAmountSell = new System.Windows.Forms.TextBox();
             this.labelAmountSell = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonBuyAmount50 = new System.Windows.Forms.Button();
+            this.buttonBuyAmountAll = new System.Windows.Forms.Button();
             this.labelAmountCaption = new System.Windows.Forms.Label();
             this.buttonCollapsePanelOrderBook = new System.Windows.Forms.Button();
             this.panelOBookButton = new System.Windows.Forms.Panel();
-            this.panelTabMain = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dGridContrSell = new System.Windows.Forms.DataGridView();
-            this.dGridContrBuy = new System.Windows.Forms.DataGridView();
-            this.buttonSellAmountAll = new System.Windows.Forms.Button();
-            this.buttonSellAmount50 = new System.Windows.Forms.Button();
-            this.buttonBuyAmount50 = new System.Windows.Forms.Button();
-            this.buttonBuyAmountAll = new System.Windows.Forms.Button();
             this.buttonShowGraphic = new System.Windows.Forms.Button();
+            this.panelTabMain = new System.Windows.Forms.Panel();
             this.panelRequestTracker.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridRequests)).BeginInit();
             this.panelBalance.SuspendLayout();
@@ -114,6 +115,9 @@
             this.tabPageOrderBook.SuspendLayout();
             this.panelOrderBook.SuspendLayout();
             this.tabPageOrderBookContr.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).BeginInit();
             this.tabPageTradeHistory.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -124,9 +128,6 @@
             this.groupBox1.SuspendLayout();
             this.panelOBookButton.SuspendLayout();
             this.panelTabMain.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).BeginInit();
             this.SuspendLayout();
             // 
             // panelRequestTracker
@@ -380,14 +381,14 @@
             this.dgridTradeHistory.AllowUserToDeleteRows = false;
             this.dgridTradeHistory.AllowUserToResizeRows = false;
             this.dgridTradeHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgridTradeHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridTradeHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgridTradeHistory.Location = new System.Drawing.Point(0, 0);
@@ -396,11 +397,11 @@
             this.dgridTradeHistory.Name = "dgridTradeHistory";
             this.dgridTradeHistory.ReadOnly = true;
             this.dgridTradeHistory.RowHeadersVisible = false;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridTradeHistory.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.dgridTradeHistory.RowTemplate.Height = 24;
             this.dgridTradeHistory.RowTemplate.ReadOnly = true;
             this.dgridTradeHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -482,19 +483,27 @@
             // 
             this.dgridOpenOrders.AllowUserToAddRows = false;
             this.dgridOpenOrders.AllowUserToDeleteRows = false;
-            this.dgridOpenOrders.AllowUserToResizeColumns = false;
-            this.dgridOpenOrders.AllowUserToResizeRows = false;
             this.dgridOpenOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgridOpenOrders.DefaultCellStyle = dataGridViewCellStyle13;
             this.dgridOpenOrders.Location = new System.Drawing.Point(2, 25);
             this.dgridOpenOrders.Margin = new System.Windows.Forms.Padding(2);
             this.dgridOpenOrders.MultiSelect = false;
             this.dgridOpenOrders.Name = "dgridOpenOrders";
             this.dgridOpenOrders.ReadOnly = true;
             this.dgridOpenOrders.RowHeadersVisible = false;
+            this.dgridOpenOrders.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgridOpenOrders.RowTemplate.Height = 24;
             this.dgridOpenOrders.RowTemplate.ReadOnly = true;
+            this.dgridOpenOrders.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgridOpenOrders.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgridOpenOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgridOpenOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgridOpenOrders.ShowCellToolTips = false;
             this.dgridOpenOrders.ShowEditingIcon = false;
             this.dgridOpenOrders.Size = new System.Drawing.Size(469, 127);
@@ -503,12 +512,12 @@
             // 
             // buttonCancellAllOrders
             // 
-            this.buttonCancellAllOrders.Location = new System.Drawing.Point(157, 3);
+            this.buttonCancellAllOrders.Location = new System.Drawing.Point(172, 4);
             this.buttonCancellAllOrders.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancellAllOrders.Name = "buttonCancellAllOrders";
-            this.buttonCancellAllOrders.Size = new System.Drawing.Size(88, 19);
+            this.buttonCancellAllOrders.Size = new System.Drawing.Size(145, 19);
             this.buttonCancellAllOrders.TabIndex = 8;
-            this.buttonCancellAllOrders.Text = "Cancel Order";
+            this.buttonCancellAllOrders.Text = "Cancel ALL Orders";
             this.buttonCancellAllOrders.UseVisualStyleBackColor = true;
             this.buttonCancellAllOrders.Click += new System.EventHandler(this.buttonCancellAllOrders_Click);
             // 
@@ -674,6 +683,62 @@
             this.tabPageOrderBookContr.UseVisualStyleBackColor = true;
             this.tabPageOrderBookContr.Click += new System.EventHandler(this.tabPageOrderBookContr_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dGridContrBuy);
+            this.panel1.Controls.Add(this.dGridContrSell);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(484, 327);
+            this.panel1.TabIndex = 0;
+            // 
+            // dGridContrBuy
+            // 
+            this.dGridContrBuy.AllowUserToAddRows = false;
+            this.dGridContrBuy.AllowUserToDeleteRows = false;
+            this.dGridContrBuy.AllowUserToResizeRows = false;
+            this.dGridContrBuy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridContrBuy.Location = new System.Drawing.Point(7, 161);
+            this.dGridContrBuy.Margin = new System.Windows.Forms.Padding(2);
+            this.dGridContrBuy.MultiSelect = false;
+            this.dGridContrBuy.Name = "dGridContrBuy";
+            this.dGridContrBuy.ReadOnly = true;
+            this.dGridContrBuy.RowHeadersVisible = false;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.dGridContrBuy.RowsDefaultCellStyle = dataGridViewCellStyle14;
+            this.dGridContrBuy.RowTemplate.Height = 24;
+            this.dGridContrBuy.RowTemplate.ReadOnly = true;
+            this.dGridContrBuy.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dGridContrBuy.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dGridContrBuy.ShowCellToolTips = false;
+            this.dGridContrBuy.ShowEditingIcon = false;
+            this.dGridContrBuy.Size = new System.Drawing.Size(289, 158);
+            this.dGridContrBuy.TabIndex = 9;
+            // 
+            // dGridContrSell
+            // 
+            this.dGridContrSell.AllowUserToAddRows = false;
+            this.dGridContrSell.AllowUserToDeleteRows = false;
+            this.dGridContrSell.AllowUserToResizeRows = false;
+            this.dGridContrSell.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridContrSell.Location = new System.Drawing.Point(6, 4);
+            this.dGridContrSell.Margin = new System.Windows.Forms.Padding(2);
+            this.dGridContrSell.MultiSelect = false;
+            this.dGridContrSell.Name = "dGridContrSell";
+            this.dGridContrSell.ReadOnly = true;
+            this.dGridContrSell.RowHeadersVisible = false;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.dGridContrSell.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            this.dGridContrSell.RowTemplate.Height = 24;
+            this.dGridContrSell.RowTemplate.ReadOnly = true;
+            this.dGridContrSell.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dGridContrSell.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dGridContrSell.ShowCellToolTips = false;
+            this.dGridContrSell.ShowEditingIcon = false;
+            this.dGridContrSell.Size = new System.Drawing.Size(290, 156);
+            this.dGridContrSell.TabIndex = 8;
+            // 
             // tabPageTradeHistory
             // 
             this.tabPageTradeHistory.Controls.Add(this.panel4);
@@ -757,6 +822,26 @@
             this.groupBox2.TabIndex = 23;
             this.groupBox2.TabStop = false;
             // 
+            // buttonSellAmount50
+            // 
+            this.buttonSellAmount50.Location = new System.Drawing.Point(193, 39);
+            this.buttonSellAmount50.Name = "buttonSellAmount50";
+            this.buttonSellAmount50.Size = new System.Drawing.Size(43, 24);
+            this.buttonSellAmount50.TabIndex = 28;
+            this.buttonSellAmount50.Text = "50 %";
+            this.buttonSellAmount50.UseVisualStyleBackColor = true;
+            this.buttonSellAmount50.Click += new System.EventHandler(this.buttonSellAmount50_Click);
+            // 
+            // buttonSellAmountAll
+            // 
+            this.buttonSellAmountAll.Location = new System.Drawing.Point(158, 40);
+            this.buttonSellAmountAll.Name = "buttonSellAmountAll";
+            this.buttonSellAmountAll.Size = new System.Drawing.Size(31, 24);
+            this.buttonSellAmountAll.TabIndex = 27;
+            this.buttonSellAmountAll.Text = "All";
+            this.buttonSellAmountAll.UseVisualStyleBackColor = true;
+            this.buttonSellAmountAll.Click += new System.EventHandler(this.buttonSellAmountAll_Click);
+            // 
             // labelPriceSell
             // 
             this.labelPriceSell.AutoSize = true;
@@ -827,6 +912,26 @@
             this.groupBox1.TabIndex = 22;
             this.groupBox1.TabStop = false;
             // 
+            // buttonBuyAmount50
+            // 
+            this.buttonBuyAmount50.Location = new System.Drawing.Point(190, 41);
+            this.buttonBuyAmount50.Name = "buttonBuyAmount50";
+            this.buttonBuyAmount50.Size = new System.Drawing.Size(42, 24);
+            this.buttonBuyAmount50.TabIndex = 30;
+            this.buttonBuyAmount50.Text = "50 %";
+            this.buttonBuyAmount50.UseVisualStyleBackColor = true;
+            this.buttonBuyAmount50.Click += new System.EventHandler(this.buttonBuyAmount50_Click);
+            // 
+            // buttonBuyAmountAll
+            // 
+            this.buttonBuyAmountAll.Location = new System.Drawing.Point(155, 42);
+            this.buttonBuyAmountAll.Name = "buttonBuyAmountAll";
+            this.buttonBuyAmountAll.Size = new System.Drawing.Size(29, 24);
+            this.buttonBuyAmountAll.TabIndex = 29;
+            this.buttonBuyAmountAll.Text = "All";
+            this.buttonBuyAmountAll.UseVisualStyleBackColor = true;
+            this.buttonBuyAmountAll.Click += new System.EventHandler(this.buttonBuyAmountAll_Click);
+            // 
             // labelAmountCaption
             // 
             this.labelAmountCaption.AutoSize = true;
@@ -865,111 +970,6 @@
             this.panelOBookButton.Size = new System.Drawing.Size(492, 27);
             this.panelOBookButton.TabIndex = 20;
             // 
-            // panelTabMain
-            // 
-            this.panelTabMain.Controls.Add(this.tabMain);
-            this.panelTabMain.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTabMain.Location = new System.Drawing.Point(0, 194);
-            this.panelTabMain.Name = "panelTabMain";
-            this.panelTabMain.Size = new System.Drawing.Size(492, 353);
-            this.panelTabMain.TabIndex = 21;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.dGridContrBuy);
-            this.panel1.Controls.Add(this.dGridContrSell);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(484, 327);
-            this.panel1.TabIndex = 0;
-            // 
-            // dGridContrSell
-            // 
-            this.dGridContrSell.AllowUserToAddRows = false;
-            this.dGridContrSell.AllowUserToDeleteRows = false;
-            this.dGridContrSell.AllowUserToResizeRows = false;
-            this.dGridContrSell.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dGridContrSell.Location = new System.Drawing.Point(6, 4);
-            this.dGridContrSell.Margin = new System.Windows.Forms.Padding(2);
-            this.dGridContrSell.MultiSelect = false;
-            this.dGridContrSell.Name = "dGridContrSell";
-            this.dGridContrSell.ReadOnly = true;
-            this.dGridContrSell.RowHeadersVisible = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.dGridContrSell.RowsDefaultCellStyle = dataGridViewCellStyle7;
-            this.dGridContrSell.RowTemplate.Height = 24;
-            this.dGridContrSell.RowTemplate.ReadOnly = true;
-            this.dGridContrSell.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dGridContrSell.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dGridContrSell.ShowCellToolTips = false;
-            this.dGridContrSell.ShowEditingIcon = false;
-            this.dGridContrSell.Size = new System.Drawing.Size(290, 156);
-            this.dGridContrSell.TabIndex = 8;
-            // 
-            // dGridContrBuy
-            // 
-            this.dGridContrBuy.AllowUserToAddRows = false;
-            this.dGridContrBuy.AllowUserToDeleteRows = false;
-            this.dGridContrBuy.AllowUserToResizeRows = false;
-            this.dGridContrBuy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dGridContrBuy.Location = new System.Drawing.Point(7, 161);
-            this.dGridContrBuy.Margin = new System.Windows.Forms.Padding(2);
-            this.dGridContrBuy.MultiSelect = false;
-            this.dGridContrBuy.Name = "dGridContrBuy";
-            this.dGridContrBuy.ReadOnly = true;
-            this.dGridContrBuy.RowHeadersVisible = false;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.dGridContrBuy.RowsDefaultCellStyle = dataGridViewCellStyle8;
-            this.dGridContrBuy.RowTemplate.Height = 24;
-            this.dGridContrBuy.RowTemplate.ReadOnly = true;
-            this.dGridContrBuy.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dGridContrBuy.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dGridContrBuy.ShowCellToolTips = false;
-            this.dGridContrBuy.ShowEditingIcon = false;
-            this.dGridContrBuy.Size = new System.Drawing.Size(289, 158);
-            this.dGridContrBuy.TabIndex = 9;
-            // 
-            // buttonSellAmountAll
-            // 
-            this.buttonSellAmountAll.Location = new System.Drawing.Point(158, 40);
-            this.buttonSellAmountAll.Name = "buttonSellAmountAll";
-            this.buttonSellAmountAll.Size = new System.Drawing.Size(31, 24);
-            this.buttonSellAmountAll.TabIndex = 27;
-            this.buttonSellAmountAll.Text = "All";
-            this.buttonSellAmountAll.UseVisualStyleBackColor = true;
-            this.buttonSellAmountAll.Click += new System.EventHandler(this.buttonSellAmountAll_Click);
-            // 
-            // buttonSellAmount50
-            // 
-            this.buttonSellAmount50.Location = new System.Drawing.Point(193, 39);
-            this.buttonSellAmount50.Name = "buttonSellAmount50";
-            this.buttonSellAmount50.Size = new System.Drawing.Size(43, 24);
-            this.buttonSellAmount50.TabIndex = 28;
-            this.buttonSellAmount50.Text = "50 %";
-            this.buttonSellAmount50.UseVisualStyleBackColor = true;
-            this.buttonSellAmount50.Click += new System.EventHandler(this.buttonSellAmount50_Click);
-            // 
-            // buttonBuyAmount50
-            // 
-            this.buttonBuyAmount50.Location = new System.Drawing.Point(190, 41);
-            this.buttonBuyAmount50.Name = "buttonBuyAmount50";
-            this.buttonBuyAmount50.Size = new System.Drawing.Size(42, 24);
-            this.buttonBuyAmount50.TabIndex = 30;
-            this.buttonBuyAmount50.Text = "50 %";
-            this.buttonBuyAmount50.UseVisualStyleBackColor = true;
-            this.buttonBuyAmount50.Click += new System.EventHandler(this.buttonBuyAmount50_Click);
-            // 
-            // buttonBuyAmountAll
-            // 
-            this.buttonBuyAmountAll.Location = new System.Drawing.Point(155, 42);
-            this.buttonBuyAmountAll.Name = "buttonBuyAmountAll";
-            this.buttonBuyAmountAll.Size = new System.Drawing.Size(29, 24);
-            this.buttonBuyAmountAll.TabIndex = 29;
-            this.buttonBuyAmountAll.Text = "All";
-            this.buttonBuyAmountAll.UseVisualStyleBackColor = true;
-            this.buttonBuyAmountAll.Click += new System.EventHandler(this.buttonBuyAmountAll_Click);
-            // 
             // buttonShowGraphic
             // 
             this.buttonShowGraphic.Image = global::BitWhiskey.Properties.Resources.if_business_work_12_2377635;
@@ -979,6 +979,15 @@
             this.buttonShowGraphic.TabIndex = 1;
             this.buttonShowGraphic.UseVisualStyleBackColor = true;
             this.buttonShowGraphic.Click += new System.EventHandler(this.buttonShowGraphic_Click);
+            // 
+            // panelTabMain
+            // 
+            this.panelTabMain.Controls.Add(this.tabMain);
+            this.panelTabMain.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTabMain.Location = new System.Drawing.Point(0, 194);
+            this.panelTabMain.Name = "panelTabMain";
+            this.panelTabMain.Size = new System.Drawing.Size(492, 353);
+            this.panelTabMain.TabIndex = 21;
             // 
             // FormTrade
             // 
@@ -1016,6 +1025,9 @@
             this.panelOrderBook.ResumeLayout(false);
             this.panelOrderBook.PerformLayout();
             this.tabPageOrderBookContr.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).EndInit();
             this.tabPageTradeHistory.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -1030,9 +1042,6 @@
             this.groupBox1.PerformLayout();
             this.panelOBookButton.ResumeLayout(false);
             this.panelTabMain.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dGridContrSell)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dGridContrBuy)).EndInit();
             this.ResumeLayout(false);
 
         }

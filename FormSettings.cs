@@ -44,6 +44,7 @@ namespace BitWhiskey
             selSettings.defaultlimitorders = checkBoxDefLimitTrade.Checked;
             ActivatePoloniexKey();
             ActivateBittrexKey();
+            ActivateYobitKey();
             selSettings.Save(settingsPath);
             Global.settingsMain = selSettings;
             Global.settingsInit.currentprofile = comboBoxProfile.Text;
@@ -76,6 +77,17 @@ namespace BitWhiskey
                 textBoxBittrexSecret.Text = "******";
             }
 
+            if (selSettings.yobitkey == "")
+            {
+                textBoxYobitKey.Text = "Empty";
+                textBoxYobitSecret.Text = "Empty";
+            }
+            else
+            {
+                textBoxYobitKey.Text = "******";
+                textBoxYobitSecret.Text = "******";
+            }
+
             checkBoxDefLimitTrade.Checked= selSettings.defaultlimitorders;
         }
 
@@ -101,32 +113,14 @@ namespace BitWhiskey
                 selSettings.bittrexsecret = AppCrypt.EncryptData(textBoxBittrexSecret.Text);
             }
         }
-
-        /*
-        private void buttonActivatePoloniexKey_Click(object sender, EventArgs e)
+        private void ActivateYobitKey()
         {
-            if (textBoxPoloniexSecret.Text == "")
+            if (textBoxYobitKey.Text != "******" && textBoxYobitKey.Text != "Empty")
             {
-                MessageBox.Show("You need to fill API Key and Secret fields");
-                return;
+                selSettings.yobitkey = AppCrypt.EncryptData(textBoxYobitKey.Text);
+                selSettings.yobitsecret = AppCrypt.EncryptData(textBoxYobitSecret.Text);
             }
-            selSettings.poloniexkey = AppCrypt.EncryptData(textBoxPoloniexKey.Text);
-            selSettings.poloniexsecret = AppCrypt.EncryptData(textBoxPoloniexSecret.Text);
-            MessageBox.Show("Done! Save you profile to apply changes");
         }
 
-        private void buttonActivateBittrexKey_Click(object sender, EventArgs e)
-        {
-            if (textBoxBittrexSecret.Text == "")
-            {
-                MessageBox.Show("You need to fill API Key and Secret fields");
-                return;
-            }
-            selSettings.bittrexkey = AppCrypt.EncryptData(textBoxBittrexKey.Text);
-            selSettings.bittrexsecret = AppCrypt.EncryptData(textBoxBittrexSecret.Text);
-            MessageBox.Show("Done! Save you profile to apply changes");
-
-        }
-        */
     }
 }

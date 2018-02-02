@@ -30,9 +30,14 @@ namespace BitWhiskey
     {
         public string pathProfiles;
         public string pathStandart ;
+        public static string fileAlert;
+        public static string pathAlert ;
+
         public AppSettingsManager()
         {
             pathProfiles = Path.Combine(ApplicationPath.directory, @"AppBin\Profiles");
+            fileAlert = "alert.json";
+            pathAlert = Path.Combine(ApplicationPath.directoryAppBin, fileAlert);
         }
         public static void LoadSettings()
         {
@@ -40,6 +45,12 @@ namespace BitWhiskey
             AppSettingsManager settingsManager = new AppSettingsManager();
             string settingsPath = settingsManager.GetSettingsFilePath(Global.settingsInit.currentprofile, "settings.json");
             Global.settingsMain = MySettings.Load(settingsPath);
+
+            if(File.Exists(pathAlert))
+              AlertManager.settingsAlert = SettingsAlert.Load(pathAlert);
+            else
+                AlertManager.settingsAlert = new SettingsAlert();
+            AlertManager.alerts= AlertManager.settingsAlert.alerts;
         }
 
         public string  GetProfileDir(string profileName)
@@ -71,10 +82,17 @@ namespace BitWhiskey
         public string poloniexsecret = "";
         public string bittrexkey = "";
         public string bittrexsecret = "";
+        public string yobitkey = "";
+        public string yobitsecret = "";
         public bool defaultlimitorders = true;
     }
     public class SettingsInit : AppSettings<SettingsInit>
     {
         public string currentprofile = "Standart";
+//        public string alertSettingsFile = "Standart";
+    }
+    public class SettingsAlert : AppSettings<SettingsAlert>
+    {
+        public Dictionary<int, Alert> alerts = new Dictionary<int, Alert>();
     }
 }

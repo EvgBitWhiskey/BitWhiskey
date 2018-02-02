@@ -16,8 +16,8 @@ namespace BitWhiskey
         public Color backColor;
         public Pen barUp = new Pen(Color.FromArgb(63, 170, 57));// new Pen(Color.FromArgb(73,192,67));
         public Pen barDown = new Pen(Color.FromArgb(200, 11,11));
-        public Pen volbarUp = new Pen(Helper.ColorAlpha(Color.LightBlue,120));
-        public Pen volbarDown = new Pen(Helper.ColorAlpha(Color.LightPink,120));
+        public Pen volbarUp = new Pen(Helper.ColorAlpha(Color.MediumSeaGreen,100));
+        public Pen volbarDown = new Pen(Helper.ColorAlpha(Color.LightPink,130));
         public Pen SelLine = Pens.Pink;
         
         public Brush barUpBrush;

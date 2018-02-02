@@ -21,7 +21,10 @@ namespace BitWhiskey
         public string exchangeName { get; set; }
         public string currency { get; set; }
         public double balance { get; set; }
-
+        public double btcBalance { get; set; }
+        public double usdBalance { get; set; }
+        public double price { get; set; }
+        public bool balanceFound { get; set; }
     }
 
     public class BuyOrder
@@ -60,6 +63,17 @@ namespace BitWhiskey
         public string currency1 { get; set; }
         public string currency2 { get; set; }
         public bool isActive { get; set; }
+
+        public TradePair Copy()
+        {
+            return new TradePair
+            {
+               currency1 = currency1,
+                currency2 =currency2 ,
+                isActive = isActive,
+                ticker =ticker 
+            };
+        }
     }
 
     public class Trade
@@ -84,6 +98,8 @@ namespace BitWhiskey
     {
         public string ticker { get; set; }
         public double lastPrice { get; set; }
+        public double ask { get; set; }
+        public double bid { get; set; }
         public double percentChange { get; set; }
         public double volumeBtc { get; set; }
         public double volumeUSDT { get; set; }
@@ -135,6 +151,19 @@ namespace BitWhiskey
         }
 
     }
+
+    public class TickerGridRow
+    {
+        public string f1 { get; set; }
+        public string f2 { get; set; }
+        public string f3 { get; set; }
+        public string f4 { get; set; }
+        public string f5 { get; set; }
+        public string f6 { get; set; }
+        public string f7 { get; set; }
+        public string f8 { get; set; }
+    }
+
 
 
 }

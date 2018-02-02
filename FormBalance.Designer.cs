@@ -36,11 +36,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.labelBalanceBaseValue = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonUpdateBalances = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxExchange = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dgridBalance = new System.Windows.Forms.DataGridView();
-            this.buttonUpdateBalances = new System.Windows.Forms.Button();
             this.panelBalance.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -56,16 +56,15 @@
             this.panelBalance.Location = new System.Drawing.Point(0, 0);
             this.panelBalance.Margin = new System.Windows.Forms.Padding(2);
             this.panelBalance.Name = "panelBalance";
-            this.panelBalance.Size = new System.Drawing.Size(329, 26);
+            this.panelBalance.Size = new System.Drawing.Size(425, 32);
             this.panelBalance.TabIndex = 1;
-            this.panelBalance.Visible = false;
             // 
             // labelBalanceUsd
             // 
             this.labelBalanceUsd.AutoSize = true;
             this.labelBalanceUsd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelBalanceUsd.ForeColor = System.Drawing.Color.Green;
-            this.labelBalanceUsd.Location = new System.Drawing.Point(245, 4);
+            this.labelBalanceUsd.Location = new System.Drawing.Point(226, 3);
             this.labelBalanceUsd.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceUsd.Name = "labelBalanceUsd";
             this.labelBalanceUsd.Size = new System.Drawing.Size(18, 20);
@@ -75,11 +74,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label7.Location = new System.Drawing.Point(1, 4);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(141, 20);
+            this.label7.Size = new System.Drawing.Size(126, 17);
             this.label7.TabIndex = 6;
             this.label7.Text = "Total Balance BTC";
             // 
@@ -87,8 +86,8 @@
             // 
             this.labelBalanceBaseValue.AutoSize = true;
             this.labelBalanceBaseValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelBalanceBaseValue.ForeColor = System.Drawing.Color.Chocolate;
-            this.labelBalanceBaseValue.Location = new System.Drawing.Point(149, 4);
+            this.labelBalanceBaseValue.ForeColor = System.Drawing.Color.OrangeRed;
+            this.labelBalanceBaseValue.Location = new System.Drawing.Point(127, 3);
             this.labelBalanceBaseValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBalanceBaseValue.Name = "labelBalanceBaseValue";
             this.labelBalanceBaseValue.Size = new System.Drawing.Size(94, 20);
@@ -101,11 +100,21 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.comboBoxExchange);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 26);
+            this.panel1.Location = new System.Drawing.Point(0, 32);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(329, 27);
+            this.panel1.Size = new System.Drawing.Size(425, 27);
             this.panel1.TabIndex = 8;
+            // 
+            // buttonUpdateBalances
+            // 
+            this.buttonUpdateBalances.Location = new System.Drawing.Point(232, 3);
+            this.buttonUpdateBalances.Name = "buttonUpdateBalances";
+            this.buttonUpdateBalances.Size = new System.Drawing.Size(75, 21);
+            this.buttonUpdateBalances.TabIndex = 2;
+            this.buttonUpdateBalances.Text = "Update";
+            this.buttonUpdateBalances.UseVisualStyleBackColor = true;
+            this.buttonUpdateBalances.Click += new System.EventHandler(this.buttonUpdateBalances_Click);
             // 
             // label1
             // 
@@ -129,9 +138,9 @@
             // 
             this.panel2.Controls.Add(this.dgridBalance);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 53);
+            this.panel2.Location = new System.Drawing.Point(0, 59);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(329, 401);
+            this.panel2.Size = new System.Drawing.Size(425, 402);
             this.panel2.TabIndex = 9;
             // 
             // dgridBalance
@@ -168,24 +177,14 @@
             this.dgridBalance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgridBalance.ShowCellToolTips = false;
             this.dgridBalance.ShowEditingIcon = false;
-            this.dgridBalance.Size = new System.Drawing.Size(329, 401);
+            this.dgridBalance.Size = new System.Drawing.Size(425, 402);
             this.dgridBalance.TabIndex = 9;
-            // 
-            // buttonUpdateBalances
-            // 
-            this.buttonUpdateBalances.Location = new System.Drawing.Point(232, 3);
-            this.buttonUpdateBalances.Name = "buttonUpdateBalances";
-            this.buttonUpdateBalances.Size = new System.Drawing.Size(75, 21);
-            this.buttonUpdateBalances.TabIndex = 2;
-            this.buttonUpdateBalances.Text = "Update";
-            this.buttonUpdateBalances.UseVisualStyleBackColor = true;
-            this.buttonUpdateBalances.Click += new System.EventHandler(this.buttonUpdateBalances_Click);
             // 
             // FormBalance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 454);
+            this.ClientSize = new System.Drawing.Size(425, 461);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelBalance);

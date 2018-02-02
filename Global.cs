@@ -17,13 +17,14 @@ namespace BitWhiskey
 
   public static class Global
   {
-        public static Dictionary<int, Alert> alerts=new Dictionary<int, Alert>();
         public static MySettings settingsMain;
         public static SettingsInit settingsInit;
+//        public static SettingsAlert settingsAlert;
+//        public static Dictionary<int, Alert> alerts=new Dictionary<int, Alert>();
         public static TaskScheduler uiScheduler;
         public static ExchangeManager markets = new ExchangeManager();
         public static MarketsState marketsState = new MarketsState();
-        public static SoundPlayer player=null;
+//        public static SoundPlayer player=null;
 
         public static double GetCurrentPrice(string market, string ticker)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,19 @@ namespace BitWhiskey
         }
         public void Create<T>(List<T> rowList, List<DGVColumn> columns_)
         {
+
+            if (!SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = gridView.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(gridView, true, null);
+//                pi.SetValue(gridView,null);
+            }
+
+            gridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
+            gridView.RowHeadersVisible = false;
+
             columns = columns_;
             DataTable table = Helper.ToDataTable(rowList);
             //            gridView.DataSource = rowList;
@@ -50,6 +64,7 @@ namespace BitWhiskey
             }
             if (hideselection)
               DataGridHideSelection();
+
         }
         public void SetColumnStyle(string field, DataGridViewCellStyle style)
         {

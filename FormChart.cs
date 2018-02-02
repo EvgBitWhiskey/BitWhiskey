@@ -144,8 +144,15 @@ namespace BitWhiskey
         private void LoadTickers()
         {
             listBoxTicker.Items.Clear();
-            tradeLogic.GetTradePairs(LoadTickers_UIResultHandler);
+
+            foreach (KeyValuePair<string, TradePair> pair in Global.marketsState.curMarketPairs[market.MarketName()].OrderBy(p => p.Key))
+            {
+                listBoxTicker.Items.Add(pair.Key);
+            }
+
+            //            tradeLogic.GetTradePairs(LoadTickers_UIResultHandler);
         }
+        /*
         public void LoadTickers_UIResultHandler(RequestItemGroup resultResponse)
         {
             if (RequestManager.IsResultHasErrors(resultResponse))
@@ -157,6 +164,7 @@ namespace BitWhiskey
                 listBoxTicker.Items.Add(pair.Key);
             }
         }
+        */
 
         private void panelChart_Paint(object sender, PaintEventArgs e)
         {

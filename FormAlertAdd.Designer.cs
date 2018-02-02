@@ -54,7 +54,7 @@
             this.listBoxTicker.FormattingEnabled = true;
             this.listBoxTicker.Location = new System.Drawing.Point(3, 28);
             this.listBoxTicker.Name = "listBoxTicker";
-            this.listBoxTicker.Size = new System.Drawing.Size(88, 290);
+            this.listBoxTicker.Size = new System.Drawing.Size(88, 394);
             this.listBoxTicker.TabIndex = 0;
             this.listBoxTicker.SelectedIndexChanged += new System.EventHandler(this.listBoxTicker_SelectedIndexChanged);
             // 
@@ -93,9 +93,8 @@
             this.labelCurrencyName.AutoSize = true;
             this.labelCurrencyName.Location = new System.Drawing.Point(292, 73);
             this.labelCurrencyName.Name = "labelCurrencyName";
-            this.labelCurrencyName.Size = new System.Drawing.Size(30, 13);
+            this.labelCurrencyName.Size = new System.Drawing.Size(0, 13);
             this.labelCurrencyName.TabIndex = 4;
-            this.labelCurrencyName.Text = "USD";
             // 
             // groupBox1
             // 
@@ -157,7 +156,7 @@
             // buttonOk
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOk.Location = new System.Drawing.Point(139, 328);
+            this.buttonOk.Location = new System.Drawing.Point(143, 389);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 6;
@@ -168,7 +167,7 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(249, 328);
+            this.buttonCancel.Location = new System.Drawing.Point(253, 389);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 7;
@@ -205,9 +204,8 @@
             this.labelCurrencyName2.AutoSize = true;
             this.labelCurrencyName2.Location = new System.Drawing.Point(293, 50);
             this.labelCurrencyName2.Name = "labelCurrencyName2";
-            this.labelCurrencyName2.Size = new System.Drawing.Size(30, 13);
+            this.labelCurrencyName2.Size = new System.Drawing.Size(0, 13);
             this.labelCurrencyName2.TabIndex = 11;
-            this.labelCurrencyName2.Text = "USD";
             // 
             // label3
             // 
@@ -231,7 +229,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 357);
+            this.ClientSize = new System.Drawing.Size(361, 424);
             this.Controls.Add(this.labelAlertText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.labelCurrencyName2);

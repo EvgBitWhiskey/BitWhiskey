@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAlertMain));
             this.panelMain = new System.Windows.Forms.Panel();
+            this.buttonStopAlerts = new System.Windows.Forms.Button();
+            this.buttonDeleteAlerts = new System.Windows.Forms.Button();
             this.buttonAddAlert = new System.Windows.Forms.Button();
             this.panelTable = new System.Windows.Forms.Panel();
             this.dGridAlerts = new System.Windows.Forms.DataGridView();
-            this.buttonDeleteAlerts = new System.Windows.Forms.Button();
-            this.buttonStopAlerts = new System.Windows.Forms.Button();
             this.panelMain.SuspendLayout();
             this.panelTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridAlerts)).BeginInit();
@@ -47,8 +48,29 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(628, 36);
+            this.panelMain.Size = new System.Drawing.Size(717, 36);
             this.panelMain.TabIndex = 0;
+            // 
+            // buttonStopAlerts
+            // 
+            this.buttonStopAlerts.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonStopAlerts.Location = new System.Drawing.Point(252, 7);
+            this.buttonStopAlerts.Name = "buttonStopAlerts";
+            this.buttonStopAlerts.Size = new System.Drawing.Size(80, 23);
+            this.buttonStopAlerts.TabIndex = 2;
+            this.buttonStopAlerts.Text = "On\\OFF All";
+            this.buttonStopAlerts.UseVisualStyleBackColor = false;
+            this.buttonStopAlerts.Click += new System.EventHandler(this.buttonStopAlerts_Click);
+            // 
+            // buttonDeleteAlerts
+            // 
+            this.buttonDeleteAlerts.Location = new System.Drawing.Point(115, 8);
+            this.buttonDeleteAlerts.Name = "buttonDeleteAlerts";
+            this.buttonDeleteAlerts.Size = new System.Drawing.Size(80, 23);
+            this.buttonDeleteAlerts.TabIndex = 1;
+            this.buttonDeleteAlerts.Text = "Delete Alerts";
+            this.buttonDeleteAlerts.UseVisualStyleBackColor = true;
+            this.buttonDeleteAlerts.Click += new System.EventHandler(this.buttonDeleteAlerts_Click);
             // 
             // buttonAddAlert
             // 
@@ -66,12 +88,13 @@
             this.panelTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTable.Location = new System.Drawing.Point(0, 36);
             this.panelTable.Name = "panelTable";
-            this.panelTable.Size = new System.Drawing.Size(628, 153);
+            this.panelTable.Size = new System.Drawing.Size(717, 264);
             this.panelTable.TabIndex = 1;
             // 
             // dGridAlerts
             // 
             this.dGridAlerts.AllowUserToAddRows = false;
+            this.dGridAlerts.AllowUserToDeleteRows = false;
             this.dGridAlerts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridAlerts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dGridAlerts.Location = new System.Drawing.Point(0, 0);
@@ -79,38 +102,22 @@
             this.dGridAlerts.Name = "dGridAlerts";
             this.dGridAlerts.ReadOnly = true;
             this.dGridAlerts.RowHeadersVisible = false;
-            this.dGridAlerts.Size = new System.Drawing.Size(628, 153);
+            this.dGridAlerts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dGridAlerts.Size = new System.Drawing.Size(717, 264);
             this.dGridAlerts.TabIndex = 0;
-            // 
-            // buttonDeleteAlerts
-            // 
-            this.buttonDeleteAlerts.Location = new System.Drawing.Point(115, 8);
-            this.buttonDeleteAlerts.Name = "buttonDeleteAlerts";
-            this.buttonDeleteAlerts.Size = new System.Drawing.Size(80, 23);
-            this.buttonDeleteAlerts.TabIndex = 1;
-            this.buttonDeleteAlerts.Text = "Delete Alerts";
-            this.buttonDeleteAlerts.UseVisualStyleBackColor = true;
-            this.buttonDeleteAlerts.Click += new System.EventHandler(this.buttonDeleteAlerts_Click);
-            // 
-            // buttonStopAlerts
-            // 
-            this.buttonStopAlerts.Location = new System.Drawing.Point(252, 7);
-            this.buttonStopAlerts.Name = "buttonStopAlerts";
-            this.buttonStopAlerts.Size = new System.Drawing.Size(80, 23);
-            this.buttonStopAlerts.TabIndex = 2;
-            this.buttonStopAlerts.Text = "Stop Sound";
-            this.buttonStopAlerts.UseVisualStyleBackColor = true;
-            this.buttonStopAlerts.Click += new System.EventHandler(this.buttonStopAlerts_Click);
+            this.dGridAlerts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGridAlerts_CellContentClick);
             // 
             // FormAlertMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 189);
+            this.ClientSize = new System.Drawing.Size(717, 300);
             this.Controls.Add(this.panelTable);
             this.Controls.Add(this.panelMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormAlertMain";
             this.Text = "Alerts";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormAlertMain_FormClosing);
             this.panelMain.ResumeLayout(false);
             this.panelTable.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGridAlerts)).EndInit();

@@ -14,26 +14,54 @@ namespace BitWhiskey
     {
         public Alert alert=null;
         public string ticker="";
-        public FormTradeLogic tradeLogic;
+//        public FormTradeLogic tradeLogic;
         Market market;
+        public bool alertAdded = false;
+        public bool alertChanged = false;
 
-        public FormAlertAdd(Market market_, string ticker_="")
+        public FormAlertAdd(Market market_, string ticker_="",int alertId=-1)
         {
             InitializeComponent();
             market = market_;
-            ticker = ticker_;
-            tradeLogic = new FormTradeLogic("BTC_BTC", market);
-        }
-        private void FormAlertAdd_Load(object sender, EventArgs e)
-        {
-            textBoxAlertName.Text ="Alert "+ Alert.GetNewId().ToString();
+            //            tradeLogic = new FormTradeLogic("BTC_BTC", market);
+            if(alertId!=-1)
+              alert= AlertManager.alerts[alertId];
+
+            if (alert == null)
+            {
+                ticker = ticker_;
+                textBoxAlertName.Text = ticker;
+            }
+            else
+            {
+                textBoxAlertName.Text = alert.caption;
+                textBoxPriceCurrent.Text = Helper.PriceToStringBtc(Global.GetCurrentPrice(alert.market,alert.tickerPair));
+                textBoxPriceAlert.Text = alert.priceAlert.ToString();
+                checkBoxDisplayInChart.Checked = alert.showInChart;
+                checkBoxPlaySound.Checked= alert.playSound;
+
+                listBoxTicker.Enabled = false;
+                ticker = alert.tickerPair;
+            }
             LoadTickers();
         }
+        private void FormAlertAdd_Load(object sender, EventArgs e)
+        { }
         private void LoadTickers()
         {
             listBoxTicker.Items.Clear();
-            tradeLogic.GetTradePairs(LoadTickers_UIResultHandler);
+            foreach (KeyValuePair<string, TradePair> pair in Global.marketsState.curMarketPairs[market.MarketName()].OrderBy(p => p.Key))
+                listBoxTicker.Items.Add(pair.Key);
+            if (ticker != "")
+            {
+                listBoxTicker.SelectedItem = ticker;
+                if (alert == null)
+                    textBoxPriceCurrent.Text = Helper.PriceToStringBtc(Global.GetCurrentPrice(market.MarketName(), ticker));
+            }
+
+            //  tradeLogic.GetTradePairs(LoadTickers_UIResultHandler);
         }
+        /*
         public void LoadTickers_UIResultHandler(RequestItemGroup resultResponse)
         {
             if (RequestManager.IsResultHasErrors(resultResponse))
@@ -49,25 +77,45 @@ namespace BitWhiskey
                 textBoxPriceCurrent.Text=Helper.PriceToStringBtc(Global.GetCurrentPrice(market.MarketName(), ticker));
             }
         }
+        */
         private void listBoxTicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             ticker = listBoxTicker.SelectedItem.ToString();
-            textBoxPriceCurrent.Text = Helper.PriceToStringBtc(Global.GetCurrentPrice(market.MarketName(), ticker));
+            textBoxAlertName.Text = ticker;
+            if (alert == null)
+                textBoxPriceCurrent.Text = Helper.PriceToStringBtc(Global.GetCurrentPrice(market.MarketName(), ticker));
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
             try
             {
-                Alert alertTmp = new Alert(textBoxAlertName.Text);
-                alertTmp.createPrice = Helper.ToDouble(textBoxPriceCurrent.Text);
-                alertTmp.priceAlert = Helper.ToDouble(textBoxPriceAlert.Text);
-                alertTmp.showInChart = checkBoxDisplayInChart.Checked;
-                alertTmp.tickerPair = listBoxTicker.SelectedItem.ToString();
-                alertTmp.playSound = checkBoxPlaySound.Checked;
-                alert = alertTmp;
+                if (alert != null)
+                {
+                    alert.caption=textBoxAlertName.Text;
+                    alert.createPrice = Helper.ToDouble(textBoxPriceCurrent.Text);
+                    alert.priceAlert = Helper.ToDouble(textBoxPriceAlert.Text);
+                    alert.showInChart = checkBoxDisplayInChart.Checked;
+                    alert.tickerPair = listBoxTicker.SelectedItem.ToString();
+                    alert.playSound = checkBoxPlaySound.Checked;
+                    alertChanged = true;
+                }
+                else
+                {
+                    Alert alertTmp = new Alert(textBoxAlertName.Text);
+                    alertTmp.createPrice = Helper.ToDouble(textBoxPriceCurrent.Text);
+                    alertTmp.market = market.MarketName();
+                    alertTmp.priceAlert = Helper.ToDouble(textBoxPriceAlert.Text);
+                    alertTmp.showInChart = checkBoxDisplayInChart.Checked;
+                    alertTmp.tickerPair = listBoxTicker.SelectedItem.ToString();
+                    alertTmp.playSound = checkBoxPlaySound.Checked;
+                    alert = alertTmp;
+
+                    AlertManager.alerts.Add(alert.id, alert);
+                    alertAdded = true;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
             }
         }

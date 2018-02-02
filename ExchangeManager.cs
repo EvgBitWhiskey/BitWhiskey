@@ -14,6 +14,7 @@ namespace BitWhiskey
         {
             marketList.Add("Poloniex");
             marketList.Add("Bittrex");
+            marketList.Add("Yobit");
         }
         public List<string> GetMarketList()
         {
@@ -27,6 +28,8 @@ namespace BitWhiskey
                     return new Poloniex();
                 case "Bittrex":
                     return new Bittrex();
+                case "Yobit":
+                    return new Yobit();
             };
 
             return null;
