@@ -28,11 +28,16 @@ namespace BitWhiskey
         protected string keyMethod = "";
         protected bool   includeParametersInRequestAddress ;
         protected bool haveKey = false;
+        protected bool enabled = true;
 
         protected MarketOptions options = new MarketOptions();
 
         public Market()
         {
+        }
+        public virtual bool IsEnabled()
+        {
+            return enabled;
         }
         public virtual bool HaveKey()
         {

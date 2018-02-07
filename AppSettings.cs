@@ -80,10 +80,13 @@ namespace BitWhiskey
     {
         public string poloniexkey = "";
         public string poloniexsecret = "";
+        public bool   poloniexdisabled = false;
         public string bittrexkey = "";
         public string bittrexsecret = "";
+        public bool   bittrexdisabled = false;
         public string yobitkey = "";
         public string yobitsecret = "";
+        public bool yobitdisabled = false;
         public bool defaultlimitorders = true;
     }
     public class SettingsInit : AppSettings<SettingsInit>

@@ -88,6 +88,10 @@ namespace BitWhiskey
                 textBoxYobitSecret.Text = "******";
             }
 
+            checkBoxPoloniexDisabled.Checked=selSettings.poloniexdisabled;
+            checkBoxBittrexDisabled.Checked = selSettings.bittrexdisabled;
+            checkBoxYobitDisabled.Checked = selSettings.yobitdisabled;
+
             checkBoxDefLimitTrade.Checked= selSettings.defaultlimitorders;
         }
 
@@ -104,6 +108,7 @@ namespace BitWhiskey
               selSettings.poloniexkey = AppCrypt.EncryptData(textBoxPoloniexKey.Text);
               selSettings.poloniexsecret = AppCrypt.EncryptData(textBoxPoloniexSecret.Text);
             }
+            selSettings.poloniexdisabled=checkBoxPoloniexDisabled.Checked;
         }
         private void ActivateBittrexKey()
         {
@@ -112,6 +117,7 @@ namespace BitWhiskey
                 selSettings.bittrexkey = AppCrypt.EncryptData(textBoxBittrexKey.Text);
                 selSettings.bittrexsecret = AppCrypt.EncryptData(textBoxBittrexSecret.Text);
             }
+            selSettings.bittrexdisabled=checkBoxBittrexDisabled.Checked;
         }
         private void ActivateYobitKey()
         {
@@ -120,6 +126,7 @@ namespace BitWhiskey
                 selSettings.yobitkey = AppCrypt.EncryptData(textBoxYobitKey.Text);
                 selSettings.yobitsecret = AppCrypt.EncryptData(textBoxYobitSecret.Text);
             }
+            selSettings.yobitdisabled = checkBoxYobitDisabled.Checked;
         }
 
     }

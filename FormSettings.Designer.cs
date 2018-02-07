@@ -49,6 +49,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxYobitSecret = new System.Windows.Forms.TextBox();
+            this.checkBoxYobitDisabled = new System.Windows.Forms.CheckBox();
+            this.checkBoxBittrexDisabled = new System.Windows.Forms.CheckBox();
+            this.checkBoxPoloniexDisabled = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -56,7 +59,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(187, 299);
+            this.buttonSave.Location = new System.Drawing.Point(187, 381);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 0;
@@ -117,26 +120,28 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxPoloniexDisabled);
             this.groupBox1.Controls.Add(this.textBoxPoloniexKey);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.textBoxPoloniexSecret);
-            this.groupBox1.Location = new System.Drawing.Point(3, 31);
+            this.groupBox1.Location = new System.Drawing.Point(3, 30);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(527, 70);
+            this.groupBox1.Size = new System.Drawing.Size(527, 93);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Poloniex";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.checkBoxBittrexDisabled);
             this.groupBox2.Controls.Add(this.textBoxBittrexKey);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.textBoxBittrexSecret);
-            this.groupBox2.Location = new System.Drawing.Point(3, 107);
+            this.groupBox2.Location = new System.Drawing.Point(3, 128);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(527, 70);
+            this.groupBox2.Size = new System.Drawing.Size(527, 92);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Bittrex";
@@ -178,7 +183,7 @@
             this.checkBoxDefLimitTrade.AutoSize = true;
             this.checkBoxDefLimitTrade.Checked = true;
             this.checkBoxDefLimitTrade.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDefLimitTrade.Location = new System.Drawing.Point(7, 268);
+            this.checkBoxDefLimitTrade.Location = new System.Drawing.Point(7, 350);
             this.checkBoxDefLimitTrade.Name = "checkBoxDefLimitTrade";
             this.checkBoxDefLimitTrade.Size = new System.Drawing.Size(208, 17);
             this.checkBoxDefLimitTrade.TabIndex = 10;
@@ -197,13 +202,14 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBoxYobitDisabled);
             this.groupBox3.Controls.Add(this.textBoxYobitKey);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.textBoxYobitSecret);
-            this.groupBox3.Location = new System.Drawing.Point(3, 183);
+            this.groupBox3.Location = new System.Drawing.Point(3, 224);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(527, 70);
+            this.groupBox3.Size = new System.Drawing.Size(527, 96);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Yobit";
@@ -240,11 +246,41 @@
             this.textBoxYobitSecret.Size = new System.Drawing.Size(431, 20);
             this.textBoxYobitSecret.TabIndex = 5;
             // 
+            // checkBoxYobitDisabled
+            // 
+            this.checkBoxYobitDisabled.AutoSize = true;
+            this.checkBoxYobitDisabled.Location = new System.Drawing.Point(9, 69);
+            this.checkBoxYobitDisabled.Name = "checkBoxYobitDisabled";
+            this.checkBoxYobitDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxYobitDisabled.TabIndex = 7;
+            this.checkBoxYobitDisabled.Text = "Отключить биржу";
+            this.checkBoxYobitDisabled.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxBittrexDisabled
+            // 
+            this.checkBoxBittrexDisabled.AutoSize = true;
+            this.checkBoxBittrexDisabled.Location = new System.Drawing.Point(6, 69);
+            this.checkBoxBittrexDisabled.Name = "checkBoxBittrexDisabled";
+            this.checkBoxBittrexDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxBittrexDisabled.TabIndex = 8;
+            this.checkBoxBittrexDisabled.Text = "Отключить биржу";
+            this.checkBoxBittrexDisabled.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPoloniexDisabled
+            // 
+            this.checkBoxPoloniexDisabled.AutoSize = true;
+            this.checkBoxPoloniexDisabled.Location = new System.Drawing.Point(9, 69);
+            this.checkBoxPoloniexDisabled.Name = "checkBoxPoloniexDisabled";
+            this.checkBoxPoloniexDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxPoloniexDisabled.TabIndex = 8;
+            this.checkBoxPoloniexDisabled.Text = "Отключить биржу";
+            this.checkBoxPoloniexDisabled.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(541, 341);
+            this.ClientSize = new System.Drawing.Size(541, 408);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.checkBoxDefLimitTrade);
@@ -290,5 +326,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxYobitSecret;
+        private System.Windows.Forms.CheckBox checkBoxYobitDisabled;
+        private System.Windows.Forms.CheckBox checkBoxPoloniexDisabled;
+        private System.Windows.Forms.CheckBox checkBoxBittrexDisabled;
     }
 }

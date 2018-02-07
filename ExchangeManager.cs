@@ -12,9 +12,21 @@ namespace BitWhiskey
 
         public ExchangeManager()
         {
-            marketList.Add("Poloniex");
-            marketList.Add("Bittrex");
-            marketList.Add("Yobit");
+        }
+        public void Init()
+        {
+            Market market=GetMarketByMarketName("Poloniex");
+            if(market.IsEnabled())
+              marketList.Add("Poloniex");
+
+            market = GetMarketByMarketName("Bittrex");
+            if (market.IsEnabled())
+                marketList.Add("Bittrex");
+
+            market = GetMarketByMarketName("Yobit");
+            if (market.IsEnabled())
+                marketList.Add("Yobit");
+
         }
         public List<string> GetMarketList()
         {

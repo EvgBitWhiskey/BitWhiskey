@@ -165,6 +165,7 @@ namespace BitWhiskey
                 currentNonce = datenonce;
             }
 
+            enabled = !Global.settingsMain.yobitdisabled;
             if (Global.settingsMain.yobitkey != "")
             {
                 key = AppCrypt.DecryptData(Global.settingsMain.yobitkey);

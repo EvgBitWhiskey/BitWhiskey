@@ -264,7 +264,8 @@ public class Bittrex24HourSummary
 
             key = "";
             secret = "";
-//            Global.settingsMain.bittrexkey = "";
+            //            Global.settingsMain.bittrexkey = "";
+            enabled = !Global.settingsMain.bittrexdisabled;
             if (Global.settingsMain.bittrexkey != "")
             { 
                 key = AppCrypt.DecryptData(Global.settingsMain.bittrexkey);

@@ -7,6 +7,7 @@ using System.Media;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using NLog;
@@ -32,11 +33,13 @@ namespace BitWhiskey
         {
             InitializeComponent();
 
+//            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls12;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             labelInfo.Text = "Please wait..Loading";
             Helper.Init();
             AppSettingsManager.LoadSettings();
+            Global.markets.Init();
 
             Global.uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -49,6 +52,7 @@ namespace BitWhiskey
             }
             RequestConsumer.requestManager.Create(Global.markets.GetMarketList());
             RequestConsumer.CreateRequestThreads(Global.markets.GetMarketList());
+            
 
             timerMarkets = new AppTimer(26000, TimerMarkets_Tick,this);
             timerCheckAlerts = new AppTimer(5000, TimerCheckAlerts_Tick, this);

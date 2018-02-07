@@ -119,6 +119,7 @@ namespace BitWhiskey
             }
             key = "";
             secret = "";
+            enabled = !Global.settingsMain.poloniexdisabled ;
             if (Global.settingsMain.poloniexkey != "")
             {
                 key = AppCrypt.DecryptData(Global.settingsMain.poloniexkey);

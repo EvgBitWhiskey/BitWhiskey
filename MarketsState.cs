@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace BitWhiskey
 {
-    public class MarketsState
+ /*   public class ExchangeInfo
     {
+        public bool enabled;
+    }
+    */
+        public class MarketsState
+    {
+      //  public Dictionary<string, ExchangeInfo> marketsInfo = new Dictionary<string, ExchangeInfo>();
         public Dictionary<string, List<MarketCurrentView>> curMarkets = new Dictionary<string, List<MarketCurrentView>>();
         public Dictionary<string, Dictionary<string, TradePair>> curMarketPairs = new Dictionary<string, Dictionary<string, TradePair>>();
 
