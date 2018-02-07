@@ -149,8 +149,8 @@ namespace BitWhiskey
 
         public Yobit()
         {
-            PUBLIC_API = " https://yobit.net/api/3/";
-            KEY_API = "https://yobit.net/tapi/";
+            PUBLIC_API = " https://yobit.io/api/3/";
+            KEY_API = "https://yobit.io/tapi/";
             signBaseUrl = "";
             publicMethod = "POST";
             keyMethod = "POST";
