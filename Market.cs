@@ -49,15 +49,14 @@ namespace BitWhiskey
         }
         public virtual string GetResponseForRequest(WebRequest request)
         {
-            using (Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (StreamReader sr = new StreamReader(s))
+                using (Stream s = request.GetResponse().GetResponseStream())
                 {
-                    var jsonResponse = sr.ReadToEnd();
-                    return jsonResponse;
+                    using (StreamReader sr = new StreamReader(s))
+                    {
+                        var jsonResponse = sr.ReadToEnd();
+                        return jsonResponse;
+                    }
                 }
-            }
-
         }
         public virtual WebRequest CreatePublicRequest(string method, string input)
         {
@@ -65,7 +64,7 @@ namespace BitWhiskey
 
             WebRequest webRequest = (HttpWebRequest)System.Net.WebRequest.Create(address);
             webRequest.Method =method;
-            webRequest.Timeout = 80000;
+            webRequest.Timeout = 60000;
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest = AddPublicHeaders(webRequest);
 
@@ -88,7 +87,7 @@ namespace BitWhiskey
 
             WebRequest webRequest = (HttpWebRequest)System.Net.WebRequest.Create(address);
             webRequest.Method =method;
-            webRequest.Timeout = 20000;
+            webRequest.Timeout = 60000;
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest = AddKeyHeaders(cryptor,webRequest);
 

@@ -256,6 +256,7 @@ namespace BitWhiskey
         }
         public void listBoxTicker_SelectedIndexChanged_UIResultHandler(RequestItemGroup resultResponse)
         {
+            timerLastPrice.Start();
             if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             Dictionary<int, PriceCandle> priceHistory = (Dictionary<int, PriceCandle>)resultResponse.items[0].result.resultData;
@@ -267,7 +268,6 @@ namespace BitWhiskey
             chart.ReDrawFull();
             Text = "Chart " + market.MarketName() + "  " + ticker;
 
-            timerLastPrice.Start();
         }
         private void UpdatePrice_Tick(object sender, ElapsedEventArgs e)
         {
@@ -276,6 +276,7 @@ namespace BitWhiskey
         }
         public void LastMarketPrice_UIResultHandler(RequestItemGroup resultResponse)
         {
+            timerLastPrice.Start();
             if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             TradeLast tradelast = (TradeLast)resultResponse.items[0].result.resultData;
@@ -283,7 +284,6 @@ namespace BitWhiskey
                 return;
             chart.UpdatePrice(tradelast.last);
             chart.ReDrawFull();
-            timerLastPrice.Start();
         }
 
 
@@ -302,7 +302,6 @@ namespace BitWhiskey
         }
         private void ResizeChart()
         {
-
             int neww = ClientRectangle.Width - listBoxTicker.Width - 20;
             int newh = ClientRectangle.Height - 40;
             panelChart.Size = new Size(neww, newh - 15);
@@ -313,7 +312,6 @@ namespace BitWhiskey
                 return;
             chart.Resize(Graphics.FromHwnd(panelChart.Handle), 0, 0, panelChart.Width, panelChart.Height);
             chart.ReDrawFull();
-
         }
         /*
         private void buttonZoomIn_Click(object sender, EventArgs e)
@@ -440,6 +438,7 @@ namespace BitWhiskey
         }
         public void buttonLoadChartData_UIResultHandler(RequestItemGroup resultResponse)
         {
+            timerLastPrice.Start();
             if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
             Dictionary<int, PriceCandle> priceHistory = (Dictionary<int, PriceCandle>)resultResponse.items[0].result.resultData;
@@ -451,7 +450,6 @@ namespace BitWhiskey
             chart.ShowVolume(checkBoxVolume.Checked);
             chart.ReDrawFull();
             loadRequeststarted = false;
-            timerLastPrice.Start();
         }
 
         private void PeriodDefaultToolStripMenuItem_Click(object sender, EventArgs e)

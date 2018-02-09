@@ -104,50 +104,60 @@ namespace BitWhiskey
         {
             if (RequestManager.IsResultHasErrors(resultResponse))
                 return;
-            AllOrders orders = (AllOrders)resultResponse.items[0].result.resultData;
 
-            var dataViewSell = orders.sellOrders.Select(item => new
+            try
             {
-                amount = Helper.PriceToStringBtc(item.quantity),
-                price = Helper.PriceToStringBtc(item.rate)
-            }).Take(150).ToList();
-            List<DGVColumn> columnsSell = new List<DGVColumn>()
-            {
-                new DGVColumn( "amount", "Amount","string") ,
-                new DGVColumn( "price", "Price","string") 
-            };
-            DataGridViewWrapper gvSell = new DataGridViewWrapper(dgridSellOrders, true);
-            gvSell.Create(dataViewSell, columnsSell);
-            gvSell.AutoSizeFillExcept("amount");
+                AllOrders orders = (AllOrders)resultResponse.items[0].result.resultData;
 
-            var dataViewBuy = orders.buyOrders.Select(item => new
-            {
-                price = Helper.PriceToStringBtc(item.rate),
-                amount = Helper.PriceToStringBtc(item.quantity)
-            }).Take(150).ToList();
-            DataGridViewWrapper gvBuy = new DataGridViewWrapper(dgridBuyOrders, true);
-            gvBuy.Create(dataViewBuy, columnsSell);
-            // gvBuy.AutoSizeFillExcept("amount");
+                var dataViewSell = orders.sellOrders.Select(item => new
+                {
+                    amount = Helper.PriceToStringBtc(item.quantity),
+                    price = Helper.PriceToStringBtc(item.rate)
+                }).Take(150).ToList();
+                List<DGVColumn> columnsSell = new List<DGVColumn>()
+                {
+                  new DGVColumn( "amount", "Amount","string") ,
+                  new DGVColumn( "price", "Price","string")
+                };
+                DataGridViewWrapper gvSell = new DataGridViewWrapper(dgridSellOrders, true);
+                gvSell.Create(dataViewSell, columnsSell);
+                gvSell.AutoSizeFillExcept("amount");
 
-            // contr orderbook data grid
-            var dataViewContrSell = orders.sellOrders.Select(item => new
-            {
-                price = Helper.PriceToStringBtc(item.rate),
-                amount = Helper.PriceToStringBtc(item.quantity)
-            }).OrderByDescending(o => o.price).Take(150).ToList();
+                var dataViewBuy = orders.buyOrders.Select(item => new
+                {
+                    price = Helper.PriceToStringBtc(item.rate),
+                    amount = Helper.PriceToStringBtc(item.quantity)
+                }).Take(150).ToList();
+                DataGridViewWrapper gvBuy = new DataGridViewWrapper(dgridBuyOrders, true);
+                gvBuy.Create(dataViewBuy, columnsSell);
+                // gvBuy.AutoSizeFillExcept("amount");
 
-            DataGridViewWrapper gvContrSell = new DataGridViewWrapper(dGridContrSell, true);
-            gvContrSell.Create(dataViewContrSell, columnsSell);
-            dGridContrSell.FirstDisplayedScrollingRowIndex = dGridContrSell.RowCount - 1;
 
-            var dataViewContrBuy = orders.buyOrders.Select(item => new
+                // contr orderbook data grid
+                var dataViewContrSell = orders.sellOrders.Select(item => new
+                {
+                    price = Helper.PriceToStringBtc(item.rate),
+                    amount = Helper.PriceToStringBtc(item.quantity)
+                }).Take(5).OrderByDescending(o => o.price).ToList();
+
+                DataGridViewWrapper gvContrSell = new DataGridViewWrapper(dGridContrSell, true);
+                gvContrSell.Create(dataViewContrSell, columnsSell);
+//                if (dGridContrSell.RowCount>0)
+//                  dGridContrSell.FirstDisplayedScrollingRowIndex = dGridContrSell.RowCount - 1;
+
+                var dataViewContrBuy = orders.buyOrders.Select(item => new
+                {
+                    price = Helper.PriceToStringBtc(item.rate),
+                    amount = Helper.PriceToStringBtc(item.quantity)
+                }).Take(5).ToList();
+                DataGridViewWrapper gvContrBuy = new DataGridViewWrapper(dGridContrBuy, true);
+                gvContrBuy.Create(dataViewContrBuy, columnsSell);
+                gvContrBuy.ShowColumnHeaders(false);
+            }
+            catch (Exception ex)
             {
-                price = Helper.PriceToStringBtc(item.rate),
-                amount = Helper.PriceToStringBtc(item.quantity)
-            }).Take(150).ToList();
-            DataGridViewWrapper gvContrBuy = new DataGridViewWrapper(dGridContrBuy, true);
-            gvContrBuy.Create(dataViewContrBuy, columnsSell);
-            gvContrBuy.ShowColumnHeaders(false);
+                Logman.Log(ex);
+            }
 
         }
         private void tabPageOrderBookContr_Click(object sender, EventArgs e)

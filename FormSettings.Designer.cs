@@ -37,7 +37,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPoloniexSecret = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxPoloniexDisabled = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBoxBittrexDisabled = new System.Windows.Forms.CheckBox();
             this.textBoxBittrexKey = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -45,13 +47,11 @@
             this.checkBoxDefLimitTrade = new System.Windows.Forms.CheckBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxYobitDisabled = new System.Windows.Forms.CheckBox();
             this.textBoxYobitKey = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxYobitSecret = new System.Windows.Forms.TextBox();
-            this.checkBoxYobitDisabled = new System.Windows.Forms.CheckBox();
-            this.checkBoxBittrexDisabled = new System.Windows.Forms.CheckBox();
-            this.checkBoxPoloniexDisabled = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -132,6 +132,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Poloniex";
             // 
+            // checkBoxPoloniexDisabled
+            // 
+            this.checkBoxPoloniexDisabled.AutoSize = true;
+            this.checkBoxPoloniexDisabled.Location = new System.Drawing.Point(9, 69);
+            this.checkBoxPoloniexDisabled.Name = "checkBoxPoloniexDisabled";
+            this.checkBoxPoloniexDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxPoloniexDisabled.TabIndex = 8;
+            this.checkBoxPoloniexDisabled.Text = "Отключить биржу";
+            this.checkBoxPoloniexDisabled.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkBoxBittrexDisabled);
@@ -145,6 +155,16 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Bittrex";
+            // 
+            // checkBoxBittrexDisabled
+            // 
+            this.checkBoxBittrexDisabled.AutoSize = true;
+            this.checkBoxBittrexDisabled.Location = new System.Drawing.Point(6, 69);
+            this.checkBoxBittrexDisabled.Name = "checkBoxBittrexDisabled";
+            this.checkBoxBittrexDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxBittrexDisabled.TabIndex = 8;
+            this.checkBoxBittrexDisabled.Text = "Отключить биржу";
+            this.checkBoxBittrexDisabled.UseVisualStyleBackColor = true;
             // 
             // textBoxBittrexKey
             // 
@@ -194,11 +214,12 @@
             // labelVersion
             // 
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(470, 4);
+            this.labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelVersion.Location = new System.Drawing.Point(445, 5);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(60, 13);
+            this.labelVersion.Size = new System.Drawing.Size(91, 15);
             this.labelVersion.TabIndex = 11;
-            this.labelVersion.Text = "Version 0.4";
+            this.labelVersion.Text = "Version 0.4.1";
             // 
             // groupBox3
             // 
@@ -213,6 +234,16 @@
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Yobit";
+            // 
+            // checkBoxYobitDisabled
+            // 
+            this.checkBoxYobitDisabled.AutoSize = true;
+            this.checkBoxYobitDisabled.Location = new System.Drawing.Point(9, 69);
+            this.checkBoxYobitDisabled.Name = "checkBoxYobitDisabled";
+            this.checkBoxYobitDisabled.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxYobitDisabled.TabIndex = 7;
+            this.checkBoxYobitDisabled.Text = "Отключить биржу";
+            this.checkBoxYobitDisabled.UseVisualStyleBackColor = true;
             // 
             // textBoxYobitKey
             // 
@@ -245,36 +276,6 @@
             this.textBoxYobitSecret.Name = "textBoxYobitSecret";
             this.textBoxYobitSecret.Size = new System.Drawing.Size(431, 20);
             this.textBoxYobitSecret.TabIndex = 5;
-            // 
-            // checkBoxYobitDisabled
-            // 
-            this.checkBoxYobitDisabled.AutoSize = true;
-            this.checkBoxYobitDisabled.Location = new System.Drawing.Point(9, 69);
-            this.checkBoxYobitDisabled.Name = "checkBoxYobitDisabled";
-            this.checkBoxYobitDisabled.Size = new System.Drawing.Size(115, 17);
-            this.checkBoxYobitDisabled.TabIndex = 7;
-            this.checkBoxYobitDisabled.Text = "Отключить биржу";
-            this.checkBoxYobitDisabled.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxBittrexDisabled
-            // 
-            this.checkBoxBittrexDisabled.AutoSize = true;
-            this.checkBoxBittrexDisabled.Location = new System.Drawing.Point(6, 69);
-            this.checkBoxBittrexDisabled.Name = "checkBoxBittrexDisabled";
-            this.checkBoxBittrexDisabled.Size = new System.Drawing.Size(115, 17);
-            this.checkBoxBittrexDisabled.TabIndex = 8;
-            this.checkBoxBittrexDisabled.Text = "Отключить биржу";
-            this.checkBoxBittrexDisabled.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxPoloniexDisabled
-            // 
-            this.checkBoxPoloniexDisabled.AutoSize = true;
-            this.checkBoxPoloniexDisabled.Location = new System.Drawing.Point(9, 69);
-            this.checkBoxPoloniexDisabled.Name = "checkBoxPoloniexDisabled";
-            this.checkBoxPoloniexDisabled.Size = new System.Drawing.Size(115, 17);
-            this.checkBoxPoloniexDisabled.TabIndex = 8;
-            this.checkBoxPoloniexDisabled.Text = "Отключить биржу";
-            this.checkBoxPoloniexDisabled.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 

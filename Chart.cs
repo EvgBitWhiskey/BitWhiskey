@@ -225,7 +225,7 @@ namespace BitWhiskey
         }
         public void Init(Graphics gform_,float xFormPos_, float yFormPos_, float xmax_, float ymax_)
         {
-            draw = new DrawContext(gform_, xmax_, ymax_, xFormPos_, yFormPos_,5,85,22,23);
+            draw = new DrawContext(gform_, xmax_, ymax_, xFormPos_, yFormPos_,5,85,30,23);
             plugin = new PriceDrawPlugin(draw);
         }
         public void SetData(Dictionary<int, PriceCandle> pricedata_, ConvertDataType convertFromType, ConvertDataType viewType)
@@ -692,7 +692,7 @@ namespace BitWhiskey
 
             }
 
-            draw.DrawString(style.strLabelBrush, style.strLabelFont, new PointF(draw.draww +10 , draw.areaymax - style.strLabelSelFont.Size/2), chartCaption);
+            draw.DrawString(style.strLabelBrush, style.strLabelFont, new PointF(draw.draww +10 , draw.areaymax - style.strLabelSelFont.Size/5), chartCaption);
 
         }
     }

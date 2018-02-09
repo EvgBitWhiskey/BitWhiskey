@@ -133,6 +133,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestsProcessingThread.cs" />
+    <Compile Include="StatusBar.cs" />
     <Compile Include="TradeData.cs" />
     <Compile Include="Yobit.cs" />
     <EmbeddedResource Include="Form1.resx">

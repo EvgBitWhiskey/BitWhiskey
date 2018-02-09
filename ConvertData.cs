@@ -198,7 +198,7 @@ namespace BitWhiskey
                 newbar.open = last.close;
                 newbar.high = Math.Max(last.close, lastPrice);
                 newbar.low = Math.Min(last.close, lastPrice);
-                newbar.volume = 666;
+                newbar.volume = 0;
                 newbar.date = lastPriceDateUnix + unixPeriod;
                 pricedata.Add(newbar.date, newbar);
                 barAdded = true;

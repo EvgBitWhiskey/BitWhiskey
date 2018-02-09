@@ -179,20 +179,32 @@ namespace BitWhiskey
         
         private void CheckResponseAndThrow(string response)
         {
-            //            if (response.Length > 13)
+            if (response.Contains("Ddos") && response.Contains("20-50 mins"))
+                throw new MarketAPIException("Yobit API Error:" + response);
+
             if (response.Contains("\"success\":"))
             {
                 if (response.Contains("\"success\":1"))
                     return;
 
-                dynamic jdata = JsonConvert.DeserializeObject<ExpandoObject>(response, new ExpandoObjectConverter());
+                dynamic jdata;
+                try
+                {
+                    jdata = JsonConvert.DeserializeObject<ExpandoObject>(response, new ExpandoObjectConverter());
+                }
+                catch (Exception ex)
+                {
+                    throw new MarketAPIException("Unknown API Error:" + response);
+                }
+
                 if (jdata.success == 0)
                 {
                     throw new MarketAPIException("Market API Error:" + jdata.error);
                 }
             }
+
         }
-    public int GetNonce()
+        public int GetNonce()
         {
             int nonce = 0;
             lock (_locker)
@@ -247,7 +259,16 @@ namespace BitWhiskey
             
             CheckResponseAndThrow(response);
 
-            YGetInfo jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YGetInfo>(response);
+            YGetInfo jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YGetInfo>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+            if(jdata.@return==null)
+              throw new MarketAPIException("Market API error: Data=null , Response: " + response); 
+
             Dictionary<string, Balance> balances;
             balances = new Dictionary<string, Balance>();
 
@@ -269,7 +290,14 @@ namespace BitWhiskey
         {
             string response = DoPublicRequest(parameters);
             CheckResponseAndThrow(response);
-            YInfo jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YInfo>(response);
+            YInfo jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YInfo>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+
 
             Dictionary<string, MarketCurrent> markets = new Dictionary<string, MarketCurrent>();
             
@@ -307,11 +335,17 @@ namespace BitWhiskey
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
-            Dictionary<string, YTickerCurrency> items = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YTickerCurrency>>(response);
-            
+            Dictionary<string, YTickerCurrency> jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YTickerCurrency>>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+
             Dictionary<string, MarketCurrent> markets = new Dictionary<string, MarketCurrent>();
 
-            foreach (var item in items)
+            foreach (var item in jdata)
             {
                 Pair iteminfo = new Pair(ToUITicker(item.Key));
                 MarketCurrent mkt = new MarketCurrent();
@@ -345,18 +379,25 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            Dictionary<string,YDepthRates> items = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YDepthRates>>(response);
+            Dictionary<string, YDepthRates> jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YDepthRates>>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+
             AllOrders orders = new AllOrders();
             orders.buyOrders = new List<BuyOrder>();
             orders.sellOrders = new List<SellOrder>();
             int n = 0;
-            foreach (var item in items.Values.ToList()[0].bids)
+            foreach (var item in jdata.Values.ToList()[0].bids)
             {
                 n++;
                 orders.buyOrders.Add(new BuyOrder { quantity = item[1], rate = item[0] });
             }
             n = 0;
-            foreach (var item in items.Values.ToList()[0].asks)
+            foreach (var item in jdata.Values.ToList()[0].asks)
             {
                 n++;
                 orders.sellOrders.Add(new SellOrder { quantity =item[1], rate = item[0] });
@@ -379,7 +420,13 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            YInfo jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YInfo>(response);
+            YInfo jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YInfo>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
 
             Dictionary<string, TradePair> tradePairs = new Dictionary<string, TradePair>();
 
@@ -402,35 +449,6 @@ namespace BitWhiskey
                 tradePairs.Add(pair.ticker, pair);
 
             }
-            /*
-                        dynamic jdata = JsonConvert.DeserializeObject<ExpandoObject>(response, new ExpandoObjectConverter());
-
-                        Dictionary<string, TradePair> tradePairs = new Dictionary<string, TradePair>();
-                        //            object aa = jdata.success;
-                        //            object r = jdata["return"];
-                        //            var returnList = jdata.@return;
-                        //            var fundsList = returnList["funds"];
-                        var pairsList = (IDictionary<string, object>)jdata.pairs;
-
-                        foreach (var item in pairsList.Keys)
-                        {
-                            TradePair pair = new TradePair
-                            {
-                                currency1 = "",
-                                currency2 = "",
-                                ticker = item,
-                                isActive = true
-                            };
-                            //                if (item.Value["disabled"].ToString() == "1")
-                            //                    pair.isActive = false;
-                            Pair pairinfo = new Pair(pair.ticker.ToUpper());
-                            if (pair.ticker!="BTC_RUR" && pair.ticker != "BTC_USD" && pairinfo.currency2 != "BTC" && pairinfo.currency2 != "USD")
-                                continue;
-                            pair.currency1 = pairinfo.currency1;
-                            pair.currency2 = pairinfo.currency2;
-                            tradePairs.Add(pair.ticker, pair);
-                        }
-                        */
 
             return tradePairs;
 
@@ -448,11 +466,17 @@ namespace BitWhiskey
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
-            Dictionary<string,List<YTrade>> items = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<YTrade>>>(response);
+            Dictionary<string, List<YTrade>> jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<YTrade>>>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
 
             int n = 0;
             List<Trade> tradeHistory = new List<Trade>();
-            foreach (var item in items.Values.ToList()[0])
+            foreach (var item in jdata.Values.ToList()[0])
             {
                 n++;
                 Trade trade = new Trade
@@ -490,9 +514,15 @@ namespace BitWhiskey
             string response = DoPublicRequest(parameters);
 
             CheckResponseAndThrow(response);
-            Dictionary<string, YTickerCurrency> items = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YTickerCurrency>>(response);
+            Dictionary<string, YTickerCurrency> jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, YTickerCurrency>>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
 
-            YTickerCurrency item= items.Values.ToList()[0];
+            YTickerCurrency item = jdata.Values.ToList()[0];
             TradeLast tradelast;
             tradelast = new TradeLast { ask = item.sell, bid =item.buy, last = item.last };
 
@@ -511,13 +541,19 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            YActiveOrders jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YActiveOrders>(response);
+            YActiveOrders jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YActiveOrders>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+            if (jdata.@return == null)
+                throw new MarketAPIException("Market API error: Data=null , Response: " + response);
 
             List<OpenOrder> openOrders = new List<OpenOrder>();
 
             //            foreach (var item in jdata.@return.funds)
-            if (jdata.@return != null)
-            {
                 foreach (var pair in jdata.@return)
                 {
                     YActiveOrder item = pair.Value;
@@ -540,43 +576,9 @@ namespace BitWhiskey
                     openOrders.Add(order);
 
                 }
-            }
             openOrders = openOrders.OrderByDescending(o => o.openedDate).ToList();
             return openOrders;
 
-/*
-
-            string response = DoKeyRequest(parameters);
-
-            CheckResponseAndThrow(response);
-
-            List<POpenOrders> jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<List<POpenOrders>>(response);
-
-            List<OpenOrder> openOrders = new List<OpenOrder>();
-            foreach (POpenOrders item in jdata)
-            {
-                OpenOrder order = new OpenOrder
-                {
-                    uuid = item.orderNumber,
-                    openUuid = item.orderNumber,
-                    orderType = item.type,
-                    ticker = ticker,
-                    quantity = Helper.ToDouble(item.amount),
-                    quantityRemaining = 0,
-                    price = Helper.ToDouble(item.rate),
-                    openedDate = DateTime.Now
-                };
-                if (order.orderType == "sell")
-                    order.orderType = "SELL LIMIT";
-                if (order.orderType == "buy")
-                    order.orderType = "BUY LIMIT";
-
-                openOrders.Add(order);
-
-            }
-            openOrders = openOrders.OrderByDescending(o => o.openedDate).ToList();
-            return openOrders;
-            */
         }
         public override string OrderCancelBegin(string idOrder)
         {
@@ -591,9 +593,16 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            dynamic jdata = JsonConvert.DeserializeObject<ExpandoObject>(response, new ExpandoObjectConverter());
-//            if(jdata.success==1)
-            //            PCancelOrder jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PCancelOrder>(response);
+            dynamic jdata = null;
+            try
+            {
+                jdata = JsonConvert.DeserializeObject<ExpandoObject>(response, new ExpandoObjectConverter());
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+            if (jdata.@return == null)
+                throw new MarketAPIException("Market API error: Data=null , Response: " + response);
+
             return "";
         }
         public override string OrderBuyLimitBegin(string ticker, double rate, double quantity)
@@ -611,7 +620,7 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            //PBuySell jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PBuySell>(response);
+
             return "";
         }
         public override string OrderSellLimitBegin(string ticker, double rate, double quantity)
@@ -628,8 +637,8 @@ namespace BitWhiskey
             string response = DoKeyRequest(parameters);
 
             CheckResponseAndThrow(response);
-
             //PBuySell jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<PBuySell>(response);
+
             return "";
         }
         public override string GetMyOrdersHistoryBegin(string ticker)
@@ -645,11 +654,18 @@ namespace BitWhiskey
 
             CheckResponseAndThrow(response);
 
-            YMyTrades jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YMyTrades>(response);
+            YMyTrades jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<YMyTrades>(response);
+            }
+            catch (Exception ex)
+            { throw new MarketAPIException("Parsing Response Error" + " >>>> " + ex.Message + " ## Response: ## " + response); }
+            if (jdata.@return == null)
+                throw new MarketAPIException("Market API error: Data=null , Response: " + response);
+
             List<OrderDone> myOrdersHistory = new List<OrderDone>();
 
-            if (jdata.@return != null)
-            {
                 foreach (var pair in jdata.@return)
                 {
                     YMyTrade item = pair.Value;
@@ -674,7 +690,7 @@ namespace BitWhiskey
                     myOrdersHistory.Add(order);
 
                 }
-            }
+            
             myOrdersHistory = myOrdersHistory.OrderByDescending(o => o.doneDate).ToList();
             return myOrdersHistory;
 

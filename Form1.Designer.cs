@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dgridMarkets = new System.Windows.Forms.DataGridView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -43,12 +43,16 @@
             this.toolStripButtonAlerts = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSettings = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panelChart = new System.Windows.Forms.Panel();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.panelChart = new System.Windows.Forms.Panel();
+            this.statusStripStatus = new System.Windows.Forms.StatusStrip();
+            this.statusLabelMain = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLabelDate = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgridMarkets)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelChart.SuspendLayout();
+            this.statusStripStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgridMarkets
@@ -58,14 +62,14 @@
             this.dgridMarkets.AllowUserToOrderColumns = true;
             this.dgridMarkets.AllowUserToResizeRows = false;
             this.dgridMarkets.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridMarkets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgridMarkets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgridMarkets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgridMarkets.Location = new System.Drawing.Point(0, 0);
@@ -74,11 +78,11 @@
             this.dgridMarkets.Name = "dgridMarkets";
             this.dgridMarkets.ReadOnly = true;
             this.dgridMarkets.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgridMarkets.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgridMarkets.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgridMarkets.RowTemplate.Height = 24;
             this.dgridMarkets.RowTemplate.ReadOnly = true;
             this.dgridMarkets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -213,15 +217,6 @@
             this.panel1.Size = new System.Drawing.Size(540, 45);
             this.panel1.TabIndex = 11;
             // 
-            // panelChart
-            // 
-            this.panelChart.Controls.Add(this.dgridMarkets);
-            this.panelChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelChart.Location = new System.Drawing.Point(0, 45);
-            this.panelChart.Name = "panelChart";
-            this.panelChart.Size = new System.Drawing.Size(540, 372);
-            this.panelChart.TabIndex = 12;
-            // 
             // labelInfo
             // 
             this.labelInfo.AutoSize = true;
@@ -232,6 +227,42 @@
             this.labelInfo.Size = new System.Drawing.Size(47, 15);
             this.labelInfo.TabIndex = 11;
             this.labelInfo.Text = "label1";
+            // 
+            // panelChart
+            // 
+            this.panelChart.Controls.Add(this.statusStripStatus);
+            this.panelChart.Controls.Add(this.dgridMarkets);
+            this.panelChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelChart.Location = new System.Drawing.Point(0, 45);
+            this.panelChart.Name = "panelChart";
+            this.panelChart.Size = new System.Drawing.Size(540, 372);
+            this.panelChart.TabIndex = 12;
+            // 
+            // statusStripStatus
+            // 
+            this.statusStripStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabelDate,
+            this.statusLabelMain});
+            this.statusStripStatus.Location = new System.Drawing.Point(0, 350);
+            this.statusStripStatus.Name = "statusStripStatus";
+            this.statusStripStatus.Size = new System.Drawing.Size(540, 22);
+            this.statusStripStatus.TabIndex = 10;
+            // 
+            // statusLabelMain
+            // 
+            this.statusLabelMain.Name = "statusLabelMain";
+            this.statusLabelMain.Size = new System.Drawing.Size(31, 17);
+            this.statusLabelMain.Text = "1111";
+            // 
+            // statusLabelDate
+            // 
+            this.statusLabelDate.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusLabelDate.BorderStyle = System.Windows.Forms.Border3DStyle.Bump;
+            this.statusLabelDate.Name = "statusLabelDate";
+            this.statusLabelDate.Size = new System.Drawing.Size(39, 17);
+            this.statusLabelDate.Text = "10.00";
             // 
             // Form1
             // 
@@ -251,6 +282,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panelChart.ResumeLayout(false);
+            this.panelChart.PerformLayout();
+            this.statusStripStatus.ResumeLayout(false);
+            this.statusStripStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -270,6 +304,9 @@
         private System.Windows.Forms.ToolStripButton toolButtonTickerBtc;
         private System.Windows.Forms.ToolStripButton toolButtonTickerUsd;
         private System.Windows.Forms.Label labelInfo;
+        private System.Windows.Forms.StatusStrip statusStripStatus;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabelMain;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabelDate;
     }
 }
 

@@ -38,12 +38,12 @@ namespace BitWhiskey
 
             labelInfo.Text = "Please wait..Loading";
             Helper.Init();
-            AppSettingsManager.LoadSettings();
-            Global.markets.Init();
-
             Global.uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
+            AppSettingsManager.LoadSettings();
+            Global.markets.Init();
             Global.marketsState.Init();
+            StatusBar.Init(statusLabelDate, statusLabelMain);
 
             toolStripComboBoxMarket.Items.Clear();
             foreach (var market in Global.markets.GetMarketList())

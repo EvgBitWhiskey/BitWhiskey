@@ -18,7 +18,39 @@ namespace BitWhiskey
         {
             request.result.error = "Request:" + request.requestString;
             request.result.exception = ex;
-            Logman.logger.Error(ex, request.result.error);
+            if (ex == null)
+            {
+                request.result.errorLevel = ResultErrorLevel.ERROR;
+                Logman.Log(ex, request.result.error);
+                return;
+            }
+            if (ex.Message == null)
+            {
+                request.result.errorLevel = ResultErrorLevel.ERROR;
+                Logman.Log(ex, request.result.error);
+                return;
+            }
+
+            if 
+            (
+               (
+                 ex.Message.Contains("422")
+                 || ex.Message.Contains("503")
+                 || ex.Message.Contains("502")
+                 || ex.Message.Contains("500")
+               )
+               || (ex.Message.Contains("Ddos") && ex.Message.Contains("20-50 mins"))
+               ||  ex.Message.Contains("DataResult=Null")
+            )
+            {
+                request.result.errorLevel = ResultErrorLevel.IGNORE;
+                Logman.Log(request.result.error + " -> " + ex.Message);
+            }
+            else
+            {
+                request.result.errorLevel = ResultErrorLevel.ERROR;
+                Logman.Log(ex, request.result.error);
+            }
         }
 
         public void GetBalances_RequestHandler(RequestItem request)

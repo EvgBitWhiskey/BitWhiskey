@@ -26,6 +26,14 @@ namespace BitWhiskey
             logger.Error(msg);
             MessageBox.Show(msg);
         }
+        public static void Log(Exception ex, string msg = null)
+        {
+            logger.Error(ex, msg);
+        }
+        public static void Log(string msg)
+        {
+            logger.Error(msg);
+        }
 
     }
 }

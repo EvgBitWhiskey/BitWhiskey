@@ -327,11 +327,34 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BBalances jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BBalances>(response);
+            string errmsg = "";
+            string errcaption = "";
+            BBalances jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BBalances>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
 
             Dictionary<string, Balance> balances;
             balances = new Dictionary<string, Balance>();
@@ -360,11 +383,37 @@ public class Bittrex24HourSummary
         {
             string response = DoPublicRequest(parameters);
 
-            BOrderBook jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderBook>(response);
+//            BOrderBook jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderBook>(response);
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+ //           if (!jdata.success)
+ //               throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BOrderBook jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderBook>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption+= "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption +" >> "+errmsg);
+
 
             AllOrders orders = new AllOrders();
             orders.buyOrders = new List<BuyOrder>();
@@ -401,11 +450,39 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BOpenOrders jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOpenOrders>(response);
+//            BOpenOrders jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOpenOrders>(response);
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+//            if (!jdata.success)
+//                throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BOpenOrders jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOpenOrders>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
+
 
             List<OpenOrder>  openOrders = new List<OpenOrder>();
             int n = 0;
@@ -445,11 +522,39 @@ public class Bittrex24HourSummary
         {
             string response = DoPublicRequest(parameters);
 
-            BMarkets jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarkets>(response);
+           // BMarkets jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarkets>(response);
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+           // if (!jdata.success)
+           //     throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BMarkets jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarkets>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
+
 
             Dictionary<string, TradePair>  tradePairs = new Dictionary<string, TradePair>();
             int n = 0;
@@ -482,11 +587,39 @@ public class Bittrex24HourSummary
         {
             string response = DoPublicRequest(parameters);
 
-            BTradeHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeHistory>(response);
+           // BTradeHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeHistory>(response);
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+           // if (!jdata.success)
+           //     throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BTradeHistory jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeHistory>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
+
 
             List<Trade>  tradeHistory = new List<Trade>();
             int n = 0;
@@ -521,11 +654,38 @@ public class Bittrex24HourSummary
         {
             string response = DoPublicRequest(parameters);
 
-            BTradeLast jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeLast>(response);
+          //  BTradeLast jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeLast>(response);
             //lastRequestMsg = jdata.message;
             //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+           // if (!jdata.success)
+           //     throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BTradeLast jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTradeLast>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
 
             TradeLast tradelast = new TradeLast { ask = jdata.result.Ask, bid = jdata.result.Bid, last = jdata.result.Last };
 
@@ -542,11 +702,30 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
-            //lastRequestMsg = jdata.message;
-            //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+            string errmsg = "";
+            string errcaption = "";
+            BOrderLimit jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
 
             return "";
         }
@@ -565,11 +744,30 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
-            //lastRequestMsg = jdata.message;
-            //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+            string errmsg = "";
+            string errcaption = "";
+            BOrderLimit jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
 
             return "";
         }
@@ -588,12 +786,31 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BOrderLimit jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
+            string errmsg = "";
+            string errcaption = "";
+            BOrderLimit jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BOrderLimit>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
 
-            //lastRequestMsg = jdata.message;
-            //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
             return "";
         }
         public override string GetMyOrdersHistoryBegin(string ticker)
@@ -609,11 +826,30 @@ public class Bittrex24HourSummary
         {
             string response = DoKeyRequest(parameters);
 
-            BMyOrdersHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMyOrdersHistory>(response);
-            //lastRequestMsg = jdata.message;
-            //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+            string errmsg = "";
+            string errcaption = "";
+            BMyOrdersHistory jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMyOrdersHistory>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
 
             List<OrderDone> myOrdersHistory = new List<OrderDone>();
             int n = 0;
@@ -665,11 +901,30 @@ public class Bittrex24HourSummary
             string response = DoPublicRequest(parameters);
             PUBLIC_API = "https://bittrex.com/api/v1.1/";
 
-            BTicksPriceHistory jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTicksPriceHistory>(response);
-            //lastRequestMsg = jdata.message;
-            //lastRequestStatus = jdata.success;
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+            string errmsg = "";
+            string errcaption = "";
+            BTicksPriceHistory jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BTicksPriceHistory>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
 
             int n = 0;
             Dictionary<int, PriceCandle>  priceHistory = new Dictionary<int, PriceCandle>();
@@ -693,9 +948,37 @@ public class Bittrex24HourSummary
         {
             string response = DoPublicRequest(parameters);
 
-            BMarket24HourSummary jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarket24HourSummary>(response);
-            if (!jdata.success)
-                throw new MarketAPIException("Market API Error:" + jdata.message);
+           // BMarket24HourSummary jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarket24HourSummary>(response);
+           // if (!jdata.success)
+           //     throw new MarketAPIException("Market API Error:" + jdata.message);
+
+            string errmsg = "";
+            string errcaption = "";
+            BMarket24HourSummary jdata = null;
+            try
+            {
+                jdata = Newtonsoft.Json.JsonConvert.DeserializeObject<BMarket24HourSummary>(response);
+                if (!jdata.success)
+                {
+                    errcaption = "Market API Error:";
+                    errmsg = jdata.message;
+                }
+                if (jdata.result == null)
+                {
+                    errcaption += "Market API Error:";
+                    errmsg += "DataResult=Null >>> " + response;
+                }
+            }
+            catch (Exception ex)
+            {
+                errcaption = "Parsing Response Error:";
+                errmsg = ex.Message + " >>> " + response;
+            }
+            if (errmsg != "")
+                throw new MarketAPIException(errcaption + " >> " + errmsg);
+
+
+
 
             Dictionary<string, MarketCurrent> markets = new Dictionary<string, MarketCurrent>();
             foreach (var item in jdata.result)

@@ -9,9 +9,17 @@ using System.Threading;
 
 namespace BitWhiskey
 {
-    public class RequestResult
+    public enum ResultErrorLevel
+    {
+        IGNORE=0,
+        UNKNOWN = 1,
+        ERROR = 1 
+    }
+
+        public class RequestResult
     {
         public string error = "";
+        public ResultErrorLevel errorLevel = ResultErrorLevel.UNKNOWN;
         public Exception exception = null;
         public object resultData = "";
     }
@@ -89,11 +97,15 @@ namespace BitWhiskey
             {
                 if (item.result.error != "")
                 {
-                    string msg = "Error UIErr->" + item.result.error;
+                    string msg = "RequestError->" + item.result.error;
                     if (log)
                         Logman.logger.Error(msg);
                     if (display)
-                        Helper.Display(msg);
+                    {
+                        if(item.result.errorLevel != ResultErrorLevel.IGNORE)
+                          StatusBar.ShowMsg(msg);
+                     //   Helper.Display(msg);
+                    }
                     return true;
                 }
             }
